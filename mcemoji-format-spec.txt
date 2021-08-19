@@ -1,0 +1,11 @@
+MCEmoji format specification
+
+Version 1:
+Bytes:
+- Format version (Currently 1)
+- Height
+- Ascent
+- (2 bytes) Character
+- Permission length (n)
+- (Next "n" bytes) Permission characters
+- (Remaining bytes) The PNG image

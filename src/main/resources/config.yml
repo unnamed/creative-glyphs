@@ -1,0 +1,24 @@
+pack:
+    meta:
+        write: true
+        # The resource-pack icon (in the plugin folder)
+        icon: 'icon.png'
+        # The resource-pack description
+        description: 'Custom server pack'
+    export:
+        file:
+            do: true
+            merge: false
+            target: 'un-emojis-generated.zip'
+        upload:
+            do: true
+            authorization: 'authorization'
+            target: 'https://artemis.unnamed.team/files/upload/testserver'
+            apply: false
+
+#feature:
+#    # Tab-completion uses client-side fake-players to
+#    # work, it may be buggy (still in development, you
+#    # can help by enabling this and reporting any bug
+#    # to our support server https://discord.gg/xbba2fy)
+#    tab-completion: false
