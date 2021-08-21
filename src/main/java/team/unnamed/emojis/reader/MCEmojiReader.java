@@ -28,7 +28,7 @@ public class MCEmojiReader implements EmojiReader {
      * Pattern for file names, also for extracting the
      * emoji name (removing the file extension)
      */
-    private static final Pattern NAME_PATTERN = Pattern.compile("([A-Za-z_]{1,14})\\.png");
+    private static final Pattern NAME_PATTERN = Pattern.compile("([A-Za-z_]{1,14})\\.mcemoji");
 
     /**
      * Logger for this class, to log all important information.
@@ -95,8 +95,9 @@ public class MCEmojiReader implements EmojiReader {
                         return input;
                     }
                 };
-                Emoji emoji = new Emoji(name, permission, data, height, ascent, character);
 
+                LOGGER.info("Loaded emoji '" + name + "' with permission '" + permission + "', height: " + height + ", ascent: " + ascent + " char: " + character);
+                Emoji emoji = new Emoji(name, permission, data, height, ascent, character);
                 emojis.put(name, emoji);
             } else {
                 LOGGER.warning("File '" + file.getName()

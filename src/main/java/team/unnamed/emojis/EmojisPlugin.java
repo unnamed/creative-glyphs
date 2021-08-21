@@ -10,7 +10,7 @@ import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.listener.ChatListener;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.reader.EmojiReader;
-import team.unnamed.emojis.reader.ResourceEmojiReader;
+import team.unnamed.emojis.reader.MCEmojiReader;
 import team.unnamed.emojis.resourcepack.ResourceExports;
 import team.unnamed.emojis.resourcepack.ResourcePackInfo;
 import team.unnamed.emojis.resourcepack.ZipResourcePackWriter;
@@ -27,10 +27,7 @@ public class EmojisPlugin extends JavaPlugin {
         saveDefaultConfig();
 
         EmojiRegistry registry = new EmojiRegistry();
-        EmojiReader reader = new ResourceEmojiReader(
-                getClassLoader(),
-                "blush", "grin", "grinning", "heart_eyes", "innocent"
-        ); //new MCEmojiReader();
+        EmojiReader reader = new MCEmojiReader(); //new MCEmojiReader();
 
         File folder = new File(getDataFolder(), "emojis");
         if (!folder.exists() && !folder.mkdirs()) {

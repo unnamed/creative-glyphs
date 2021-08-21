@@ -9,18 +9,17 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 public class ResourcePackApplyListener implements Listener {
 
     private final String downloadUrl;
-    //private final byte[] hash;
+    private final byte[] hash;
 
     public ResourcePackApplyListener(String downloadUrl, byte[] hash) {
         this.downloadUrl = downloadUrl;
-        //this.hash = hash;
+        this.hash = hash;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setResourcePack(downloadUrl);
-        // TODO: Use NMS and set the hash too
+        player.setResourcePack(downloadUrl, hash);
     }
 
     @EventHandler

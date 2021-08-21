@@ -6,7 +6,6 @@ public class ReplacementTest {
 
     @Test
     public void test() {
-
     }
 
 }
