@@ -1,5 +1,6 @@
 package team.unnamed.emojis.io;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -100,6 +101,21 @@ public interface Streamable {
                 return new FileOutputStream(file);
             }
 
+        };
+    }
+
+    /**
+     * Creates a read-only {@link Streamable} representing
+     * the given {@code bytes}. Doesn't support writing and
+     * doesn't modify the bytes
+     * @param bytes the wrapped bytes
+     */
+    static Streamable ofBytes(byte[] bytes) {
+        return new Streamable() {
+            @Override
+            public InputStream openIn() {
+                return new ByteArrayInputStream(bytes);
+            }
         };
     }
 

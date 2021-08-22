@@ -5,21 +5,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+import team.unnamed.emojis.EmojisPlugin;
+import team.unnamed.emojis.export.RemoteResource;
 
 public class ResourcePackApplyListener implements Listener {
 
-    private final String downloadUrl;
-    private final byte[] hash;
+    private final EmojisPlugin plugin;
 
-    public ResourcePackApplyListener(String downloadUrl, byte[] hash) {
-        this.downloadUrl = downloadUrl;
-        this.hash = hash;
+    public ResourcePackApplyListener(EmojisPlugin plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        RemoteResource resource = plugin.getRemoteResource();
         Player player = event.getPlayer();
-        player.setResourcePack(downloadUrl, hash);
+        player.setResourcePack(resource.getUrl(), resource.getHash());
     }
 
     @EventHandler

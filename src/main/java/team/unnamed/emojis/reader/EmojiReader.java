@@ -2,22 +2,24 @@ package team.unnamed.emojis.reader;
 
 import team.unnamed.emojis.Emoji;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.Collection;
 
 /**
- * Responsible for reading emojis from files.
+ * Responsible for reading emojis from sequences
+ * of bytes.
  * @author yusshu (Andre Roldan)
  */
 public interface EmojiReader {
 
     /**
-     * Reads the emojis from the given {@code folder}
-     * @return The read emojis (it may be immutable)
-     * @throws IOException If read failed or found an
-     * invalid emoji
+     * Reads the emojis from the given {@code input}
+     * <strong>Note that this method won't close the
+     * given InputStream</strong>
+     * @return The read emojis
+     * @throws IOException If read failed
      */
-    Map<String, Emoji> read(File folder) throws IOException;
+    Collection<Emoji> read(InputStream input) throws IOException;
 
 }

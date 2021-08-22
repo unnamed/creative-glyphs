@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class EmojiRegistry {
 
-    private final Map<String, Emoji> registry = new HashMap<>();
+    private Map<String, Emoji> registry = new HashMap<>();
 
     @Nullable
     public Emoji get(String name) {
@@ -17,6 +17,19 @@ public class EmojiRegistry {
 
     public void add(Emoji emoji) {
         registry.put(emoji.getName(), emoji);
+    }
+
+    public void update(Collection<Emoji> emojis) {
+        // create a new registry, the previous registry
+        // will be replaced by this, so we don't have a
+        // map with an inconsistent state for some nanoseconds
+        // (I'm paranoid)
+        Map<String, Emoji> newRegistry = new HashMap<>();
+        for (Emoji emoji : emojis) {
+            newRegistry.put(emoji.getName(), emoji);
+        }
+        // update the registry
+        registry = newRegistry;
     }
 
     public Collection<Emoji> values() {

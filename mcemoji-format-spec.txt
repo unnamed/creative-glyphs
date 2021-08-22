@@ -3,9 +3,12 @@ MCEmoji format specification
 Version 1:
 Bytes:
 - Format version (Currently 1)
+- Name length (m)
+- (Next "m" bytes) Name characters
 - Height
 - Ascent
 - (2 bytes) Character
 - Permission length (n)
 - (Next "n" bytes) Permission characters
-- (Remaining bytes) The PNG image
+- PNG Image length (p)
+- (Next "p" bytes) The PNG image
