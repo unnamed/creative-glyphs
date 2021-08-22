@@ -4,11 +4,11 @@ Version 1:
 Bytes:
 - Format version (Currently 1)
 - Name length (m)
-- (Next "m" bytes) Name characters
+- (Next "m * 2" bytes) Name characters
 - Height
 - Ascent
 - (2 bytes) Character
 - Permission length (n)
-- (Next "n" bytes) Permission characters
+- (Next "n * 2" bytes) Permission characters
 - PNG Image length (p)
 - (Next "p" bytes) The PNG image
