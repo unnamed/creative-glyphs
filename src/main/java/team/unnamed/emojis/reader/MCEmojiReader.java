@@ -50,7 +50,7 @@ public class MCEmojiReader implements EmojiReader {
         String permission = Streams.readString(dataInput, permissionLength);
 
         // image read
-        byte imageLength = dataInput.readByte();
+        int imageLength = dataInput.readShort();
 
         byte[] imageBytes = new byte[imageLength];
         int read = input.read(imageBytes); // save the image bytes
