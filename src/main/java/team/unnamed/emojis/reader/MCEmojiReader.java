@@ -41,8 +41,8 @@ public class MCEmojiReader implements EmojiReader {
         byte nameLength = dataInput.readByte();
         String name = Streams.readString(dataInput, nameLength);
 
-        int height = dataInput.readByte();
-        int ascent = dataInput.readByte();
+        int height = dataInput.readShort();
+        int ascent = dataInput.readShort();
         char character = dataInput.readChar();
 
         // permission read
