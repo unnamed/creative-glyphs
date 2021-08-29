@@ -160,8 +160,8 @@ public final class ComponentEmojiReplacer {
             if (start - lastEnd > 0) {
                 // so there's text within this emoji and the previous emoji (or text start)
                 String previous = message.substring(lastEnd, start - 1);
-                fromLegacyText(previous, components, last);
-                last = components.get(components.size() - 1).duplicate();
+                fromLegacyText(previous, components, last.duplicate());
+                last = components.get(components.size() - 1);
             }
 
             String emojiName = message.substring(start, end);
@@ -182,7 +182,7 @@ public final class ComponentEmojiReplacer {
 
         // append remaining text
         if (message.length() - lastEnd > 0) {
-            fromLegacyText(message.substring(lastEnd), components, last);
+            fromLegacyText(message.substring(lastEnd), components, last.duplicate());
         }
 
         return components.toArray(EMPTY_COMPONENT_ARRAY);
