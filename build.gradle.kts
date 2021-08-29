@@ -13,11 +13,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
+    val spigot = "org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT";
+
+    compileOnly(spigot)
     compileOnly("org.jetbrains:annotations:21.0.0")
 
     implementation("team.unnamed.hephaestus:common:0.1.0")
 
+    testImplementation(spigot)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
@@ -28,5 +31,4 @@ tasks.getByName<Test>("test") {
 
 tasks.withType<JavaCompile> {
     options.encoding = Charsets.UTF_8.name()
-    options.release.set(8)
 }
