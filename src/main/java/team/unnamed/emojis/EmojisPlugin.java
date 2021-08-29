@@ -44,11 +44,6 @@ public class EmojisPlugin extends JavaPlugin {
             throw new IllegalStateException("Cannot load emojis", e);
         }
 
-        Bukkit.getPluginManager().registerEvents(
-                new ChatListener(registry),
-                this
-        );
-
         // export
         this.exportService = new DefaultExportService(this);
         this.resource = exportService.export(registry);
