@@ -31,7 +31,17 @@ public class EmojiReplacer {
             if (c == ':') {
                 while (++i < text.length()) {
                     char current = text.charAt(i);
-                    if (current == ':') {
+                    if (current == ' ') {
+                        builder.append(':')
+                                .append(name)
+                                .append(current);
+                        name.setLength(0);
+                        continue textLoop;
+                    } else if (current == ':') {
+                        if (name.length() < 1) {
+                            builder.append(':');
+                            continue;
+                        }
                         String nameStr = name.toString();
                         Emoji value;
                         if (
@@ -40,8 +50,9 @@ public class EmojiReplacer {
                         ) {
                             builder
                                     .append(':')
-                                    .append(nameStr)
-                                    .append(':');
+                                    .append(nameStr);
+                            name.setLength(0);
+                            continue;
                         } else {
 
                             builder.append(value.getCharacter());
