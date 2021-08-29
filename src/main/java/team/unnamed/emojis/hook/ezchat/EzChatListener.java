@@ -31,14 +31,16 @@ public class EzChatListener implements Listener {
     private TextComponent buildEmojiComponent(Emoji emoji) {
         // TODO: this is temporal, should be configurable
         TextComponent component = new TextComponent(emoji.getCharacter() + "");
+        component.setColor(net.md_5.bungee.api.ChatColor.WHITE);
         component.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 new Text(new ComponentBuilder()
                         .append(emoji.getCharacter() + "")
+                        .color(net.md_5.bungee.api.ChatColor.WHITE)
+                        .append(" :" + emoji.getName() + ": ")
                         .color(net.md_5.bungee.api.ChatColor.GRAY)
-                        .append(" This is ")
+                        .append("/emojis")
                         .color(net.md_5.bungee.api.ChatColor.RED)
-                        .append(":" + emoji.getName() + ":")
                         .create())
         ));
         return component;
