@@ -31,13 +31,7 @@ public class EmojiReplacer {
             if (c == ':') {
                 while (++i < text.length()) {
                     char current = text.charAt(i);
-                    if (current == ' ') {
-                        builder.append(':')
-                                .append(name)
-                                .append(current);
-                        name.setLength(0);
-                        continue textLoop;
-                    } else if (current == ':') {
+                    if (current == ':') {
                         if (name.length() < 1) {
                             builder.append(':');
                             continue;
