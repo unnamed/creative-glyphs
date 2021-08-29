@@ -3,9 +3,10 @@ package team.unnamed.emojis.resourcepack;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.io.Streamable;
-import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.util.Texts;
+import team.unnamed.hephaestus.io.Streamable;
+import team.unnamed.hephaestus.io.Streams;
+import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
 
 import java.io.IOException;
 import java.io.OutputStream;

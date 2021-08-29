@@ -1,8 +1,8 @@
 package team.unnamed.emojis.reader;
 
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.io.Streamable;
-import team.unnamed.emojis.io.Streams;
+import team.unnamed.hephaestus.io.Streamable;
+import team.unnamed.hephaestus.io.Streams;
 
 import java.io.DataInputStream;
 import java.io.IOException;

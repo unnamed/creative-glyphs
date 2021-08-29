@@ -2,18 +2,16 @@ package team.unnamed.emojis.export;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.io.Streamable;
-import team.unnamed.emojis.io.Streams;
-import team.unnamed.emojis.listener.ResourcePackApplyListener;
-import team.unnamed.emojis.resourcepack.ResourceExports;
-import team.unnamed.emojis.resourcepack.ResourcePackInfo;
 import team.unnamed.emojis.resourcepack.ZipResourcePackWriter;
 import team.unnamed.emojis.util.Version;
+import team.unnamed.hephaestus.io.Streamable;
+import team.unnamed.hephaestus.io.Streams;
+import team.unnamed.hephaestus.resourcepack.ResourceExports;
+import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
 
 import java.io.File;
 import java.io.IOException;
