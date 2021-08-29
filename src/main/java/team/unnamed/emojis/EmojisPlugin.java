@@ -6,6 +6,7 @@ import team.unnamed.emojis.command.EmojisCommand;
 import team.unnamed.emojis.export.DefaultExportService;
 import team.unnamed.emojis.export.ExportService;
 import team.unnamed.emojis.export.RemoteResource;
+import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.listener.ChatListener;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.reader.EmojiReader;
@@ -60,6 +61,8 @@ public class EmojisPlugin extends JavaPlugin {
         }
 
         getCommand("emojis").setExecutor(new EmojisCommand(this));
+
+        new EzChatHook(this, registry).init();
     }
 
     public EmojiRegistry getRegistry() {

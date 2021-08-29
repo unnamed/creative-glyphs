@@ -18,6 +18,9 @@ dependencies {
     compileOnly(spigot)
     compileOnly("org.jetbrains:annotations:21.0.0")
 
+    // You must run the deps.sh script to have this dependencies
+    compileOnly("me.fixeddev:EzChat:2.5.0")
+
     implementation("team.unnamed.hephaestus:common:0.1.0")
 
     testImplementation(spigot)
