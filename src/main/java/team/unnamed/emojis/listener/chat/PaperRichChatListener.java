@@ -3,16 +3,18 @@ package team.unnamed.emojis.listener.chat;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.ComponentEmojiReplacer;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.listener.EventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.logging.Logger;
 
 /**
  * Implementation for listening to Paper's AsyncChatEvent,
@@ -61,15 +63,11 @@ public class PaperRichChatListener
         }
 
         List<Component> children = new ArrayList<>(newComponent.children());
-        ListIterator<Component> childIterator = children.listIterator();
 
-        while (childIterator.hasNext()) {
-            Component child = childIterator.next();
+        for (int i = 0; i < children.size(); i++) {
+            Component child = children.get(i);
             Component newChild = replaceEmojisRecursively(permissible, child);
-
-            for (Component grandChild : newChild.children()) {
-                childIterator.add(grandChild);
-            }
+            children.set(i, newChild);
         }
 
         return newComponent.children(children);

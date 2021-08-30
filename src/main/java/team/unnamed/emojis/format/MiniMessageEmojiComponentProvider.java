@@ -28,13 +28,14 @@ public class MiniMessageEmojiComponentProvider
     @Override
     public Component toAdventureComponent(Emoji emoji) {
         Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("emoji", emoji.getName());
+        placeholders.put("emoji", emoji.getCharacter() + "");
         placeholders.put("emojiname", emoji.getName());
 
-        return formatter.parse(
-                config.getString("format.paper.emoji", DEFAULT_FORMAT),
-                placeholders
-        );
+        return Component.text(emoji.getCharacter())
+                .hoverEvent(formatter.parse(
+                        config.getString("format.paper.emoji", DEFAULT_FORMAT),
+                        placeholders
+                ));
     }
 
     @Override

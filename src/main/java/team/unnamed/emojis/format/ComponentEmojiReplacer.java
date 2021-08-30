@@ -59,12 +59,23 @@ public class ComponentEmojiReplacer {
 
         // append remaining text
         if (content.length() - lastEnd > 0) {
-            children.add(Component.text(content.substring(lastEnd)));
+            children.add(origin.content(content.substring(lastEnd)));
         }
 
         children.addAll(origin.children());
 
-        return Component.text().append(children).build();
+        if (children.isEmpty()) {
+            return Component.text("");
+        } else {
+            Component first = children.get(0);
+            if (first instanceof TextComponent) {
+                children.remove(0);
+                return ((TextComponent) first)
+                        .children(children);
+            } else {
+                return Component.text().append(children).build();
+            }
+        }
     }
 
 }
