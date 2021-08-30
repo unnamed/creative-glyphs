@@ -3,7 +3,7 @@ package team.unnamed.emojis;
 import org.bukkit.permissions.Permissible;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import team.unnamed.emojis.util.EmojiReplacer;
+import team.unnamed.emojis.format.EmojiReplacer;
 
 public class ReplacementTest {
 

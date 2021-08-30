@@ -1,4 +1,4 @@
-package team.unnamed.emojis.util;
+package team.unnamed.emojis.format;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -10,7 +10,6 @@ import team.unnamed.emojis.EmojiRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,25 +17,19 @@ import java.util.regex.Pattern;
  * Utility class for replacing emojis and obtaining
  * the result in a rich component like {@link BaseComponent[]}
  */
-public final class ComponentEmojiReplacer {
-
-    /**
-     * Pattern for matching emojis from a string
-     */
-    private static final Pattern EMOJI_PATTERN
-            = Pattern.compile(":([A-Za-z_]{1,14}):");
+public final class LegacyComponentEmojiReplacer {
 
     /**
      * Pattern for matching URLs
      */
     private static final Pattern URL_PATTERN
-            = Pattern.compile( "^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$" );
+            = Pattern.compile("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
 
     // convenience constant holding an empty component array
     private static final BaseComponent[] EMPTY_COMPONENT_ARRAY
             = new BaseComponent[0];
 
-    private ComponentEmojiReplacer() {
+    private LegacyComponentEmojiReplacer() {
     }
 
     private static void fromLegacyText(
@@ -145,10 +138,10 @@ public final class ComponentEmojiReplacer {
             Permissible permissible,
             EmojiRegistry registry,
             String message,
-            BiConsumer<List<TextComponent>, Emoji> buildEmojiComponent
+            EmojiComponentProvider emojiComponentProvider
     ) {
         List<TextComponent> components = new ArrayList<>();
-        Matcher matcher = EMOJI_PATTERN.matcher(message);
+        Matcher matcher = Patterns.EMOJI_PATTERN.matcher(message);
         int lastEnd = 0;
 
         TextComponent last = new TextComponent();
@@ -173,7 +166,7 @@ public final class ComponentEmojiReplacer {
                 // "previous" text
                 lastEnd = start - 1;
             } else {
-                buildEmojiComponent.accept(components, emoji);
+                components.add(emojiComponentProvider.toBungeeComponent(emoji));
                 // if valid emoji, lastEnd is the emoji end + 1, so it doesn't
                 // consume the emoji nor its closing colon
                 lastEnd = end + 1;

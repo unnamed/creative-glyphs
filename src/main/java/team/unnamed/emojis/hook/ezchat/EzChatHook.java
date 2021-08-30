@@ -3,28 +3,34 @@ package team.unnamed.emojis.hook.ezchat;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.format.EmojiComponentProvider;
+import team.unnamed.emojis.hook.PluginHook;
 
-public class EzChatHook {
+public class EzChatHook implements PluginHook {
 
     private final Plugin plugin;
     private final EmojiRegistry registry;
+    private final EmojiComponentProvider emojiComponentProvider;
 
     public EzChatHook(
             Plugin plugin,
-            EmojiRegistry registry
+            EmojiRegistry registry,
+            EmojiComponentProvider emojiComponentProvider
     ) {
         this.plugin = plugin;
         this.registry = registry;
+        this.emojiComponentProvider = emojiComponentProvider;
     }
 
-    public void init() {
-        if (Bukkit.getPluginManager().getPlugin("EzChat") == null) {
-            // TODO: I don't really like doing this
-            return;
-        }
+    @Override
+    public String getPluginName() {
+        return "EzChat";
+    }
 
+    @Override
+    public void hook(Plugin hook) {
         Bukkit.getPluginManager().registerEvents(
-                new EzChatListener(registry),
+                new EzChatListener(registry, emojiComponentProvider),
                 plugin
         );
     }

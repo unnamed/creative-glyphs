@@ -5,45 +5,29 @@ import me.fixeddev.ezchat.event.AsyncEzChatEvent;
 import me.fixeddev.ezchat.format.ChatFormat;
 import me.fixeddev.ezchat.format.ChatFormatSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.util.ComponentEmojiReplacer;
+import team.unnamed.emojis.format.EmojiComponentProvider;
+import team.unnamed.emojis.format.LegacyComponentEmojiReplacer;
 
+@SuppressWarnings("deprecation")
 public class EzChatListener implements Listener {
 
     private final ChatFormatSerializer formatSerializer
             = new ChatFormatSerializer();
 
     private final EmojiRegistry registry;
+    private final EmojiComponentProvider emojiComponentProvider;
 
-    public EzChatListener(EmojiRegistry registry) {
+    public EzChatListener(
+            EmojiRegistry registry,
+            EmojiComponentProvider emojiComponentProvider
+    ) {
         this.registry = registry;
-    }
-
-    private TextComponent buildEmojiComponent(Emoji emoji) {
-        // TODO: this is temporal, should be configurable
-        TextComponent component = new TextComponent(emoji.getCharacter() + "");
-        component.setColor(net.md_5.bungee.api.ChatColor.WHITE);
-        component.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text(new ComponentBuilder()
-                        .append(emoji.getCharacter() + "")
-                        .color(net.md_5.bungee.api.ChatColor.WHITE)
-                        .append(" :" + emoji.getName() + ": ")
-                        .color(net.md_5.bungee.api.ChatColor.GRAY)
-                        .append("/emojis")
-                        .color(net.md_5.bungee.api.ChatColor.RED)
-                        .create())
-        ));
-        return component;
+        this.emojiComponentProvider = emojiComponentProvider;
     }
 
     @EventHandler
@@ -60,11 +44,11 @@ public class EzChatListener implements Listener {
             message = ChatColor.translateAlternateColorCodes('&', message);
         }
 
-        BaseComponent[] messageComponent = ComponentEmojiReplacer.replace(
+        BaseComponent[] messageComponent = LegacyComponentEmojiReplacer.replace(
                 sender,
                 registry,
                 message,
-                (components, emoji) -> components.add(buildEmojiComponent(emoji))
+                emojiComponentProvider
         );
 
         if (!format.isUsePlaceholderApi()) {

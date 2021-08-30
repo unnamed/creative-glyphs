@@ -16,6 +16,26 @@ pack:
             target: 'https://artemis.unnamed.team/files/upload/testserver'
             apply: false
 
+format:
+
+    # Configuration for when running on a Paper server
+    paper:
+        emoji: '<white><emoji> <gray>:<emojiname>: <#ff8df8>/emojis'
+
+    # Configuration for when not running on a Paper server
+    legacy:
+        # Using components in legacy servers can affect
+        # compatibility with other plugins since we need
+        # to surround the chat event
+        rich: true
+
+        # Event surrounding strategy, 'clearRecipients'
+        # will remove all event recipients (it makes it
+        # compatible with DiscordSRV), 'cancel' will just
+        # cancel the event, both strategies may cause problems
+        # with another plugins
+        surround: 'clearRecipients'
+
 #feature:
 #    # Tab-completion uses client-side fake-players to
 #    # work, it may be buggy (still in development, you

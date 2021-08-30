@@ -9,17 +9,25 @@ version = "0.1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
+    maven("https://repo.essentialsx.net/releases/")
     mavenLocal()
 }
 
 dependencies {
-    val spigot = "org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT";
+    val spigot = "io.papermc.paper:paper:1.17.1-R0.1-SNAPSHOT";
 
     compileOnly(spigot)
     compileOnly("org.jetbrains:annotations:21.0.0")
+    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") {
+        exclude(group = "net.kyori", module = "adventure-api")
+        exclude(group = "net.kyori", module = "adventure-text-serializer-plain")
+        exclude(group = "net.kyori", module = "adventure-text-serializer-gson")
+    }
 
-    // You must run the deps.sh script to have this dependencies
+    // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
+
+    compileOnly("net.ess3:EssentialsXChat:2.18.2")
 
     implementation("team.unnamed.hephaestus:common:0.1.0")
 

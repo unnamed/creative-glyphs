@@ -1,4 +1,4 @@
-package team.unnamed.emojis.util;
+package team.unnamed.emojis.format;
 
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.Emoji;
