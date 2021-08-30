@@ -6,7 +6,7 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 
-public class EzChatHook implements PluginHook {
+public class EzChatHook implements PluginHook.Chat {
 
     private final Plugin plugin;
     private final EmojiRegistry registry;
