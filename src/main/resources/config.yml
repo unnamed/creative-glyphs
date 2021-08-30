@@ -11,7 +11,7 @@ pack:
             merge: false
             target: 'un-emojis-generated.zip'
         upload:
-            do: true
+            do: false
             authorization: 'authorization'
             target: 'https://artemis.unnamed.team/files/upload/testserver'
             apply: false
