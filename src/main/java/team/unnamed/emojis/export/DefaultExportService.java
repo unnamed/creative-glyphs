@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.resourcepack.ZipResourcePackWriter;
+import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
 import team.unnamed.emojis.util.Version;
 import team.unnamed.hephaestus.io.Streamable;
 import team.unnamed.hephaestus.io.Streams;
@@ -60,7 +60,7 @@ public class DefaultExportService
 
                 ResourceExports.newFileExporter(target)
                         .setMergeZip(mergeZip)
-                        .export(new ZipResourcePackWriter(registry, packInfo));
+                        .export(new EmojiResourcePackWriter(registry, packInfo));
             } catch (IOException e) {
                 throw new IllegalStateException("Cannot create output file", e);
             }
@@ -76,7 +76,7 @@ public class DefaultExportService
                     exporter.setAuthorization(authorization);
                 }
                 JsonObject response = new JsonParser()
-                        .parse(exporter.export(new ZipResourcePackWriter(registry, packInfo)))
+                        .parse(exporter.export(new EmojiResourcePackWriter(registry, packInfo)))
                         .getAsJsonObject();
 
                 String downloadUrl = response.get("url").getAsString();
