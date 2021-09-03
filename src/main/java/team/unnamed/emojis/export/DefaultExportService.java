@@ -1,7 +1,7 @@
 package team.unnamed.emojis.export;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,6 @@ import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
 import team.unnamed.emojis.util.Version;
 import team.unnamed.hephaestus.io.Streamable;
 import team.unnamed.hephaestus.io.Streams;
-import team.unnamed.hephaestus.resourcepack.ResourceExports;
 import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
 
 import java.io.File;
@@ -48,44 +47,21 @@ public class DefaultExportService
             );
         }
 
-        if (config.getBoolean("pack.export.file.do")) {
-            File target = new File(plugin.getDataFolder(), config.getString("pack.export.file.target"));
-            boolean mergeZip = config.getBoolean("pack.export.file.merge");
+        try {
+            Object value = ResourceExportMethodFactory.createExporter(
+                    plugin.getDataFolder(),
+                    config.getString("pack.export", "into:resourcepack")
+            ).export(new EmojiResourcePackWriter(registry, packInfo));
 
-            try {
-                if (!target.exists() && !target.createNewFile()) {
-                    throw new IOException("Already exists, huh?");
-                }
-
-
-                ResourceExports.newFileExporter(target)
-                        .setMergeZip(mergeZip)
-                        .export(new EmojiResourcePackWriter(registry, packInfo));
-            } catch (IOException e) {
-                throw new IllegalStateException("Cannot create output file", e);
+            if (value instanceof JsonElement) {
+                JsonObject response = ((JsonElement) value).getAsJsonObject();
+                resource = new RemoteResource(
+                        response.get("url").getAsString(),
+                        Streams.getBytesFromHex(response.get("hash").getAsString())
+                );
             }
-        }
-
-        if (config.getBoolean("pack.export.upload.do")) {
-            String url = config.getString("pack.export.upload.target");
-            String authorization = config.getString("pack.export.upload.authorization");
-
-            try {
-                ResourceExports.HttpExporter exporter = ResourceExports.newHttpExporter(url);
-                if (authorization != null) {
-                    exporter.setAuthorization(authorization);
-                }
-                JsonObject response = new JsonParser()
-                        .parse(exporter.export(new EmojiResourcePackWriter(registry, packInfo)))
-                        .getAsJsonObject();
-
-                String downloadUrl = response.get("url").getAsString();
-                byte[] hash = Streams.getBytesFromHex(response.get("hash").getAsString());
-
-                resource = new RemoteResource(downloadUrl, hash);
-            } catch (IOException e) {
-                throw new IllegalStateException("Cannot upload output file", e);
-            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot export resource pack", e);
         }
 
         return resource;

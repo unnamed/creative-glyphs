@@ -5,16 +5,26 @@ pack:
         icon: 'icon.png'
         # The resource-pack description
         description: 'Custom server pack'
-    export:
-        file:
-            do: true
-            merge: false
-            target: 'un-emojis-generated.zip'
-        upload:
-            do: false
-            authorization: 'authorization'
-            target: 'https://artemis.unnamed.team/files/upload/testserver'
-            apply: false
+    # How to generate the resource pack
+    # -> file:filename
+    #     -> Generates a resource pack as a file (ZIP)
+    # -> mergezipfile:filename
+    #     -> Similar to file:filename but if the file exists,
+    #        it will merge the contents instead of overwriting
+    #        them (ZIP)
+    # -> upload:authorization:url
+    #     -> Uploads the resource pack to the given URL (ZIP)
+    #     -> Use 'none' as authorization if no authorization
+    # -> into:folderName
+    #     -> Writes the resource pack as files into the given
+    #        folder name, if it doesn't start with '/', it will
+    #        be inside the plugin (Hephaestus/) folder, if it
+    #        starts with '@', it will be inside the plugins folder
+    #        Examples:
+    #        -> @OtherPlugin/resourcepack
+    #        -> /home/user/server/resourcepack/
+    #        -> resourcepack
+    export: "into:resourcepack"
 
 format:
 
