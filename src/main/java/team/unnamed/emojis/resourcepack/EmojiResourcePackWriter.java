@@ -1,13 +1,10 @@
 package team.unnamed.emojis.resourcepack;
 
-import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.util.Texts;
 import team.unnamed.hephaestus.io.Streamable;
 import team.unnamed.hephaestus.io.Streams;
 import team.unnamed.hephaestus.io.TreeOutputStream;
-import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
 import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
 
 import java.io.IOException;
@@ -22,14 +19,9 @@ public class EmojiResourcePackWriter
         implements ResourcePackWriter {
 
     private final EmojiRegistry registry;
-    @Nullable private final ResourcePackInfo packInfo;
 
-    public EmojiResourcePackWriter(
-            EmojiRegistry registry,
-            @Nullable ResourcePackInfo packInfo
-    ) {
+    public EmojiResourcePackWriter(EmojiRegistry registry) {
         this.registry = registry;
-        this.packInfo = packInfo;
     }
 
     /**
@@ -41,26 +33,6 @@ public class EmojiResourcePackWriter
      */
     @Override
     public void write(TreeOutputStream output) throws IOException {
-        if (packInfo != null) {
-            // pack.mcmeta write
-            output.useEntry("pack.mcmeta");
-            Streams.writeUTF(
-                    output,
-                    "{\"pack\": {" +
-                            "\"pack_format\": " + packInfo.getFormat() + "," +
-                            "\"description\": \"" + Texts.escapeDoubleQuotes(packInfo.getDescription()) + "\"" +
-                            "}}"
-            );
-            output.closeEntry();
-
-            // icon write
-            Streamable icon = packInfo.getIcon();
-            if (icon != null) {
-                output.useEntry("pack.png");
-                icon.transfer(output);
-                output.closeEntry();
-            }
-        }
 
         // write the font json file
         output.useEntry("assets/minecraft/font/default.json");

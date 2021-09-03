@@ -7,13 +7,18 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
+import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
 import team.unnamed.hephaestus.io.Streamable;
 import team.unnamed.hephaestus.io.Streams;
 import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
+import team.unnamed.hephaestus.resourcepack.ResourcePackInfoWriter;
+import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Default implementation of {@link ExportService},
@@ -33,25 +38,27 @@ public class DefaultExportService
     public @Nullable RemoteResource export(EmojiRegistry registry) {
 
         ConfigurationSection config = plugin.getConfig();
-        ResourcePackInfo packInfo = null;
+        Collection<ResourcePackWriter> writers = new HashSet<>();
         RemoteResource resource = null;
 
         if (config.getBoolean("pack.meta.write")) {
-            String description = config.getString("pack.meta.description");
+            String description = config.getString("pack.meta.description", "Hephaestus generated");
             File file = new File(plugin.getDataFolder(), config.getString("pack.meta.icon"));
 
-            packInfo = new ResourcePackInfo(
+            writers.add(new ResourcePackInfoWriter(new ResourcePackInfo(
                     getPackFormatVersion(),
-                    description,
+                    Texts.escapeDoubleQuotes(description),
                     file.exists() ? Streamable.ofFile(file) : null
-            );
+            )));
         }
+
+        writers.add(new EmojiResourcePackWriter(registry));
 
         try {
             Object value = ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
-            ).export(new EmojiResourcePackWriter(registry, packInfo));
+            ).export(ResourcePackWriter.compose(writers));
 
             if (value instanceof JsonElement) {
                 JsonObject response = ((JsonElement) value).getAsJsonObject();
