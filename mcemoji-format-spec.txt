@@ -3,7 +3,7 @@ MCEmoji format specification
 Version 1:
 Bytes:
 - Format version (Currently 1)
-- (2 bytes) Emoji count
+- Emoji count
 - [Emojis]
 
 Emoji format:
