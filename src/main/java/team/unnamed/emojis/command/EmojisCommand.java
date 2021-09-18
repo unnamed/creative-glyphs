@@ -85,6 +85,7 @@ public class EmojisCommand implements CommandExecutor {
                 }
 
                 emojiRegistry.update(emojis);
+                plugin.saveEmojis();
                 RemoteResource resource = exportService.export(emojiRegistry);
 
                 // if there is a remote resource location, update players

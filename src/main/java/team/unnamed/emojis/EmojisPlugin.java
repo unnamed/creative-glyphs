@@ -12,16 +12,21 @@ import team.unnamed.emojis.format.MiniMessageEmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
+import team.unnamed.emojis.io.writer.EmojiWriter;
+import team.unnamed.emojis.io.writer.MCEmojiWriter;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.io.reader.EmojiReader;
-import team.unnamed.emojis.io.reader.FileTreeEmojiReader;
 import team.unnamed.emojis.io.reader.MCEmojiReader;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,21 +34,26 @@ public class EmojisPlugin extends JavaPlugin {
 
     private EmojiRegistry registry;
     private RemoteResource resource;
+
     private EmojiReader reader;
+    private EmojiWriter writer;
+
     private ExportService exportService;
+    private File database;
 
-    private void loadEmojis() {
-        File folder = new File(getDataFolder(), "emojis");
-        if (!folder.exists() && !folder.mkdirs()) {
-            throw new IllegalStateException("Cannot create emojis folder");
-        }
-
-        try {
-            new FileTreeEmojiReader(reader)
-                    .read(folder)
-                    .forEach(registry::add);
+    public void loadEmojis() {
+        try (InputStream input = new FileInputStream(database)) {
+            reader.read(input).forEach(registry::add);
         } catch (IOException e) {
             throw new IllegalStateException("Cannot load emojis", e);
+        }
+    }
+
+    public void saveEmojis() {
+        try (OutputStream output = new FileOutputStream(database)) {
+            writer.write(output, registry.values());
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot save emojis", e);
         }
     }
 
@@ -53,8 +63,11 @@ public class EmojisPlugin extends JavaPlugin {
 
         saveDefaultConfig();
 
+        this.database = new File(getDataFolder(), "emojis.mcemoji");
+
         this.registry = new EmojiRegistry();
         this.reader = new MCEmojiReader();
+        this.writer = new MCEmojiWriter();
 
         this.loadEmojis();
 
