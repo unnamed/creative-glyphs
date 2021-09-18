@@ -33,7 +33,7 @@ public class MCEmojiReader implements EmojiReader {
                     + " Update this plugin");
         }
 
-        short emojiCount = dataInput.readShort();
+        int emojiCount = dataInput.readUnsignedByte();
         Emoji[] emojis = new Emoji[emojiCount];
 
         for (short i = 0; i < emojiCount; i++) {
