@@ -27,8 +27,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class EmojisPlugin extends JavaPlugin {
 
@@ -40,6 +42,24 @@ public class EmojisPlugin extends JavaPlugin {
 
     private ExportService exportService;
     private File database;
+
+    private File makeDatabase() throws IOException {
+        File file = new File(getDataFolder(), "emojis.mcemoji");
+        if (!file.exists()) {
+            if (!file.createNewFile()) {
+                // this should never happen because we already
+                // checked for its existence with File#exists
+                throw new IOException("Cannot create file, already created?");
+            }
+
+            // write zero emojis so next reads
+            // don't fail
+            try (OutputStream output = new FileOutputStream(file)) {
+                writer.write(output, Collections.emptySet());
+            }
+        }
+        return file;
+    }
 
     public void loadEmojis() {
         try (InputStream input = new FileInputStream(database)) {
@@ -63,11 +83,17 @@ public class EmojisPlugin extends JavaPlugin {
 
         saveDefaultConfig();
 
-        this.database = new File(getDataFolder(), "emojis.mcemoji");
-
         this.registry = new EmojiRegistry();
         this.reader = new MCEmojiReader();
         this.writer = new MCEmojiWriter();
+
+        try {
+            this.database = makeDatabase();
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Cannot create database file", e);
+            this.setEnabled(false);
+            return;
+        }
 
         this.loadEmojis();
 
