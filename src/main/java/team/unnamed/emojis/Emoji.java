@@ -10,6 +10,8 @@ public class Emoji {
 
     private final String name;
     private final String permission;
+
+    private final int dataLength;
     private final Streamable data;
 
     private final int height;
@@ -19,6 +21,7 @@ public class Emoji {
     public Emoji(
             String name,
             String permission,
+            int dataLength,
             Streamable data,
             int height,
             int ascent,
@@ -26,6 +29,7 @@ public class Emoji {
     ) {
         this.name = name;
         this.permission = permission;
+        this.dataLength = dataLength;
         this.data = data;
         this.height = height;
         this.ascent = ascent;
@@ -38,6 +42,10 @@ public class Emoji {
 
     public String getPermission() {
         return permission;
+    }
+
+    public int getDataLength() {
+        return dataLength;
     }
 
     public Streamable getData() {

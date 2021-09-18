@@ -3,6 +3,10 @@ MCEmoji format specification
 Version 1:
 Bytes:
 - Format version (Currently 1)
+- (2 bytes) Emoji count
+- [Emojis]
+
+Emoji format:
 - Name length (m)
 - (Next "m * 2" bytes) Name characters
 - (2 bytes) Height

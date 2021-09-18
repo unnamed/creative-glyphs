@@ -14,8 +14,7 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.export.ExportService;
 import team.unnamed.emojis.export.RemoteResource;
-import team.unnamed.emojis.reader.EmojiReader;
-import team.unnamed.emojis.reader.ZipEmojiReader;
+import team.unnamed.emojis.io.reader.EmojiReader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -40,7 +39,7 @@ public class EmojisCommand implements CommandExecutor {
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
-        this.emojiReader = new ZipEmojiReader(plugin.getReader());
+        this.emojiReader = plugin.getReader();
         this.emojiRegistry = plugin.getRegistry();
         this.exportService = plugin.getExportService();
         this.plugin = plugin;

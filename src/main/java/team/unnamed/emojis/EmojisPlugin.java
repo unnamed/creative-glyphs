@@ -16,9 +16,9 @@ import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
-import team.unnamed.emojis.reader.EmojiReader;
-import team.unnamed.emojis.reader.FileTreeEmojiReader;
-import team.unnamed.emojis.reader.MCEmojiReader;
+import team.unnamed.emojis.io.reader.EmojiReader;
+import team.unnamed.emojis.io.reader.FileTreeEmojiReader;
+import team.unnamed.emojis.io.reader.MCEmojiReader;
 
 import java.io.File;
 import java.io.IOException;
