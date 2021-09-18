@@ -79,21 +79,23 @@ public class EmojisCommand implements CommandExecutor {
                 JsonObject response = JSON_PARSER.parse(reader).getAsJsonObject();
                 byte[] base64 = response.get("file").getAsString().getBytes(StandardCharsets.UTF_8);
 
+                Collection<Emoji> emojis;
                 try (InputStream input = Base64.getDecoder().wrap(new ByteArrayInputStream(base64))) {
-                    Collection<Emoji> emojis = emojiReader.read(input);
-                    emojiRegistry.update(emojis);
-                    RemoteResource resource = exportService.export(emojiRegistry);
+                    emojis = emojiReader.read(input);
+                }
 
-                    // if there is a remote resource location, update players
-                    if (resource != null) {
-                        // for current players
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.setResourcePack(resource.getUrl(), resource.getHash());
-                        }
+                emojiRegistry.update(emojis);
+                RemoteResource resource = exportService.export(emojiRegistry);
 
-                        // for future player joins
-                        plugin.setRemoteResource(resource);
+                // if there is a remote resource location, update players
+                if (resource != null) {
+                    // for current players
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.setResourcePack(resource.getUrl(), resource.getHash());
                     }
+
+                    // for future player joins
+                    plugin.setRemoteResource(resource);
                 }
             }
         } catch (IOException e) {
