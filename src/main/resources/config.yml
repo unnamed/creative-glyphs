@@ -24,7 +24,11 @@ pack:
     #        -> @OtherPlugin/resourcepack
     #        -> /home/user/server/resourcepack/
     #        -> resourcepack
-    export: "into:resourcepack"
+    # -> mcpacks
+    #     -> Uses https://mc-packs.net/ to upload the result,
+    #        it's a free resource-pack host, you can donate to
+    #        them :)
+    export: "mcpacks"
 
 format:
 
