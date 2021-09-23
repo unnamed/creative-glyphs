@@ -1,7 +1,8 @@
 package team.unnamed.emojis.export;
 
-import team.unnamed.hephaestus.resourcepack.ResourceExporter;
-import team.unnamed.hephaestus.resourcepack.ResourceExports;
+import team.unnamed.emojis.export.http.ArtemisHttpExporter;
+import team.unnamed.emojis.export.http.MCPacksHttpExporter;
+import team.unnamed.hephaestus.io.TreeOutputStream;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public final class ResourceExportMethodFactory {
     private ResourceExportMethodFactory() {
     }
 
-    public static ResourceExporter<?> createExporter(File folder, String format)
+    public static ResourceExporter createExporter(File folder, String format)
             throws IOException {
         String[] args = format.split(":");
         String method = args[0].toLowerCase();
@@ -32,7 +33,7 @@ public final class ResourceExportMethodFactory {
                 }
 
                 String filename = String.join(":", Arrays.copyOfRange(args, 1, args.length));
-                return ResourceExports.newFileExporter(new File(folder, filename))
+                return new FileExporter(new File(folder, filename))
                         .setMergeZip(method.equals("mergezipfile"));
             }
             case "upload": {
@@ -49,8 +50,11 @@ public final class ResourceExportMethodFactory {
                     authorization = null;
                 }
 
-                return ResourceExports.newHttpExporter(url)
+                return new ArtemisHttpExporter(url)
                         .setAuthorization(authorization);
+            }
+            case "mcpacks": {
+                return new MCPacksHttpExporter();
             }
             case "into": {
                 if (args.length < 2) {
@@ -73,7 +77,12 @@ public final class ResourceExportMethodFactory {
                     targetFolder = new File(pluginsFolder, folderFormat);
                 }
 
-                return ResourceExports.newTreeExporter(targetFolder);
+                return writer -> {
+                    try (TreeOutputStream output = TreeOutputStream.forFolder(targetFolder)) {
+                        writer.write(output);
+                    }
+                    return null;
+                };
             }
             default: {
                 throw new IllegalArgumentException(
