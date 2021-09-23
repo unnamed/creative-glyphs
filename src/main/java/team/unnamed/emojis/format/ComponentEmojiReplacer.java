@@ -25,7 +25,7 @@ public class ComponentEmojiReplacer {
             EmojiRegistry registry,
             EmojiComponentProvider emojiComponentProvider
     ) {
-        List<Component> children = new ArrayList<>();
+        List<Component> parts = new ArrayList<>();
         String content = origin.content();
 
         Matcher matcher = Patterns.EMOJI_PATTERN.matcher(content);
@@ -38,7 +38,7 @@ public class ComponentEmojiReplacer {
             if (start - lastEnd > 0) {
                 // so there's text within this emoji and the previous emoji (or text start)
                 String previous = content.substring(lastEnd, start - 1);
-                children.add(Component.text(previous));
+                parts.add(Component.text(previous));
             }
 
             String emojiName = content.substring(start, end);
@@ -50,7 +50,7 @@ public class ComponentEmojiReplacer {
                 // "previous" text
                 lastEnd = start - 1;
             } else {
-                children.add(emojiComponentProvider.toAdventureComponent(emoji));
+                parts.add(emojiComponentProvider.toAdventureComponent(emoji));
                 // if valid emoji, lastEnd is the emoji end + 1, so it doesn't
                 // consume the emoji nor its closing colon
                 lastEnd = end + 1;
@@ -59,21 +59,21 @@ public class ComponentEmojiReplacer {
 
         // append remaining text
         if (content.length() - lastEnd > 0) {
-            children.add(origin.content(content.substring(lastEnd)));
+            parts.add(origin.content(content.substring(lastEnd)));
         }
 
-        children.addAll(origin.children());
-
-        if (children.isEmpty()) {
+        if (parts.isEmpty()) {
             return Component.text("");
         } else {
-            Component first = children.get(0);
+            Component first = parts.get(0);
             if (first instanceof TextComponent) {
-                children.remove(0);
+                parts.remove(0);
                 return ((TextComponent) first)
-                        .children(children);
+                        .children(parts);
             } else {
-                return Component.text().append(children).build();
+                return Component.text()
+                        .append(parts)
+                        .build();
             }
         }
     }

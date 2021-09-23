@@ -62,13 +62,15 @@ public class PaperRichChatListener
             );
         }
 
-        List<Component> children = new ArrayList<>(newComponent.children());
+        List<Component> children = new ArrayList<>(component.children());
 
         for (int i = 0; i < children.size(); i++) {
             Component child = children.get(i);
             Component newChild = replaceEmojisRecursively(permissible, child);
             children.set(i, newChild);
         }
+
+        children.addAll(0, newComponent.children());
 
         return newComponent.children(children);
     }
