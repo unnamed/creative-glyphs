@@ -29,7 +29,7 @@ public class MCEmojiWriter implements EmojiWriter {
         dataOutput.write(MCEmojiFormat.VERSION);
 
         // write emoji length
-        dataOutput.writeShort(emojis.size());
+        dataOutput.writeByte(emojis.size());
 
         // write all emojis
         for (Emoji emoji : emojis) {
