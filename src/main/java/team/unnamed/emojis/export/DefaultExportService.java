@@ -1,7 +1,5 @@
 package team.unnamed.emojis.export;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +8,6 @@ import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
 import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
 import team.unnamed.hephaestus.io.Streamable;
-import team.unnamed.hephaestus.io.Streams;
 import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
 import team.unnamed.hephaestus.resourcepack.ResourcePackInfoWriter;
 import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
@@ -39,7 +36,7 @@ public class DefaultExportService
 
         ConfigurationSection config = plugin.getConfig();
         Collection<ResourcePackWriter> writers = new HashSet<>();
-        RemoteResource resource = null;
+        RemoteResource resource;
 
         if (config.getBoolean("pack.meta.write")) {
             String description = config.getString("pack.meta.description", "Hephaestus generated");
@@ -55,18 +52,10 @@ public class DefaultExportService
         writers.add(new EmojiResourcePackWriter(registry));
 
         try {
-            Object value = ResourceExportMethodFactory.createExporter(
+            resource = ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
             ).export(ResourcePackWriter.compose(writers));
-
-            if (value instanceof JsonElement) {
-                JsonObject response = ((JsonElement) value).getAsJsonObject();
-                resource = new RemoteResource(
-                        response.get("url").getAsString(),
-                        Streams.getBytesFromHex(response.get("hash").getAsString())
-                );
-            }
         } catch (IOException e) {
             throw new IllegalStateException("Cannot export resource pack", e);
         }
