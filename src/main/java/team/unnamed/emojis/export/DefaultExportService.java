@@ -36,7 +36,6 @@ public class DefaultExportService
 
         ConfigurationSection config = plugin.getConfig();
         Collection<ResourcePackWriter> writers = new HashSet<>();
-        RemoteResource resource;
 
         if (config.getBoolean("pack.meta.write")) {
             String description = config.getString("pack.meta.description", "Hephaestus generated");
@@ -52,15 +51,13 @@ public class DefaultExportService
         writers.add(new EmojiResourcePackWriter(registry));
 
         try {
-            resource = ResourceExportMethodFactory.createExporter(
+            return ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
             ).export(ResourcePackWriter.compose(writers));
         } catch (IOException e) {
             throw new IllegalStateException("Cannot export resource pack", e);
         }
-
-        return resource;
     }
 
     private static void failUnsupportedVersion() {

@@ -8,6 +8,7 @@ import team.unnamed.hephaestus.io.TreeOutputStream;
 import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -62,9 +63,8 @@ public class MCPacksHttpExporter implements ResourceExporter {
             Streams.writeUTF(
                     output,
                     "--" + BOUNDARY + LINE_FEED
-                            + "Content-Disposition: form-data; name=\"emojis\"; filename=\"emojis.zip\""
-                            + LINE_FEED + "Content-Type: application/octet-stream;" +
-                            " charset=utf-8" + LINE_FEED + LINE_FEED
+                            + "Content-Disposition: form-data; name=\"file\"; filename=\"emojis.zip\""
+                            + LINE_FEED + "Content-Type: application/zip" + LINE_FEED + LINE_FEED
             );
 
             MessageDigest digest;
@@ -101,6 +101,10 @@ public class MCPacksHttpExporter implements ResourceExporter {
                     output,
                     LINE_FEED + "--" + BOUNDARY + "--" + LINE_FEED
             );
+        }
+
+        // execute request and close, no response expected
+        try (InputStream in = connection.getInputStream()) {
         }
 
         return new RemoteResource(

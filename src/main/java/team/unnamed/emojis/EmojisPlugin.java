@@ -103,7 +103,7 @@ public class EmojisPlugin extends JavaPlugin {
 
         EventBus eventBus = EventBus.create(this);
 
-        if (resource != null && getConfig().getBoolean("pack.export.upload.apply")) {
+        if (resource != null) {
             Bukkit.getPluginManager().registerEvents(
                     new ResourcePackApplyListener(this),
                     this
