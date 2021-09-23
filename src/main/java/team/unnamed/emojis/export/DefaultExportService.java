@@ -51,10 +51,14 @@ public class DefaultExportService
         writers.add(new EmojiResourcePackWriter(registry));
 
         try {
-            return ResourceExportMethodFactory.createExporter(
+            RemoteResource resource = ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
             ).export(ResourcePackWriter.compose(writers));
+            if (resource != null) {
+                plugin.getLogger().info("Uploaded resource pack to " + resource.getUrl());
+            }
+            return resource;
         } catch (IOException e) {
             throw new IllegalStateException("Cannot export resource pack", e);
         }
