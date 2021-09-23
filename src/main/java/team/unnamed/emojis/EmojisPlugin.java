@@ -67,6 +67,7 @@ public class EmojisPlugin extends JavaPlugin {
         } catch (IOException e) {
             throw new IllegalStateException("Cannot load emojis", e);
         }
+        getLogger().info("Loaded " + registry.values().size() + " emojis.");
     }
 
     public void saveEmojis() {
@@ -75,6 +76,7 @@ public class EmojisPlugin extends JavaPlugin {
         } catch (IOException e) {
             throw new IllegalStateException("Cannot save emojis", e);
         }
+        getLogger().info("Saved " + registry.values().size() + " emojis.");
     }
 
     @Override
