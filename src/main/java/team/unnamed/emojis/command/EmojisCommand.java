@@ -61,6 +61,7 @@ public class EmojisCommand implements CommandExecutor {
         // TODO: Add more commands
         if (args.length != 2 || !args[0].equalsIgnoreCase("update")) {
             sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
+            return;
         }
 
         String id = args[1];
