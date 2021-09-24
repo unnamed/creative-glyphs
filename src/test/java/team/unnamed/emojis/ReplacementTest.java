@@ -13,7 +13,7 @@ public class ReplacementTest {
         Permissible permissible = new MockPermissible();
 
         EmojiRegistry registry = new EmojiRegistry();
-        registry.add(new Emoji("test", "", null, 0, 0, '\u03bc'));
+        registry.add(new Emoji("test", "", 0, null, 0, 0, '\u03bc'));
 
         Assertions.assertEquals(
                 "Executing this \u03bc :    oh   :testing this: hmm \u03bc \u03bc\u03bc:::\u03bc",
