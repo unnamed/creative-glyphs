@@ -36,11 +36,14 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 
-tasks.withType<JavaCompile> {
-    options.encoding = Charsets.UTF_8.name()
-    options.release.set(8)
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(16))
+        }
+    }
 }
