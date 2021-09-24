@@ -27,12 +27,16 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EmojisCommand implements CommandExecutor {
 
     private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
     private static final JsonParser JSON_PARSER = new JsonParser();
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final EmojiReader emojiReader;
     private final EmojiRegistry emojiRegistry;
     private final ExportService exportService;
@@ -45,29 +49,16 @@ public class EmojisCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    @Override
-    public boolean onCommand(
-            @NotNull CommandSender sender,
-            @NotNull Command command,
-            @NotNull String label,
-            @NotNull String[] args
-    ) {
+    private void handleUnexpectedException(CommandSender sender, Exception exception) {
+        sender.sendMessage(ChatColor.RED + "Something went wrong, please contact an administrator to read the console.");
+        exception.printStackTrace();
+    }
 
-        if (!sender.isOp() || !sender.hasPermission("emojis.admin")) {
-            sender.sendMessage(ChatColor.RED + "No permission to do this.");
-            return true;
-        }
-
-        // TODO: Add more commands
-        if (args.length != 2 || !args[0].equalsIgnoreCase("update")) {
-            sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
-            return true;
-        }
-
-        String id = args[1];
+    private void execute(CommandSender sender, String id) {
+        HttpURLConnection connection = null;
         try {
             URL url = new URL(API_URL.replace("%id%", id));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
 
             connection.setConnectTimeout(10000);
             connection.setRequestMethod("GET");
@@ -100,10 +91,46 @@ public class EmojisCommand implements CommandExecutor {
                     plugin.setRemoteResource(resource);
                 }
             }
-        } catch (IOException e) {
-            sender.sendMessage(ChatColor.RED + "Something went wrong, please contact an administrator to read the console.");
-            e.printStackTrace();
+        } catch (IOException exception) {
+            // TODO: Make this code prettier
+            if (connection != null) {
+                try {
+                    int statusCode = connection.getResponseCode();
+                    if (statusCode == 429) {
+                        // 429: Too many requests
+                        sender.sendMessage(ChatColor.RED + "Your IP is being rate-limited," +
+                                " please wait to send a request again.");
+                        return;
+                    }
+                } catch (IOException e) {
+                    handleUnexpectedException(sender, exception);
+                }
+            }
+            handleUnexpectedException(sender, exception);
         }
+    }
+
+    @Override
+    public boolean onCommand(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String label,
+            @NotNull String[] args
+    ) {
+
+        if (!sender.isOp() || !sender.hasPermission("emojis.admin")) {
+            sender.sendMessage(ChatColor.RED + "No permission to do this.");
+            return true;
+        }
+
+        // TODO: Add more commands
+        if (args.length != 2 || !args[0].equalsIgnoreCase("update")) {
+            sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
+            return true;
+        }
+
+        String id = args[1];
+        executor.submit(() -> execute(sender, id));
         return true;
     }
 
