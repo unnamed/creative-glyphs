@@ -21,6 +21,7 @@ import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.io.reader.EmojiReader;
 import team.unnamed.emojis.io.reader.MCEmojiReader;
+import team.unnamed.hephaestus.io.Streams;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,10 +55,19 @@ public class EmojisPlugin extends JavaPlugin {
                 throw new IOException("Cannot create file, already created?");
             }
 
-            // write zero emojis so next reads
-            // don't fail
             try (OutputStream output = new FileOutputStream(file)) {
-                writer.write(output, Collections.emptySet());
+                try (InputStream input = getResource("emojis.mcemoji")) {
+                    if (input != null) {
+                        // if there's a default 'emojis.mcemoji'
+                        // file in our resources, copy it
+                        Streams.pipe(input, output);
+                    } else {
+                        // if there isn't, write zero emojis
+                        // to the created file, so next reads
+                        // don't fail
+                        writer.write(output, Collections.emptySet());
+                    }
+                }
             }
         }
         return file;
