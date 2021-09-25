@@ -91,7 +91,10 @@ public class EmojisCommand implements CommandExecutor {
                 TextComponent line = new TextComponent();
                 for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
                     Emoji emoji = iterator.next();
-                    String hover = config.getString("messages.list.hover", "Not found")
+                    String hover = ChatColor.translateAlternateColorCodes(
+                            '&',
+                            config.getString("messages.list.hover", "Not found")
+                    )
                             .replace("<emojiname>", emoji.getName())
                             .replace("<emoji>", emoji.getCharacter() + "");
                     TextComponent component = new TextComponent(emoji.getCharacter() + " ");
@@ -129,6 +132,11 @@ public class EmojisCommand implements CommandExecutor {
                         '&',
                         config.getString("messages.help", "Message not found")
                 ));
+                break;
+            }
+
+            default: {
+                sender.sendMessage(ChatColor.RED + "Unknown subcommand");
                 break;
             }
         }
