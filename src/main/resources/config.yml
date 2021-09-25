@@ -18,7 +18,7 @@ pack:
     # -> into:folderName
     #     -> Writes the resource pack as files into the given
     #        folder name, if it doesn't start with '/', it will
-    #        be inside the plugin (Hephaestus/) folder, if it
+    #        be inside the plugin (unemojis/) folder, if it
     #        starts with '@', it will be inside the plugins folder
     #        Examples:
     #        -> @OtherPlugin/resourcepack
