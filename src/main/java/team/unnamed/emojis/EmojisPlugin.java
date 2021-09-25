@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.EmojisCommand;
@@ -145,7 +146,10 @@ public class EmojisPlugin extends JavaPlugin {
                     new MiniMessageEmojiComponentProvider(getConfig()),
                     cancellationStrategy,
                     getConfig().getBoolean("format.legacy.rich")
-            ));
+            ), EventPriority.valueOf(getConfig().getString(
+                    "compat.listener-priority",
+                    "HIGHEST"
+            ).toUpperCase()));
         }
     }
 

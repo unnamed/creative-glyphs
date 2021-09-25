@@ -50,6 +50,10 @@ format:
         # with another plugins
         surround: 'clearRecipients'
 
+compat:
+    # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+    listener-priority: 'HIGHEST'
+
 #feature:
 #    # Tab-completion uses client-side fake-players to
 #    # work, it may be buggy (still in development, you
