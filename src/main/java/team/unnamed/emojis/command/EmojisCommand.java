@@ -1,10 +1,14 @@
 package team.unnamed.emojis.command;
 
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.Emoji;
@@ -31,12 +35,14 @@ public class EmojisCommand implements CommandExecutor {
     private final EmojiImporter importer;
     private final EmojiRegistry emojiRegistry;
     private final ExportService exportService;
+    private final ConfigurationSection config;
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
         this.importer = plugin.getImporter();
         this.emojiRegistry = plugin.getRegistry();
         this.exportService = plugin.getExportService();
+        this.config = plugin.getConfig();
         this.plugin = plugin;
     }
 
@@ -82,15 +88,20 @@ public class EmojisCommand implements CommandExecutor {
         if (!sender.isOp() || !sender.hasPermission("emojis.admin") || args.length == 0) {
             Iterator<Emoji> iterator = emojiRegistry.values().iterator();
             while (iterator.hasNext()) {
-                StringBuilder lineBuilder = new StringBuilder();
+                TextComponent line = new TextComponent();
                 for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
                     Emoji emoji = iterator.next();
-                    lineBuilder
-                            .append(emoji.getCharacter())
-                            .append(' ');
+                    String hover = config.getString("messages.list.hover", "Not found")
+                            .replace("<emojiname>", emoji.getName())
+                            .replace("<emoji>", emoji.getCharacter() + "");
+                    TextComponent component = new TextComponent(emoji.getCharacter() + " ");
+                    component.setHoverEvent(new HoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            new Text(TextComponent.fromLegacyText(hover))
+                    ));
+                    line.addExtra(component);
                 }
-
-                sender.sendMessage(lineBuilder.toString());
+                sender.sendMessage(line);
             }
             return true;
         }
@@ -113,12 +124,11 @@ public class EmojisCommand implements CommandExecutor {
             }
 
             case "help": {
-                sender.sendMessage(
-                        ChatColor.LIGHT_PURPLE + "/emojis update <id> " + ChatColor.DARK_GRAY
-                                + "-" + ChatColor.GRAY + " Import emojis from https://unnamed.team/emojis\n" +
-                        ChatColor.LIGHT_PURPLE + "/emojis reload " + ChatColor.DARK_GRAY
-                                + "-" + ChatColor.GRAY + " Reload emojis from the emojis.mcemoji file"
-                );
+                // todo: replace this
+                sender.sendMessage(ChatColor.translateAlternateColorCodes(
+                        '&',
+                        config.getString("messages.help", "Message not found")
+                ));
                 break;
             }
         }

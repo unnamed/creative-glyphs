@@ -54,6 +54,13 @@ compat:
     # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
     listener-priority: 'HIGHEST'
 
+messages:
+    help: |-
+        &d/emojis update <id> &8- &7Import emojis from https://unnamed.team/emojis
+        &d/emojis reload &8- &7Reload emojis from the emojis.mcemoji file
+    list:
+        hover: '&f<emoji> &8:<emojiname>:'
+
 #feature:
 #    # Tab-completion uses client-side fake-players to
 #    # work, it may be buggy (still in development, you
