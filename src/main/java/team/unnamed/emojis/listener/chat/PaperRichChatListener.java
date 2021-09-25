@@ -3,18 +3,15 @@ package team.unnamed.emojis.listener.chat;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.ComponentEmojiReplacer;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.listener.EventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Implementation for listening to Paper's AsyncChatEvent,
