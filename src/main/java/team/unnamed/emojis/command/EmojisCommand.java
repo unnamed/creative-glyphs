@@ -1,7 +1,5 @@
 package team.unnamed.emojis.command;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,100 +10,62 @@ import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
+import team.unnamed.emojis.download.EmojiImporter;
 import team.unnamed.emojis.export.ExportService;
 import team.unnamed.emojis.export.RemoteResource;
-import team.unnamed.emojis.io.reader.EmojiReader;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class EmojisCommand implements CommandExecutor {
 
+    private static final int EMOJIS_PER_LINE = 10;
+
     private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
-    private static final JsonParser JSON_PARSER = new JsonParser();
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
-    private final EmojiReader emojiReader;
+    private final EmojiImporter importer;
     private final EmojiRegistry emojiRegistry;
     private final ExportService exportService;
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
-        this.emojiReader = plugin.getReader();
+        this.importer = plugin.getImporter();
         this.emojiRegistry = plugin.getRegistry();
         this.exportService = plugin.getExportService();
         this.plugin = plugin;
     }
 
-    private void handleUnexpectedException(CommandSender sender, Exception exception) {
-        sender.sendMessage(ChatColor.RED + "Something went wrong, please contact an administrator to read the console.");
-        exception.printStackTrace();
-    }
-
     private void execute(CommandSender sender, String id) {
-        HttpURLConnection connection = null;
         try {
             URL url = new URL(API_URL.replace("%id%", id));
-            connection = (HttpURLConnection) url.openConnection();
+            Collection<Emoji> emojis = importer.importHttp(url);
 
-            connection.setConnectTimeout(10000);
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", "UnnamedEmojis");
+            emojiRegistry.update(emojis);
+            plugin.saveEmojis();
+            RemoteResource resource = exportService.export(emojiRegistry);
 
-            // execute and read the response
-            try (Reader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream())
-            )) {
-                JsonObject response = JSON_PARSER.parse(reader).getAsJsonObject();
-                byte[] base64 = response.get("file").getAsString().getBytes(StandardCharsets.UTF_8);
-
-                Collection<Emoji> emojis;
-                try (InputStream input = Base64.getDecoder().wrap(new ByteArrayInputStream(base64))) {
-                    emojis = emojiReader.read(input);
+            // if there is a remote resource location, update players
+            if (resource != null) {
+                // for current players
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.setResourcePack(resource.getUrl(), resource.getHash());
                 }
 
-                emojiRegistry.update(emojis);
-                plugin.saveEmojis();
-                RemoteResource resource = exportService.export(emojiRegistry);
-
-                // if there is a remote resource location, update players
-                if (resource != null) {
-                    // for current players
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.setResourcePack(resource.getUrl(), resource.getHash());
-                    }
-
-                    // for future player joins
-                    plugin.setRemoteResource(resource);
-                }
+                // for future player joins
+                plugin.setRemoteResource(resource);
             }
-        } catch (IOException exception) {
-            // TODO: Make this code prettier
-            if (connection != null) {
-                try {
-                    int statusCode = connection.getResponseCode();
-                    if (statusCode == 429) {
-                        // 429: Too many requests
-                        sender.sendMessage(ChatColor.RED + "Your IP is being rate-limited," +
-                                " please wait to send a request again.");
-                        return;
-                    }
-                } catch (IOException e) {
-                    handleUnexpectedException(sender, exception);
-                }
-            }
-            handleUnexpectedException(sender, exception);
+        } catch (IOException e) {
+            sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
+                    " contact an administrator to read the console.");
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            // stack trace in this case isn't so relevant
+            sender.sendMessage(ChatColor.RED + e.getMessage());
         }
     }
 
@@ -117,19 +77,52 @@ public class EmojisCommand implements CommandExecutor {
             @NotNull String[] args
     ) {
 
-        if (!sender.isOp() || !sender.hasPermission("emojis.admin")) {
-            sender.sendMessage(ChatColor.RED + "No permission to do this.");
+        // if no permission for subcommands or no arguments given,
+        // just send the emoji list
+        if (!sender.isOp() || !sender.hasPermission("emojis.admin") || args.length == 0) {
+            Iterator<Emoji> iterator = emojiRegistry.values().iterator();
+            while (iterator.hasNext()) {
+                StringBuilder lineBuilder = new StringBuilder();
+                for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
+                    Emoji emoji = iterator.next();
+                    lineBuilder
+                            .append(emoji.getCharacter())
+                            .append(' ');
+                }
+
+                sender.sendMessage(lineBuilder.toString());
+            }
             return true;
         }
 
-        // TODO: Add more commands
-        if (args.length != 2 || !args[0].equalsIgnoreCase("update")) {
-            sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
-            return true;
+        switch (args[0].toLowerCase()) {
+            case "update": {
+                if (args.length != 2) {
+                    sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
+                    break;
+                }
+
+                String downloadId = args[1];
+                executor.submit(() -> execute(sender, downloadId));
+                break;
+            }
+
+            case "reload": {
+                plugin.loadEmojis();
+                break;
+            }
+
+            case "help": {
+                sender.sendMessage(
+                        ChatColor.LIGHT_PURPLE + "/emojis update <id> " + ChatColor.DARK_GRAY
+                                + "-" + ChatColor.GRAY + " Import emojis from https://unnamed.team/emojis\n" +
+                        ChatColor.LIGHT_PURPLE + "/emojis reload " + ChatColor.DARK_GRAY
+                                + "-" + ChatColor.GRAY + " Reload emojis from the emojis.mcemoji file"
+                );
+                break;
+            }
         }
 
-        String id = args[1];
-        executor.submit(() -> execute(sender, id));
         return true;
     }
 

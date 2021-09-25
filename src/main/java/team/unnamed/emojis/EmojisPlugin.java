@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.EmojisCommand;
+import team.unnamed.emojis.download.EmojiImporter;
 import team.unnamed.emojis.export.DefaultExportService;
 import team.unnamed.emojis.export.ExportService;
 import team.unnamed.emojis.export.RemoteResource;
@@ -39,6 +40,7 @@ public class EmojisPlugin extends JavaPlugin {
 
     private EmojiReader reader;
     private EmojiWriter writer;
+    private EmojiImporter importer;
 
     private ExportService exportService;
     private File database;
@@ -63,7 +65,7 @@ public class EmojisPlugin extends JavaPlugin {
 
     public void loadEmojis() {
         try (InputStream input = new FileInputStream(database)) {
-            reader.read(input).forEach(registry::add);
+            registry.update(reader.read(input));
         } catch (IOException e) {
             throw new IllegalStateException("Cannot load emojis", e);
         }
@@ -88,6 +90,7 @@ public class EmojisPlugin extends JavaPlugin {
         this.registry = new EmojiRegistry();
         this.reader = new MCEmojiReader();
         this.writer = new MCEmojiWriter();
+        this.importer = new EmojiImporter(this.reader);
 
         try {
             this.database = makeDatabase();
@@ -138,6 +141,10 @@ public class EmojisPlugin extends JavaPlugin {
 
     public EmojiRegistry getRegistry() {
         return registry;
+    }
+
+    public EmojiImporter getImporter() {
+        return importer;
     }
 
     public EmojiReader getReader() {
