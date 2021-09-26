@@ -38,6 +38,10 @@ format:
 
     # Configuration for when not running on a Paper server
     legacy:
+        # Initial message color, because we can't get it
+        # from other plugins using AsyncPlayerChatEvent
+        color: '7'
+
         # Using components in legacy servers can affect
         # compatibility with other plugins since we need
         # to surround the chat event

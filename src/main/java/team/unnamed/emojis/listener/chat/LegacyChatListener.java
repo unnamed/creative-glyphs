@@ -1,8 +1,12 @@
 package team.unnamed.emojis.listener.chat;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -17,6 +21,7 @@ import team.unnamed.emojis.listener.EventListener;
 public class LegacyChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 
+    private final Plugin plugin = JavaPlugin.getPlugin(EmojisPlugin.class); // todo: ugly
     private final EmojiRegistry emojiRegistry;
 
     public LegacyChatListener(EmojiRegistry emojiRegistry) {
@@ -32,7 +37,10 @@ public class LegacyChatListener
     public void execute(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        String newMessage = EmojiReplacer.replace(player, emojiRegistry, message);
+        ChatColor color = ChatColor.getByChar(plugin.getConfig()
+                .getString("format.legacy.color", "f").charAt(0));
+
+        String newMessage = EmojiReplacer.replace(player, emojiRegistry, color + message);
         event.setMessage(newMessage);
     }
 
