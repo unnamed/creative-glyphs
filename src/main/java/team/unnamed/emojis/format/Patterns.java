@@ -12,7 +12,7 @@ public final class Patterns {
      * Pattern for matching emojis from a string
      */
     public static final Pattern EMOJI_PATTERN
-            = Pattern.compile(":([A-Za-z_]{1,14}):");
+            = Pattern.compile(":([A-Za-z_-]{1,14}):");
 
     private Patterns() {
     }
