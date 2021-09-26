@@ -29,6 +29,11 @@ public class ReplacementTest {
                 "many normal text here \u03bc i'll be happy if this works \u03bc",
                 EmojiReplacer.replace(permissible, registry, "many normal text here :test: i'll be happy if this works :test:")
         );
+
+        Assertions.assertEquals(
+                "§8text with §c§lcolors should §f\u03bc§c§l have colors here too",
+                EmojiReplacer.replace(permissible, registry, "§8text with §c§lcolors should :test: have colors here too")
+        );
     }
 
 }

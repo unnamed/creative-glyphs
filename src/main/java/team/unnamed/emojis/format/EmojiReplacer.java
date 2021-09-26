@@ -1,5 +1,6 @@
 package team.unnamed.emojis.format;
 
+import org.bukkit.ChatColor;
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
@@ -9,6 +10,8 @@ import team.unnamed.emojis.EmojiRegistry;
  * @author yusshu (Andre Roldan)
  */
 public class EmojiReplacer {
+
+    private static final String WHITE_PREFIX = ChatColor.WHITE.toString();
 
     /**
      * Replaces the emojis in the given {@code text}
@@ -24,10 +27,34 @@ public class EmojiReplacer {
         StringBuilder builder = new StringBuilder();
         StringBuilder name = new StringBuilder();
 
+        StringBuilder lastColors = new StringBuilder();
+
         textLoop:
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if (c == ':') {
+            if (c == ChatColor.COLOR_CHAR) {
+                if (i + 1 < text.length()) {
+                    char code = text.charAt(++i);
+                    ChatColor color = ChatColor.getByChar(code);
+
+                    builder
+                            .append(c)
+                            .append(code);
+
+                    if (color == null) {
+                        continue;
+                    }
+
+                    if (color.isColor()) {
+                        // reset if color
+                        lastColors.setLength(0);
+                    }
+
+                    lastColors.append(color);
+                } else {
+                    builder.append(c);
+                }
+            } else if (c == ':') {
                 while (++i < text.length()) {
                     char current = text.charAt(i);
                     if (current == ':') {
@@ -44,7 +71,15 @@ public class EmojiReplacer {
                             name.setLength(0);
                             continue;
                         } else {
+                            boolean previousColors = lastColors.length() > 0;
+                            if (previousColors) {
+                                builder.append(WHITE_PREFIX);
+                            }
                             builder.append(emoji.getCharacter());
+
+                            if (previousColors) {
+                                builder.append(lastColors);
+                            }
                         }
                         name.setLength(0);
                         continue textLoop;
