@@ -160,7 +160,7 @@ public final class LegacyComponentEmojiReplacer {
             String emojiName = message.substring(start, end);
             Emoji emoji = registry.get(emojiName);
 
-            if (emoji == null || !permissible.hasPermission(emoji.getPermission())) {
+            if (!Permissions.canUse(permissible, emoji)) {
                 // if invalid emoji, lastEnd is the current start - 1, so it
                 // consumes the emoji and its starting colon for the next
                 // "previous" text

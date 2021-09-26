@@ -6,7 +6,6 @@ import team.unnamed.emojis.EmojiRegistry;
 
 /**
  * Utility class for replacing emojis in strings
- * TODO: Allow using components
  * @author yusshu (Andre Roldan)
  */
 public class EmojiReplacer {
@@ -37,19 +36,15 @@ public class EmojiReplacer {
                             continue;
                         }
                         String nameStr = name.toString();
-                        Emoji value;
-                        if (
-                                (value = registry.get(nameStr)) == null
-                                        || !permissible.hasPermission(value.getPermission())
-                        ) {
+                        Emoji emoji = registry.get(nameStr);
+                        if (!Permissions.canUse(permissible, emoji)) {
                             builder
                                     .append(':')
                                     .append(nameStr);
                             name.setLength(0);
                             continue;
                         } else {
-
-                            builder.append(value.getCharacter());
+                            builder.append(emoji.getCharacter());
                         }
                         name.setLength(0);
                         continue textLoop;
