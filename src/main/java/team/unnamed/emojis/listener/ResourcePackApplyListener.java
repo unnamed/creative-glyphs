@@ -29,6 +29,12 @@ public class ResourcePackApplyListener implements Listener {
         Player player = event.getPlayer();
         player.setResourcePack(resource.getUrl(), resource.getHash());
     }
+    /*
+            this.packRequired = getConfig().getBoolean("feature.require-pack");
+        this.messageKick = getConfig().getString("messages.kick");
+        this.messageWarn = getConfig().getString("messages.warn");
+        this.messageFailedDownload = getConfig().getString("messages.fail");
+    */
 
     @EventHandler
     public void onStatus(PlayerResourcePackStatusEvent event) {
@@ -42,10 +48,10 @@ public class ResourcePackApplyListener implements Listener {
             }
             case DECLINED: {
                 // TODO: De-hardcode the message
-                if(plugin.isPackRequired())
-                    player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getPackKickMessage()));
+                if(plugin.getConfig().getBoolean("feature.require-pack"))
+                    player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.kick")));
                 else
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackWarnMessage()));
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.warn")));
                 break;
             }
             case FAILED_DOWNLOAD: {
@@ -54,12 +60,12 @@ public class ResourcePackApplyListener implements Listener {
                     count = 0;
                 } else if (count > 3) {
                     //player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
-                    if(plugin.isPackRequired()){
-                        player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getPackFailMessage()));
+                    if(plugin.getConfig().getBoolean("feature.require-pack")){
+                        player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.fail")));
                     }
                     else{
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackFailMessage()));
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackWarnMessage()));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.fail")));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.warn")));
                     }
                     retries.remove(player.getUniqueId());
                 }
