@@ -45,8 +45,7 @@ public class ResourcePackApplyListener implements Listener {
             }
             case DECLINED: {
                 if(plugin.getConfig().getBoolean("feature.require-pack"))
-                    //player.kickPlayer(plugin.getConfig().getString("messages.kick"));
-                    player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.kick")));
+                    player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
                 else
                     player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
                 break;
