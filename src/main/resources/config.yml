@@ -64,10 +64,19 @@ messages:
         &d/emojis reload &8- &7Reload emojis from the emojis.mcemoji file
     list:
         hover: '&f<emoji> &8:<emojiname>:'
+    kick: "&2&lPlease accept the resource pack"
+    warn: "&2&lThis server supports emojis, turn on the resourcepack to see them!"
+    fail: "&cResource pack download failed, try to reconnect."
 
-#feature:
+
+feature:
 #    # Tab-completion uses client-side fake-players to
 #    # work, it may be buggy (still in development, you
 #    # can help by enabling this and reporting any bug
 #    # to our support server https://discord.gg/xbba2fy)
 #    tab-completion: false
+
+    # require-pack is if the player NEEDS to accept the resourcepack.
+    # If the pack is required it will kick players who decline or fail to download it.
+    # If the pack isnt required they will get a warning instead.
+    require-pack: false

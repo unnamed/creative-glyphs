@@ -47,6 +47,12 @@ public class EmojisPlugin extends JavaPlugin {
     private ExportService exportService;
     private File database;
 
+    private String messageKick;
+    private String messageWarn;
+    private String messageFailedDownload;
+
+    private boolean packRequired;
+
     private File makeDatabase() throws IOException {
         File file = new File(getDataFolder(), "emojis.mcemoji");
         if (!file.exists()) {
@@ -97,6 +103,11 @@ public class EmojisPlugin extends JavaPlugin {
     public void onEnable() {
 
         saveDefaultConfig();
+
+        this.packRequired = getConfig().getBoolean("feature.require-pack");
+        this.messageKick = getConfig().getString("messages.kick");
+        this.messageWarn = getConfig().getString("messages.warn");
+        this.messageFailedDownload = getConfig().getString("messages.fail");
 
         this.registry = new EmojiRegistry();
         this.reader = new MCEmojiReader();
@@ -175,6 +186,22 @@ public class EmojisPlugin extends JavaPlugin {
 
     public void setRemoteResource(RemoteResource resource) {
         this.resource = resource;
+    }
+
+    public String getPackKickMessage(){
+        return messageKick;
+    }
+
+    public String getPackWarnMessage(){
+        return messageWarn;
+    }
+
+    public String getPackFailMessage(){
+        return messageFailedDownload;
+    }
+
+    public boolean isPackRequired(){
+        return packRequired;
     }
 
 }

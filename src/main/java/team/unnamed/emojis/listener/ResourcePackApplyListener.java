@@ -5,6 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+
+import net.md_5.bungee.api.ChatColor;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.export.RemoteResource;
 
@@ -40,7 +42,10 @@ public class ResourcePackApplyListener implements Listener {
             }
             case DECLINED: {
                 // TODO: De-hardcode the message
-                player.kickPlayer("§cPlease accept the resource pack");
+                if(plugin.isPackRequired())
+                    player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getPackKickMessage()));
+                else
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackWarnMessage()));
                 break;
             }
             case FAILED_DOWNLOAD: {
@@ -48,7 +53,14 @@ public class ResourcePackApplyListener implements Listener {
                 if (count == null) {
                     count = 0;
                 } else if (count > 3) {
-                    player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
+                    //player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
+                    if(plugin.isPackRequired()){
+                        player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getPackFailMessage()));
+                    }
+                    else{
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackFailMessage()));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getPackWarnMessage()));
+                    }
                     retries.remove(player.getUniqueId());
                 }
 
