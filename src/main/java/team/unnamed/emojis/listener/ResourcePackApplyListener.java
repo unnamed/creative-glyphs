@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
-import net.md_5.bungee.api.ChatColor;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.export.RemoteResource;
 
@@ -23,18 +22,16 @@ public class ResourcePackApplyListener implements Listener {
         this.plugin = plugin;
     }
 
+    private String formatMessage(char formatChar,String colorString){
+        return colorString.replace(formatChar, '§');
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         RemoteResource resource = plugin.getRemoteResource();
         Player player = event.getPlayer();
         player.setResourcePack(resource.getUrl(), resource.getHash());
     }
-    /*
-            this.packRequired = getConfig().getBoolean("feature.require-pack");
-        this.messageKick = getConfig().getString("messages.kick");
-        this.messageWarn = getConfig().getString("messages.warn");
-        this.messageFailedDownload = getConfig().getString("messages.fail");
-    */
 
     @EventHandler
     public void onStatus(PlayerResourcePackStatusEvent event) {
@@ -47,11 +44,11 @@ public class ResourcePackApplyListener implements Listener {
                 break;
             }
             case DECLINED: {
-                // TODO: De-hardcode the message
                 if(plugin.getConfig().getBoolean("feature.require-pack"))
-                    player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.kick")));
+                    //player.kickPlayer(plugin.getConfig().getString("messages.kick"));
+                    player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.kick")));
                 else
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.warn")));
+                    player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
                 break;
             }
             case FAILED_DOWNLOAD: {
@@ -61,11 +58,11 @@ public class ResourcePackApplyListener implements Listener {
                 } else if (count > 3) {
                     //player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
                     if(plugin.getConfig().getBoolean("feature.require-pack")){
-                        player.kickPlayer(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.fail")));
+                        player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
                     }
                     else{
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.fail")));
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.warn")));
+                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.fail")));
+                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
                     }
                     retries.remove(player.getUniqueId());
                 }
