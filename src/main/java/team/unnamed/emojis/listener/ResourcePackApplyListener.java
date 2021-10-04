@@ -38,15 +38,9 @@ public class ResourcePackApplyListener implements Listener {
         PlayerResourcePackStatusEvent.Status status = event.getStatus();
 
         switch (status) {
-            case SUCCESSFULLY_LOADED: {
-                retries.remove(player.getUniqueId());
-                break;
-            }
-            case DECLINED: {
-                handleFailedPack(player);
-                break;
-            }
-            case FAILED_DOWNLOAD: {
+            case SUCCESSFULLY_LOADED -> retries.remove(player.getUniqueId());
+            case DECLINED -> handleFailedPack(player);
+            case FAILED_DOWNLOAD -> {
                 Integer count = retries.get(player.getUniqueId());
                 if (count == null) {
                     count = 0;
@@ -57,7 +51,6 @@ public class ResourcePackApplyListener implements Listener {
                 }
 
                 retries.put(player.getUniqueId(), count + 1);
-                break;
             }
         }
     }
@@ -72,6 +65,7 @@ public class ResourcePackApplyListener implements Listener {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    @SuppressWarnings("deprecation")
     private void handleFailedPack(Player player) {
         if (config.getBoolean("feature.require-pack")) {
             player.kickPlayer(getAndFormat("messages.fail"));
