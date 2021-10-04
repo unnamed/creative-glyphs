@@ -1,5 +1,7 @@
 package team.unnamed.emojis.listener;
 
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,19 +18,16 @@ import java.util.UUID;
 public class ResourcePackApplyListener implements Listener {
 
     private final Map<UUID, Integer> retries = new HashMap<>();
-    private final EmojisPlugin plugin;
+    private final RemoteResource resource;
+    private final FileConfiguration config;
 
     public ResourcePackApplyListener(EmojisPlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    private String formatMessage(char formatChar,String colorString){
-        return colorString.replace(formatChar, '§');
+        this.resource = plugin.getRemoteResource();
+        this.config = plugin.getConfig();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        RemoteResource resource = plugin.getRemoteResource();
         Player player = event.getPlayer();
         player.setResourcePack(resource.getUrl(), resource.getHash());
     }
@@ -44,10 +43,7 @@ public class ResourcePackApplyListener implements Listener {
                 break;
             }
             case DECLINED: {
-                if(plugin.getConfig().getBoolean("feature.require-pack"))
-                    player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
-                else
-                    player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
+                handleFailedPack(player);
                 break;
             }
             case FAILED_DOWNLOAD: {
@@ -55,20 +51,32 @@ public class ResourcePackApplyListener implements Listener {
                 if (count == null) {
                     count = 0;
                 } else if (count > 3) {
-                    //player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
-                    if(plugin.getConfig().getBoolean("feature.require-pack")){
-                        player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
-                    }
-                    else{
-                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.fail")));
-                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
-                    }
+                    handleFailedPack(player);
+                    player.sendMessage(getAndFormat("messages.fail"));
                     retries.remove(player.getUniqueId());
                 }
 
                 retries.put(player.getUniqueId(), count + 1);
                 break;
             }
+        }
+    }
+
+    private String getAndFormat(String path) {
+        String message = config.getString(path);
+
+        if (message == null) {
+            return path;
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    private void handleFailedPack(Player player) {
+        if (config.getBoolean("feature.require-pack")) {
+            player.kickPlayer(getAndFormat("messages.fail"));
+        } else {
+            player.sendMessage(getAndFormat("messages.warn"));
         }
     }
 
