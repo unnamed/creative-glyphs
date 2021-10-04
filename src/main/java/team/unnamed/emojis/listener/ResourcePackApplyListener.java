@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.export.RemoteResource;
 
@@ -19,6 +20,10 @@ public class ResourcePackApplyListener implements Listener {
 
     public ResourcePackApplyListener(EmojisPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    private String formatMessage(char formatChar,String colorString){
+        return colorString.replace(formatChar, '§');
     }
 
     @EventHandler
@@ -39,8 +44,10 @@ public class ResourcePackApplyListener implements Listener {
                 break;
             }
             case DECLINED: {
-                // TODO: De-hardcode the message
-                player.kickPlayer("§cPlease accept the resource pack");
+                if(plugin.getConfig().getBoolean("feature.require-pack"))
+                    player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
+                else
+                    player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
                 break;
             }
             case FAILED_DOWNLOAD: {
@@ -48,7 +55,14 @@ public class ResourcePackApplyListener implements Listener {
                 if (count == null) {
                     count = 0;
                 } else if (count > 3) {
-                    player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
+                    //player.kickPlayer("§cAn error occurred while downloading resource pack, please re-join");
+                    if(plugin.getConfig().getBoolean("feature.require-pack")){
+                        player.kickPlayer(formatMessage('&',plugin.getConfig().getString("messages.fail")));
+                    }
+                    else{
+                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.fail")));
+                        player.sendMessage(formatMessage('&',plugin.getConfig().getString("messages.warn")));
+                    }
                     retries.remove(player.getUniqueId());
                 }
 

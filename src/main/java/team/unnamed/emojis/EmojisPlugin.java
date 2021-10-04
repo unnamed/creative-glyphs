@@ -176,5 +176,4 @@ public class EmojisPlugin extends JavaPlugin {
     public void setRemoteResource(RemoteResource resource) {
         this.resource = resource;
     }
-
 }
