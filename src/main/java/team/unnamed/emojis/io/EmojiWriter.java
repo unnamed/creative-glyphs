@@ -1,4 +1,4 @@
-package team.unnamed.emojis.io.writer;
+package team.unnamed.emojis.io;
 
 import team.unnamed.emojis.Emoji;
 

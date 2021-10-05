@@ -14,14 +14,14 @@ import team.unnamed.emojis.format.MiniMessageEmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
-import team.unnamed.emojis.io.writer.EmojiWriter;
-import team.unnamed.emojis.io.writer.MCEmojiWriter;
+import team.unnamed.emojis.io.EmojiWriter;
+import team.unnamed.emojis.io.MCEmojiWriter;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
-import team.unnamed.emojis.io.reader.EmojiReader;
-import team.unnamed.emojis.io.reader.MCEmojiReader;
+import team.unnamed.emojis.io.EmojiReader;
+import team.unnamed.emojis.io.MCEmojiReader;
 import team.unnamed.hephaestus.io.Streams;
 
 import java.io.File;

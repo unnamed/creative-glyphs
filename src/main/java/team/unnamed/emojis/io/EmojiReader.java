@@ -1,4 +1,4 @@
-package team.unnamed.emojis.io.reader;
+package team.unnamed.emojis.io;
 
 import team.unnamed.emojis.Emoji;
 

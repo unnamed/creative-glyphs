@@ -1,7 +1,6 @@
-package team.unnamed.emojis.io.writer;
+package team.unnamed.emojis.io;
 
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.io.MCEmojiFormat;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

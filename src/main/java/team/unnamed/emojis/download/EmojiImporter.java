@@ -3,7 +3,7 @@ package team.unnamed.emojis.download;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.io.reader.EmojiReader;
+import team.unnamed.emojis.io.EmojiReader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
