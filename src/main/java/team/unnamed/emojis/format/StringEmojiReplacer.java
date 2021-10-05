@@ -9,7 +9,7 @@ import team.unnamed.emojis.EmojiRegistry;
  * Utility class for replacing emojis in strings
  * @author yusshu (Andre Roldan)
  */
-public class EmojiReplacer {
+public class StringEmojiReplacer {
 
     private static final String WHITE_PREFIX = ChatColor.WHITE.toString();
 
