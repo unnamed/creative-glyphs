@@ -10,6 +10,7 @@ repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.essentialsx.net/releases/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     mavenLocal()
 }
 
@@ -27,7 +28,7 @@ dependencies {
     // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
 
-    compileOnly("net.ess3:EssentialsXChat:2.18.2")
+    compileOnly("me.clip:placeholderapi:2.10.10")
 
     implementation("team.unnamed.hephaestus:common:0.1.0")
 

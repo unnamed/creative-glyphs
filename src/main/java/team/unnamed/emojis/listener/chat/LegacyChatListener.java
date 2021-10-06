@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.StringEmojiReplacer;
 import team.unnamed.emojis.listener.EventListener;
 
 /**
@@ -40,7 +40,7 @@ public class LegacyChatListener
         ChatColor color = ChatColor.getByChar(plugin.getConfig()
                 .getString("format.legacy.color", "f").charAt(0));
 
-        String newMessage = EmojiReplacer.replace(player, emojiRegistry, color + message);
+        String newMessage = StringEmojiReplacer.replace(player, emojiRegistry, color + message);
         event.setMessage(newMessage);
     }
 
