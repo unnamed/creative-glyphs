@@ -14,6 +14,7 @@ import team.unnamed.emojis.format.MiniMessageEmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
+import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.io.EmojiWriter;
 import team.unnamed.emojis.io.MCEmojiWriter;
 import team.unnamed.emojis.listener.EventBus;
@@ -137,6 +138,7 @@ public class EmojisPlugin extends JavaPlugin {
 
         Set<PluginHook> hooks = PluginHookManager.create()
                 .registerHook(new EzChatHook(this, registry, emojiComponentProvider))
+                .registerHook(new PlaceholderApiHook(this, registry))
                 .hook();
 
         if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {
