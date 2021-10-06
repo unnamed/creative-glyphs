@@ -93,7 +93,6 @@ public class EmojisPlugin extends JavaPlugin {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onEnable() {
 
         saveDefaultConfig();
@@ -145,6 +144,7 @@ public class EmojisPlugin extends JavaPlugin {
                     registry,
                     new MiniMessageEmojiComponentProvider(getConfig()),
                     cancellationStrategy,
+                    getConfig().getBoolean("compat.use-paper-listener"),
                     getConfig().getBoolean("format.legacy.rich")
             ), EventPriority.valueOf(getConfig().getString(
                     "compat.listener-priority",

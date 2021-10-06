@@ -22,16 +22,19 @@ public final class ListenerFactory {
             EmojiRegistry registry,
             EmojiComponentProvider componentProvider,
             EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy,
+            boolean paper,
             boolean rich
     ) {
-        // try using the Paper event 'AsyncChatEvent'
-        try {
-            // check for modern AsyncChatEvent
-            Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
+        if (paper) {
+            // try using the Paper event 'AsyncChatEvent'
+            try {
+                // check for modern AsyncChatEvent
+                Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
 
-            // if it didn't throw an exception, return its event listener
-            return new PaperRichChatListener(registry, componentProvider);
-        } catch (ClassNotFoundException ignored) {
+                // if it didn't throw an exception, return its event listener
+                return new PaperRichChatListener(registry, componentProvider);
+            } catch (ClassNotFoundException ignored) {
+            }
         }
 
         if (rich) {
