@@ -37,7 +37,7 @@ public class EmojiPlaceholderExpansion
 
     @Override
     public @NotNull String getIdentifier() {
-        return plugin.getName();
+        return "emoji";
     }
 
     @Override
