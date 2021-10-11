@@ -40,7 +40,7 @@ format:
     legacy:
         # Initial message color, because we can't get it
         # from other plugins using AsyncPlayerChatEvent
-        color: '7'
+        color: 'f'
 
         # Using components in legacy servers can affect
         # compatibility with other plugins since we need
