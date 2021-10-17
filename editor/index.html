@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, height=device-height">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Display metadata -->
+    <meta property="og:title" content="Unnamed Team | mcemoji">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://unnamed.team/menumaker">
+    <meta property="og:description" content="Web-application to create emojis in the MCEmoji format">
+
+    <link rel="stylesheet" href="vendor/mcformat.min.css">
+    <link rel="stylesheet" href="index.css">
+    <title>mcemoji</title>
+</head>
+<body>
+
+<!-- Dialog Element -->
+<div class="dialog-container hidden">
+    <div class="dialog-box">
+        <h3 class="mc-text dialog-title"></h3>
+        <p class="mc-text dialog-content"></p>
+        <button class="mce-button dialog-close"></button>
+    </div>
+</div>
+
+<div>
+    <h1 class="mc-text">MCEmoji</h1>
+</div>
+
+<div class="ghost mc-text file-input">
+    <h2>Drop your emojis here</h2>
+</div>
+
+<div class="row-container">
+    <button class="mce-button save">Save</button>
+    <button class="mce-button import">Import</button>
+    <button class="mce-button export">Export</button>
+</div>
+
+<div class="emoji-container">
+</div>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="index.js"></script>
+
+</body>

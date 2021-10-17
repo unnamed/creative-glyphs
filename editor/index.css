@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #3f3d3f;
+}
+
+.file-input.is-dragover {
+    background: rgba(0, 0, 0, .5);
+}
+
+.ghost {
+    background: rgba(0, 0, 0, .25);
+}
+
+.file-input {
+    height: 25%;
+    width: 30%;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.mc-text {
+    font-family: 'minecraft-regular', monospace;
+    color: rgba(255, 255, 255, .6);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, .4);
+}
+
+.emoji-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2%;
+}
+
+.emoji {
+    display: flex;
+    width: 22%;
+    margin: 10px;
+    padding: 10px;
+    align-items: center;
+}
+
+.emoji img {
+    width: 40%;
+    margin: 10px;
+}
+
+.properties {
+    display: inline-block;
+    width: 60%;
+    padding: 0 10px;
+}
+
+.emoji label {
+    font-family: 'minecraft-regular', monospace;
+    color: rgba(255, 255, 255, .4);
+    font-size: .8em;
+    text-transform: capitalize;
+}
+
+.emoji .delete-button {
+    background: none;
+    border: none;
+    color: rgba(255, 100, 100, .8);
+    font-size: 1.2em;
+    margin-left: 5px;
+    cursor: pointer;
+    text-shadow: rgba(255, 100, 100, .8) 0 0 5px;
+}
+
+.emoji input {
+
+    display: block;
+    width: 100%;
+
+    font-family: 'minecraft-regular', monospace;
+    color: rgba(255, 255, 255, .6);
+    font-size: 1.1em;
+
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .6);
+
+    margin: -5px 0 8px;
+    padding: 0 5px;
+    outline: none;
+}
+
+.row-container {
+    display: block;
+    width: max-content;
+    margin: 20px auto;
+}
+
+.mce-button {
+    font-family: 'minecraft-regular', monospace;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    border: none;
+
+    background: rgba(0, 0, 0, .4);
+    cursor: pointer;
+    color: rgba(255, 255, 255, .6);
+}
+
+.mce-button:hover {
+    background: rgba(0, 0, 0, .35);
+}
+
+.dialog-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .4);
+}
+
+.dialog-box {
+    display: flex;
+    position: relative;
+    width: 500px;
+    background-color: #3f3d3f;
+
+    padding: 20px;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    flex-direction: column;
+}
+
+.dialog-box * {
+    margin: 6px 0;
+}
+
+.dialog-box code {
+    background: rgba(0, 0, 0, .4);
+    padding: 5px 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-error input {
+    color: rgba(255, 100, 100, .8);
+}
+
+@media (max-width: 1460px) {
+    .emoji {
+        width: 28%;
+    }
+    .file-input {
+        width: 40%;
+    }
+}
+
+@media (max-width: 1080px) {
+    .emoji {
+        width: 40%;
+    }
+    .file-input {
+        width: 70%;
+    }
+}
+
+@media (max-width: 500px) {
+    .emoji {
+        width: 100%;
+    }
+    .file-input {
+        width: 80%;
+    }
+}
