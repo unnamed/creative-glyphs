@@ -15,15 +15,13 @@ import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
-import team.unnamed.emojis.io.EmojiWriter;
-import team.unnamed.emojis.io.MCEmojiWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
-import team.unnamed.emojis.io.EmojiReader;
-import team.unnamed.emojis.io.MCEmojiReader;
+import team.unnamed.emojis.io.EmojiCodec;
+import team.unnamed.emojis.io.MCEmojiCodec;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,8 +39,7 @@ public class EmojisPlugin extends JavaPlugin {
     private EmojiRegistry registry;
     private RemoteResource resource;
 
-    private EmojiReader reader;
-    private EmojiWriter writer;
+    private EmojiCodec codec;
     private EmojiImporter importer;
 
     private ExportService exportService;
@@ -67,7 +64,7 @@ public class EmojisPlugin extends JavaPlugin {
                         // if there isn't, write zero emojis
                         // to the created file, so next reads
                         // don't fail
-                        writer.write(output, Collections.emptySet());
+                        codec.write(output, Collections.emptySet());
                     }
                 }
             }
@@ -77,7 +74,7 @@ public class EmojisPlugin extends JavaPlugin {
 
     public void loadEmojis() {
         try (InputStream input = new FileInputStream(database)) {
-            registry.update(reader.read(input));
+            registry.update(codec.read(input));
         } catch (IOException e) {
             throw new IllegalStateException("Cannot load emojis", e);
         }
@@ -86,7 +83,7 @@ public class EmojisPlugin extends JavaPlugin {
 
     public void saveEmojis() {
         try (OutputStream output = new FileOutputStream(database)) {
-            writer.write(output, registry.values());
+            codec.write(output, registry.values());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot save emojis", e);
         }
@@ -99,9 +96,8 @@ public class EmojisPlugin extends JavaPlugin {
         saveDefaultConfig();
 
         this.registry = new EmojiRegistry();
-        this.reader = new MCEmojiReader();
-        this.writer = new MCEmojiWriter();
-        this.importer = new EmojiImporter(this.reader);
+        this.codec = new MCEmojiCodec();
+        this.importer = new EmojiImporter(this.codec);
 
         try {
             this.database = makeDatabase();
@@ -163,8 +159,8 @@ public class EmojisPlugin extends JavaPlugin {
         return importer;
     }
 
-    public EmojiReader getReader() {
-        return reader;
+    public EmojiCodec getCodec() {
+        return codec;
     }
 
     public ExportService getExportService() {

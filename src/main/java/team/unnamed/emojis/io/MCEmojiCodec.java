@@ -1,21 +1,23 @@
 package team.unnamed.emojis.io;
 
 import team.unnamed.emojis.Emoji;
-import team.unnamed.hephaestus.io.Streamable;
-import team.unnamed.hephaestus.io.Streams;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Implementation of {@link EmojiReader} for reading
- * emojis from the MCEmoji format
+ * Implementation of {@link EmojiCodec} for reading
+ * and writing emojis from/to the MCEmoji format
  * @author yusshu (Andre Roldan)
  */
-public class MCEmojiReader implements EmojiReader {
+public class MCEmojiCodec implements EmojiCodec {
+
+    private static final byte VERSION = 1;
 
     @Override
     public Collection<Emoji> read(InputStream input) throws IOException {
@@ -25,7 +27,7 @@ public class MCEmojiReader implements EmojiReader {
         DataInputStream dataInput = new DataInputStream(input);
 
         byte formatVersion = dataInput.readByte();
-        if (formatVersion != MCEmojiFormat.VERSION) {
+        if (formatVersion != VERSION) {
             // Currently, there are no other versions
             throw new IOException("Invalid format version: '"
                     + formatVersion + "'. Are you from the future?"
@@ -71,6 +73,47 @@ public class MCEmojiReader implements EmojiReader {
         }
 
         return Arrays.asList(emojis);
+    }
+
+    @Override
+    public void write(
+            OutputStream output,
+            Collection<Emoji> emojis
+    ) throws IOException {
+
+        // not in a try-with-resources because this shouldn't close the
+        // original output stream
+        DataOutputStream dataOutput = new DataOutputStream(output);
+
+        // write current MCEmoji format
+        dataOutput.write(VERSION);
+
+        // write emoji length
+        dataOutput.writeByte(emojis.size());
+
+        // write all emojis
+        for (Emoji emoji : emojis) {
+
+            String name = emoji.getName();
+            String permission = emoji.getPermission();
+
+            // write name
+            dataOutput.writeByte(name.length());
+            dataOutput.writeChars(name);
+
+            // height, ascent and character
+            dataOutput.writeShort(emoji.getHeight());
+            dataOutput.writeShort(emoji.getAscent());
+            dataOutput.writeChar(emoji.getCharacter());
+
+            // write permission
+            dataOutput.writeByte(permission.length());
+            dataOutput.writeChars(permission);
+
+            // image write
+            dataOutput.writeShort(emoji.getDataLength());
+            emoji.getData().transfer(dataOutput);
+        }
     }
 
 }

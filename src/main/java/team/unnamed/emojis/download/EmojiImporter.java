@@ -3,7 +3,7 @@ package team.unnamed.emojis.download;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.io.EmojiReader;
+import team.unnamed.emojis.io.EmojiCodec;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -27,14 +27,14 @@ public class EmojiImporter {
     private static final String USER_AGENT = "unemojis-importer";
 
     private final JsonParser jsonParser = new JsonParser();
-    private final EmojiReader reader;
+    private final EmojiCodec reader;
 
     /**
      * Constructs a new importing service that
      * uses the given {@code reader} to read the
      * imported data
      */
-    public EmojiImporter(EmojiReader reader) {
+    public EmojiImporter(EmojiCodec reader) {
         this.reader = reader;
     }
 
