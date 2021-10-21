@@ -1,0 +1,2 @@
+# Emojis ![Build Status](https://img.shields.io/github/workflow/status/unnamed/emojis/build/main) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
+Bukkit plugin extending the default Minecraft chat by adding emojis
