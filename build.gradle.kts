@@ -3,9 +3,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
-group = "team.unnamed"
-version = "0.1.8-SNAPSHOT"
-
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
