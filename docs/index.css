@@ -89,7 +89,9 @@ button.solid:hover {
 .w-min-content { width: min-content; }
 .text-center { text-align: center; }
 .absolute { position: absolute; }
+.relative { position: relative; }
 .mh-view { height: 100vh; }
+.right-0 { right: 0; }
 
 
 /**
