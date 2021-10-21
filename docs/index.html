@@ -7,42 +7,174 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Display metadata -->
-    <meta property="og:title" content="Unnamed Team | mcemoji">
+    <meta property="og:title" content="Unnamed Team | µŋEmojis">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://unnamed.team/emojis">
-    <meta property="og:description" content="Web-application to create emojis in the MCEmoji format">
+    <meta property="og:description" content="µŋEmojis plugin by Unnamed Team. Documentation, Web-Editor and Downloads">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="index.css">
-    <title>mcemoji</title>
+    <title>µŋEmojis</title>
 </head>
 <body>
 
-<!-- Dialog Element -->
-<div class="dialog-container hidden">
-    <div class="dialog-box">
-        <h3 class="mc-text dialog-title"></h3>
-        <p class="mc-text dialog-content"></p>
-        <button class="mce-button dialog-close"></button>
+<div class="mh-view" id="home">
+    <header class="flex space-between center-items pad">
+        <span>
+            <span class="title">µŋEmojis</span>
+        </span>
+        <span>
+            <button class="anchor" data-for="features">Features</button>
+            <button class="anchor" data-for="editor">Editor</button>
+            <button onclick="window.open('https://github.com/unnamed/emojis/wiki')">Docs</button>
+            <button class="solid anchor" data-for="download">Download now!</button>
+        </span>
+    </header>
+
+    <main class="flex center-items pad">
+        <div>
+            <img src="assets/heart_eyes.png" alt="heart_eyes" class="pixelated big-emoji">
+        </div>
+        <div class="margin">
+            <h1 class="title">Emojis that extend the default Minecraft chat</h1>
+            <p>Emojis that simply make your server beautiful</p>
+            <button class="solid anchor" data-for="download">Download now!</button>
+        </div>
+        <div>
+            <img src="assets/blush.png" alt="blush" class="pixelated ghost extra-big-emoji">
+        </div>
+    </main>
+</div>
+
+<!-- Features section -->
+<section class="features pad mh-view" id="features">
+    <h2 class="title text-center">Features</h2>
+    <p class="text-center">A list of µŋemojis features!</p>
+
+    <img src="assets/slight_smile.png" alt="slight_smile" class="pixelated ghost extra-big-emoji absolute">
+
+    <div class="flex container">
+        <div class="feature flex">
+            <div>
+                <img src="assets/kissing.png" alt="kissing" class="pixelated">
+            </div>
+            <div>
+                <p class="heading">Easy to use</p>
+                <p>Just drop your emoji images in the web editor, upload them and
+                    download them in your server by executing just one command!</p>
+            </div>
+        </div>
+        <div class="feature flex">
+            <div>
+                <img src="assets/smile.png" alt="smile" class="pixelated">
+            </div>
+            <div>
+                <p class="heading">Nice support</p>
+                <p>Fast and friendly support in our Discord server, we answer as
+                    fast as possible to try to help you</p>
+            </div>
+        </div>
+        <div class="feature flex">
+            <div>
+                <img src="assets/relaxed.png" alt="relaxed" class="pixelated">
+            </div>
+            <div>
+                <p class="heading">Code Quality</p>
+                <p>You can ensure our code is the best by visiting it in our
+                GitHub Repository, you can also modify and add new features
+                to it</p>
+            </div>
+        </div>
+        <div class="feature flex">
+            <div>
+                <img src="assets/smiley.png" alt="smiley" class="pixelated">
+            </div>
+            <div>
+                <p class="heading">Frequent Updates</p>
+                <p>We are always adding new features and fixing bugs, you
+                can also get development-builds in our Discord server</p>
+            </div>
+        </div>
+        <div class="feature flex">
+            <div>
+                <img src="assets/heart_eyes.png" alt="heart_eyes" class="pixelated">
+            </div>
+            <div>
+                <p class="heading">Compatibility</p>
+                <p>Support for Minecraft versions from 1.8 to 1.17, can
+                run on Bukkit and Minestom, compatible with Uracle!</p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
-<div>
-    <h1 class="mc-text">MCEmoji</h1>
-</div>
+<!-- Editor section -->
+<section class="editor pad mh-view" id="editor">
+    <h2 class="title text-center">Editor</h2>
+    <p class="text-center">Web-editor for µŋemojis</p>
 
-<div class="ghost mc-text file-input">
-    <h2>Drop your emojis here</h2>
-</div>
+    <div class="file-input">
+        <h2 class="text-center">Drop your emojis here</h2>
+    </div>
 
-<div class="row-container">
-    <button class="mce-button save">Save</button>
-    <button class="mce-button import">Import</button>
-    <button class="mce-button export">Export</button>
-</div>
+    <div class="flex controls">
+        <button class="solid action-save">Save</button>
+        <button class="solid action-import">Import</button>
+        <button class="solid action-export">Export</button>
+    </div>
 
-<div class="emoji-container">
-</div>
+    <div class="emojis flex container">
+    </div>
+
+</section>
+
+<!-- Downloads section -->
+<section class="pad mh-view downloads" id="download">
+    <h2 class="title text-center">Releases</h2>
+    <p class="text-center">Download µŋemojis for your Minecraft server</p>
+
+    <div class="flex space-between container">
+        <div class="flex column releases">
+        </div>
+        <div class="flex column commits">
+        </div>
+    </div>
+</section>
+
+<footer class="flex space-between column">
+    <div class="flex row links">
+        <div>
+            <p class="heading">Projects</p>
+            <ul>
+                <li><a>Hephaestus-Engine</a></li>
+                <li><a>Unnamed GUI</a></li>
+                <li><a>CommandFlow</a></li>
+                <li><a>Uracle</a></li>
+                <li><a>Emojis</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="heading">Initiatives</p>
+            <ul>
+                <li><a>Uracle</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="heading">Community</p>
+            <ul>
+                <li><a>Discord</a></li>
+            </ul>
+        </div>
+    </div>
+    <i class="separator"></i>
+    <div class="flex row space-between">
+        <p>Copyright 2021 - Unnamed Team</p>
+        <p>Developed by yusshu</p>
+    </div>
+</footer>
 
 <script src="index.js"></script>
-
 </body>

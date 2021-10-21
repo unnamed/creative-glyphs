@@ -6,47 +6,83 @@
     const append = (element, children) => children
         .forEach(children => element.appendChild(children));
 
-    const container = $(".emoji-container");
+    const container = $(".emojis");
     const form = $(".file-input");
     const emojis = new Map();
 
-    /**
-     * Object representing an information dialog,
-     * used to show information to the user
-     */
-    const dialog = (function () {
-        const containerElement = $(".dialog-container");
-        const titleElement = $(".dialog-title");
-        const contentElement = $(".dialog-content");
-        const closeButton = $(".dialog-close");
-        let callback = () => true;
-
-        closeButton.addEventListener("click", () => {
-            if (callback()) {
-                containerElement.classList.add("hidden");
+    (function() {
+        // anchor linking
+        for (const anchor of document.getElementsByClassName("anchor")) {
+            const id = anchor.dataset["for"];
+            const target = document.getElementById(id);
+            if (target) {
+                anchor.addEventListener("click", () => target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end"
+                }));
             }
-        });
+        }
+    })();
 
-        return {
-            /**
-             * Shows the dialog using the given title,
-             * content and some extra options
-             * @param {string} title Dialog title
-             * @param {string} content Dialog content
-             * @param {Function} cb Callback (executed when clicking
-             * the submit button)
-             * @param close The close button text
-             */
-            show(title, content, cb = (() => true), close = "Ok") {
-                titleElement.innerText = title;
-                contentElement.innerText = content;
-                closeButton.innerText = close;
-                containerElement.classList.remove("hidden");
-                if (cb) {
-                    callback = cb;
-                }
+    const Dialog = (function () {
+
+        const maxDialogs = 1;
+        const dialogContainer = document.createElement("div");
+        let dialogs = [];
+
+        dialogContainer.classList.add("dialogs");
+        document.body.appendChild(dialogContainer);
+
+        /**
+         * Shows a dialog with the given
+         * heading and message
+         * @param {string} heading Dialog title
+         * @param {string} message Dialog message
+         * @param {"info" | "error"} type Type of dialog
+         */
+        function add(heading, message, type = "info") {
+            const close = document.createElement("button");
+            const title = document.createElement("h3");
+            const body = document.createElement("p");
+            const element = document.createElement("div");
+            element.classList.add("dialog");
+            element.classList.add(type);
+
+            title.innerText = heading;
+            body.innerText = message;
+            close.innerHTML = "&#10005;";
+
+            append(element, [ title, close, body ]);
+            dialogContainer.appendChild(element)
+                    .animate([
+                        { opacity: 0 },
+                        { opacity: 1 }
+                    ], {
+                        duration: 500
+                    });
+
+            // remove last dialog if required
+            if (dialogs.length >= maxDialogs) {
+                const lastDialog = dialogs.shift();
+                lastDialog.element.remove();
+                clearTimeout(lastDialog.id);
             }
-        };
+
+            // closing
+            function remove() {
+                element.remove();
+                dialogs = dialogs.filter(e => e.id !== id);
+            }
+            const id = setTimeout(remove, 5000);
+            close.addEventListener("click", () => {
+                remove();
+                clearTimeout(id);
+            });
+
+            dialogs.push({ id, element });
+        }
+
+        return { add };
     })();
 
     function addEmoji(name, img, ascent, height, permission) {
@@ -60,14 +96,16 @@
             const labelElement = document.createElement("label");
             labelElement.innerText = property;
             const element = document.createElement("input");
+            element.type = "text";
+            element.spellcheck = false;
             labelElement.appendChild(element);
 
             element.addEventListener("input", event => {
                 const value = event.target.value;
                 if (!validate(value)) {
-                    labelElement.classList.add("input-error");
+                    element.classList.add("error");
                 } else {
-                    labelElement.classList.remove("input-error");
+                    element.classList.remove("error");
                     emojis.get(name)[property] = parse(value);
                 }
             });
@@ -81,21 +119,10 @@
 
         const div = document.createElement("div");
 
-        div.classList.add("ghost", "emoji");
+        div.classList.add("emoji");
 
         const imgElement = document.createElement("img");
         const propertiesElement = document.createElement("div");
-        const deleteButton = document.createElement("button");
-
-        deleteButton.innerHTML = "&#x2715;";
-        deleteButton.classList.add("delete-button");
-
-        deleteButton.addEventListener("click", () => {
-            // set to undefined and don't change the others emojis index
-            emojis.delete(name);
-            // remove the card
-            container.removeChild(div);
-        });
 
         propertiesElement.classList.add("properties");
 
@@ -111,7 +138,7 @@
         permissionElement.input.value = permission;
 
         append(propertiesElement, [nameElement, ascentElement, heightElement, permissionElement].map(e => e.label));
-        append(div, [deleteButton, imgElement, propertiesElement]);
+        append(div, [imgElement, propertiesElement]);
 
         container.appendChild(div);
 
@@ -153,9 +180,10 @@
         }
 
         if (errors.length > 0) {
-            dialog.show(
-                `${errors.length} errors occurred`,
-                errors.join('\n')
+            Dialog.add(
+                    `${errors.length} error(s) occurred`,
+                    errors.join('\n'),
+                    "error"
             );
         }
     });
@@ -291,22 +319,18 @@
         });
     }
 
-    $(".import").addEventListener("click", () => {
-        load()
-            .catch(error => {
-                dialog.show(
-                    "Error",
-                    error.message
-                );
-            });
+    $(".action-import").addEventListener("click", () => {
+        load().catch(error =>
+                Dialog.add("Error", error.message, "error"));
     });
 
-    $(".export").addEventListener("click", () => {
+    $(".action-export").addEventListener("click", () => {
         if (emojis.size < 1) {
             // no emojis, return
-            dialog.show(
-                "Error",
-                "No emojis to upload, first add some emojis!"
+            Dialog.add(
+                    "Error",
+                    "No emojis to upload, add some emojis first!",
+                    "error"
             );
             return;
         }
@@ -322,26 +346,26 @@
             .then(response => response.json())
             .then(response => {
                 const { id } = response;
-                dialog.show(
-                    "Uploaded!",
-                    "Successfully uploaded the emojis, execute this" +
-                    " command in your Minecraft server to load them.",
-                    () => {
-                        navigator.clipboard.writeText(`/emojis update ${id}`)
-                            .then(() => $(".dialog-container").classList.add("hidden"))
-                            .catch(console.error);
-                    },
-                    "Copy Command"
+                const command = `/emojis update ${id}`;
+
+                navigator.clipboard.writeText(command).catch(console.error);
+
+                Dialog.add(
+                        "Uploaded & Copied Command!",
+                        `Successfully uploaded emojis, execute the"
+                        + "command (${command}) in your Minecraft server to load them.`,
+                        "info"
                 );
             });
     });
 
-    $(".save").addEventListener("click", () => {
+    $(".action-save").addEventListener("click", () => {
         if (emojis.size < 1) {
             // no emojis, return
-            dialog.show(
-                "Error",
-                "No emojis to save, first add some emojis!"
+            Dialog.add(
+                    "Error",
+                    "No emojis to save, add some emojis first!",
+                    "error"
             );
             return;
         }
@@ -354,5 +378,62 @@
             downloadElement.remove();
         });
     });
+
+    // get github data
+    (function () {
+        const releasesContainer = $(".releases");
+        const commitsContainer = $(".commits");
+        const maxCommits = 10;
+
+        fetch("https://api.github.com/repos/unnamed/emojis/releases")
+                .then(response => response.json())
+                .then(releases => releases.forEach(release => {
+                    const { tag_name, prerelease, created_at, assets } = release;
+                    if (assets.length === 0) {
+                        return;
+                    }
+
+                    const date = new Date(Date.parse(created_at));
+
+                    const { browser_download_url, download_count } = assets[0];
+                    const element = document.createElement("div");
+                    element.classList.add("release");
+
+                    // TODO:
+                    element.innerHTML = `
+                        <h3>${tag_name} ${prerelease ? "(Prerelease)" : ""}</h3>
+                        <p>${date.toLocaleString()}</p>
+                        <p>${download_count} downloads</p>
+                    `;
+
+                    element.addEventListener("click", () => window.open(browser_download_url));
+                    releasesContainer.appendChild(element);
+                }));
+
+        fetch("https://api.github.com/repos/unnamed/emojis/commits")
+                .then(response => response.json())
+                .then(commits => {
+                    for (const commitJson of commits) {
+                        if (commitsContainer.children.length > maxCommits) {
+                            // limit
+                            break;
+                        }
+
+                        let { sha, commit, html_url } = commitJson;
+                        const message = commit.message;
+                        sha = sha.substring(0, 6);
+
+                        const element = document.createElement("span");
+                        element.classList.add("commit");
+
+                        // TODO:
+                        element.innerHTML = `
+                        <a href="${html_url}">${sha}</a> ${message}
+                        `;
+
+                        commitsContainer.appendChild(element);
+                    }
+                });
+    })();
 
 })();
