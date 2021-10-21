@@ -9,7 +9,6 @@ version = "0.1.8-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
-    maven("https://repo.essentialsx.net/releases/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     mavenLocal()
 }
