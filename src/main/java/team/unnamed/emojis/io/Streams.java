@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 /**
  * Utility class for working with
@@ -118,13 +117,4 @@ public final class Streams {
         return new ByteArrayInputStream(bytes);
     }
 
-    /**
-     * Creates a {@link InputStream} for reading and decoding
-     * the given {@code string} from Base64 using the specified
-     * {@code charset}
-     */
-    public static InputStream fromBase64(String string, Charset charset) {
-        InputStream original = fromString(string, charset);
-        return Base64.getDecoder().wrap(original);
-    }
 }
