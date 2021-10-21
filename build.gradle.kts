@@ -13,9 +13,10 @@ repositories {
 
 dependencies {
     val spigot = "io.papermc.paper:paper:1.17-R0.1-SNAPSHOT";
+    val annotations = "org.jetbrains:annotations:21.0.0";
 
     compileOnly(spigot)
-    compileOnly("org.jetbrains:annotations:21.0.0")
+    compileOnly(annotations)
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") {
         exclude(group = "net.kyori", module = "adventure-api")
         exclude(group = "net.kyori", module = "adventure-text-serializer-plain")
@@ -28,6 +29,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.10")
 
     testImplementation(spigot)
+    testImplementation(annotations)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
