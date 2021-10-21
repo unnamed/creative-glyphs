@@ -1,7 +1,7 @@
 main: team.unnamed.emojis.EmojisPlugin
 name: unemojis
 api-version: 1.13
-version: 0.1.8
+version: @version@
 description: Unnamed Team's Emojis Plugin
 authors: [Yusshu]
 softdepend: [PlaceholderAPI, EzChat]
