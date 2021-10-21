@@ -2,10 +2,10 @@ package team.unnamed.emojis.resourcepack;
 
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.hephaestus.io.Streamable;
-import team.unnamed.hephaestus.io.Streams;
-import team.unnamed.hephaestus.io.TreeOutputStream;
-import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
+import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.io.TreeOutputStream;
+import team.unnamed.emojis.io.Streamable;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -15,8 +15,7 @@ import java.util.Iterator;
  * plugin.
  * @author yusshu (Andre Roldan)
  */
-public class EmojiResourcePackWriter
-        implements ResourcePackWriter {
+public class EmojiResourcePackWriter implements ResourcePackWriter {
 
     private final EmojiRegistry registry;
 

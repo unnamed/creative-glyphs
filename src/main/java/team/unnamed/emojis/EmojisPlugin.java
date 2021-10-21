@@ -17,13 +17,13 @@ import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.io.EmojiWriter;
 import team.unnamed.emojis.io.MCEmojiWriter;
+import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.io.EmojiReader;
 import team.unnamed.emojis.io.MCEmojiReader;
-import team.unnamed.hephaestus.io.Streams;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -3,9 +3,9 @@ package team.unnamed.emojis.export.http;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.export.RemoteResource;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.hephaestus.io.Streams;
-import team.unnamed.hephaestus.io.TreeOutputStream;
-import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
+import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.io.TreeOutputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,8 +104,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
         }
 
         // execute request and close, no response expected
-        try (InputStream in = connection.getInputStream()) {
-        }
+        connection.getInputStream().close();
 
         return new RemoteResource(
                 DOWNLOAD_URL_TEMPLATE.replace("%HASH%", hashString),

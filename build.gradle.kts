@@ -30,8 +30,6 @@ dependencies {
 
     compileOnly("me.clip:placeholderapi:2.10.10")
 
-    implementation("team.unnamed.hephaestus:common:0.1.0")
-
     testImplementation(spigot)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
-import team.unnamed.hephaestus.io.Streamable;
+
+import team.unnamed.emojis.io.Streamable;
 
 /**
  * Represents an emoji, has a name, size and

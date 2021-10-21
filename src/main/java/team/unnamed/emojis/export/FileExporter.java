@@ -1,9 +1,9 @@
 package team.unnamed.emojis.export;
 
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.hephaestus.io.Streams;
-import team.unnamed.hephaestus.io.TreeOutputStream;
-import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
+import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.io.TreeOutputStream;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

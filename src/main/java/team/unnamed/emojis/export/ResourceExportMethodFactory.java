@@ -2,7 +2,7 @@ package team.unnamed.emojis.export;
 
 import team.unnamed.emojis.export.http.ArtemisHttpExporter;
 import team.unnamed.emojis.export.http.MCPacksHttpExporter;
-import team.unnamed.hephaestus.io.TreeOutputStream;
+import team.unnamed.emojis.io.TreeOutputStream;
 
 import java.io.File;
 import java.io.IOException;

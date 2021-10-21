@@ -1,7 +1,7 @@
 package team.unnamed.emojis.export;
 
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
+import team.unnamed.emojis.io.ResourcePackWriter;
 
 import java.io.IOException;
 

@@ -4,13 +4,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.io.ResourcePackInfo;
+import team.unnamed.emojis.io.ResourcePackInfoWriter;
+import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.Streamable;
 import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
 import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
-import team.unnamed.hephaestus.io.Streamable;
-import team.unnamed.hephaestus.resourcepack.ResourcePackInfo;
-import team.unnamed.hephaestus.resourcepack.ResourcePackInfoWriter;
-import team.unnamed.hephaestus.resourcepack.ResourcePackWriter;
 
 import java.io.File;
 import java.io.IOException;
