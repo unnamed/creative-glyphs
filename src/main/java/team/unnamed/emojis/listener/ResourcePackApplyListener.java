@@ -9,7 +9,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.export.RemoteResource;
+import team.unnamed.emojis.resourcepack.ResourcePack;
+import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,18 +19,18 @@ import java.util.UUID;
 public class ResourcePackApplyListener implements Listener {
 
     private final Map<UUID, Integer> retries = new HashMap<>();
-    private final RemoteResource resource;
+    private final ResourcePack resourcePack;
     private final FileConfiguration config;
 
     public ResourcePackApplyListener(EmojisPlugin plugin) {
-        this.resource = plugin.getRemoteResource();
+        this.resourcePack = plugin.getResourcePack();
         this.config = plugin.getConfig();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setResourcePack(resource.getUrl(), resource.getHash());
+        ResourcePackApplier.setResourcePack(player, resourcePack);
     }
 
     @EventHandler
@@ -72,7 +73,6 @@ public class ResourcePackApplyListener implements Listener {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    @SuppressWarnings("deprecation")
     private void handleFailedPack(Player player) {
         if (config.getBoolean("feature.require-pack")) {
             player.kickPlayer(getAndFormat("messages.fail"));

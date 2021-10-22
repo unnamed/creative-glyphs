@@ -2,6 +2,7 @@ package team.unnamed.emojis.export;
 
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 /**
  * High-level resource-pack exporting
@@ -13,11 +14,11 @@ public interface ExportService {
     /**
      * Exports the emojis in the given
      * {@code registry}
-     * @return The remote location for
+     * @return The url and hash for
      * the resource pack, null if not
      * exported to a remote location
      */
     @Nullable
-    RemoteResource export(EmojiRegistry registry);
+    UrlAndHash export(EmojiRegistry registry);
 
 }

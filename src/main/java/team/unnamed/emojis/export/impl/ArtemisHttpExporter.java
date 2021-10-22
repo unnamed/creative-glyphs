@@ -1,14 +1,14 @@
-package team.unnamed.emojis.export.http;
+package team.unnamed.emojis.export.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.emojis.export.RemoteResource;
 import team.unnamed.emojis.export.ResourceExporter;
 import team.unnamed.emojis.io.ResourcePackWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class ArtemisHttpExporter
 
     @Override
     @NotNull
-    public RemoteResource export(ResourcePackWriter writer) throws IOException {
+    public UrlAndHash export(ResourcePackWriter writer) throws IOException {
 
         if (fileName == null) {
             // use 'resourcepack' as default name
@@ -124,9 +124,9 @@ public class ArtemisHttpExporter
                 new InputStreamReader(connection.getInputStream())
         )) {
             JsonObject response = PARSER.parse(reader).getAsJsonObject();
-            return new RemoteResource(
+            return new UrlAndHash(
                     response.get("url").getAsString(),
-                    Streams.getBytesFromHex(response.get("hash").getAsString())
+                    response.get("hash").getAsString()
             );
         }
     }

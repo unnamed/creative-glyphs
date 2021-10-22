@@ -153,7 +153,7 @@ public final class LegacyComponentEmojiReplacer {
             if (start - lastEnd > 0) {
                 // so there's text within this emoji and the previous emoji (or text start)
                 String previous = message.substring(lastEnd, start - 1);
-                fromLegacyText(previous, components, last.duplicate());
+                fromLegacyText(previous, components, new TextComponent(last));
                 last = components.get(components.size() - 1);
             }
 
@@ -166,7 +166,7 @@ public final class LegacyComponentEmojiReplacer {
                 // "previous" text
                 lastEnd = start - 1;
             } else {
-                components.add(emojiComponentProvider.toBungeeComponent(emoji));
+                components.add(emojiComponentProvider.toComponent(emoji));
                 // if valid emoji, lastEnd is the emoji end + 1, so it doesn't
                 // consume the emoji nor its closing colon
                 lastEnd = end + 1;

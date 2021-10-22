@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,9 +9,8 @@ import team.unnamed.emojis.command.EmojisCommand;
 import team.unnamed.emojis.download.EmojiImporter;
 import team.unnamed.emojis.export.DefaultExportService;
 import team.unnamed.emojis.export.ExportService;
-import team.unnamed.emojis.export.RemoteResource;
 import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.MiniMessageEmojiComponentProvider;
+import team.unnamed.emojis.format.DefaultEmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
@@ -22,6 +22,9 @@ import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.io.EmojiCodec;
 import team.unnamed.emojis.io.MCEmojiCodec;
+import team.unnamed.emojis.resourcepack.ResourcePack;
+import team.unnamed.emojis.resourcepack.ResourcePackApplier;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +40,7 @@ import java.util.logging.Level;
 public class EmojisPlugin extends JavaPlugin {
 
     private EmojiRegistry registry;
-    private RemoteResource resource;
+    private ResourcePack resourcePack;
 
     private EmojiCodec codec;
     private EmojiImporter importer;
@@ -111,11 +114,17 @@ public class EmojisPlugin extends JavaPlugin {
 
         // export
         this.exportService = new DefaultExportService(this);
-        this.resource = exportService.export(registry);
+        UrlAndHash location = exportService.export(registry);
 
         EventBus eventBus = EventBus.create(this);
 
-        if (resource != null) {
+        if (location != null) {
+            this.resourcePack = new ResourcePack(
+                    location.getUrl(),
+                    location.getHash(),
+                    required,
+                    "json prompt"
+            );
             Bukkit.getPluginManager().registerEvents(
                     new ResourcePackApplyListener(this),
                     this
@@ -125,7 +134,7 @@ public class EmojisPlugin extends JavaPlugin {
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
                 .setExecutor(new EmojisCommand(this));
 
-        EmojiComponentProvider emojiComponentProvider = new MiniMessageEmojiComponentProvider(getConfig());
+        EmojiComponentProvider emojiComponentProvider = new DefaultEmojiComponentProvider(getConfig());
         EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy =
                 "clearRecipients".equals(getConfig().getString(""))
                         ? EventCancellationStrategy.removingRecipients()
@@ -140,7 +149,7 @@ public class EmojisPlugin extends JavaPlugin {
             // if no chat plugin hooks, let's register our own listener
             eventBus.register(ListenerFactory.create(
                     registry,
-                    new MiniMessageEmojiComponentProvider(getConfig()),
+                    new DefaultEmojiComponentProvider(getConfig()),
                     cancellationStrategy,
                     getConfig().getBoolean("compat.use-paper-listener"),
                     getConfig().getBoolean("format.legacy.rich")
@@ -167,11 +176,26 @@ public class EmojisPlugin extends JavaPlugin {
         return exportService;
     }
 
-    public RemoteResource getRemoteResource() {
-        return resource;
+    public ResourcePack getResourcePack() {
+        return resourcePack;
     }
 
-    public void setRemoteResource(RemoteResource resource) {
-        this.resource = resource;
+    public void setResourcePack(ResourcePack resourcePack) {
+        this.resourcePack = resourcePack;
     }
+
+    public void updateResourcePackLocation(UrlAndHash location) {
+        this.resourcePack = new ResourcePack(
+                location.getUrl(),
+                location.getHash(),
+                required,
+                "json prompt"
+        );
+
+        // for current players
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ResourcePackApplier.setResourcePack(player, resourcePack);
+        }
+    }
+
 }

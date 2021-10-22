@@ -1,11 +1,11 @@
-package team.unnamed.emojis.export.http;
+package team.unnamed.emojis.export.impl;
 
 import org.jetbrains.annotations.NotNull;
-import team.unnamed.emojis.export.RemoteResource;
 import team.unnamed.emojis.export.ResourceExporter;
 import team.unnamed.emojis.io.ResourcePackWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,7 +41,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
 
     @Override
     @NotNull
-    public RemoteResource export(ResourcePackWriter writer) throws IOException {
+    public UrlAndHash export(ResourcePackWriter writer) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -55,7 +55,6 @@ public class MCPacksHttpExporter implements ResourceExporter {
         connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 
         String hashString;
-        byte[] hash;
 
         // write http request body
         try (OutputStream output = connection.getOutputStream()) {
@@ -83,7 +82,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
                 treeOutput.finish();
             }
 
-            hash = digest.digest();
+            byte[] hash = digest.digest();
             int len = hash.length;
             StringBuilder hashBuilder = new StringBuilder(len * 2);
             for (byte b : hash) {
@@ -105,9 +104,9 @@ public class MCPacksHttpExporter implements ResourceExporter {
         // execute request and close, no response expected
         connection.getInputStream().close();
 
-        return new RemoteResource(
+        return new UrlAndHash(
                 DOWNLOAD_URL_TEMPLATE.replace("%HASH%", hashString),
-                hash
+                hashString
         );
     }
 

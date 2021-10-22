@@ -2,8 +2,6 @@ package team.unnamed.emojis.command;
 
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +14,7 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.download.EmojiImporter;
 import team.unnamed.emojis.export.ExportService;
-import team.unnamed.emojis.export.RemoteResource;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,17 +51,11 @@ public class EmojisCommand implements CommandExecutor {
 
             emojiRegistry.update(emojis);
             plugin.saveEmojis();
-            RemoteResource resource = exportService.export(emojiRegistry);
+            UrlAndHash resource = exportService.export(emojiRegistry);
 
-            // if there is a remote resource location, update players
+            // update
             if (resource != null) {
-                // for current players
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.setResourcePack(resource.getUrl(), resource.getHash());
-                }
-
-                // for future player joins
-                plugin.setRemoteResource(resource);
+                plugin.updateResourcePackLocation(resource);
             }
         } catch (IOException e) {
             sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
@@ -83,6 +75,13 @@ public class EmojisCommand implements CommandExecutor {
             @NotNull String[] args
     ) {
 
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("You must be a player to do this");
+            return true;
+        }
+
+        Player player = (Player) sender;
+
         // if no permission for subcommands or no arguments given,
         // just send the emoji list
         if (!sender.isOp() || !sender.hasPermission("emojis.admin") || args.length == 0) {
@@ -100,11 +99,11 @@ public class EmojisCommand implements CommandExecutor {
                     TextComponent component = new TextComponent(emoji.getCharacter() + " ");
                     component.setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new Text(TextComponent.fromLegacyText(hover))
+                            TextComponent.fromLegacyText(hover)
                     ));
                     line.addExtra(component);
                 }
-                sender.sendMessage(line);
+                player.spigot().sendMessage(line);
             }
             return true;
         }

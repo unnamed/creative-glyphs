@@ -9,6 +9,7 @@ import team.unnamed.emojis.io.ResourcePackInfoWriter;
 import team.unnamed.emojis.io.ResourcePackWriter;
 import team.unnamed.emojis.io.Streamable;
 import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
 
@@ -32,7 +33,7 @@ public class DefaultExportService
     }
 
     @Override
-    public @Nullable RemoteResource export(EmojiRegistry registry) {
+    public @Nullable UrlAndHash export(EmojiRegistry registry) {
 
         ConfigurationSection config = plugin.getConfig();
         Collection<ResourcePackWriter> writers = new HashSet<>();
@@ -51,7 +52,7 @@ public class DefaultExportService
         writers.add(new EmojiResourcePackWriter(registry));
 
         try {
-            RemoteResource resource = ResourceExportMethodFactory.createExporter(
+            UrlAndHash resource = ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
             ).export(ResourcePackWriter.compose(writers));
