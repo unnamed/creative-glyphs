@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    val spigot = "io.papermc.paper:paper:1.17-R0.1-SNAPSHOT";
+    val spigot = "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT";
 
     compileOnly(spigot)
     compileOnly("org.jetbrains:annotations:21.0.0")
