@@ -17,7 +17,6 @@ import team.unnamed.emojis.listener.EventListener;
  * to cancel the event. Should be compatible with
  * all chat plugins.
  */
-@SuppressWarnings("deprecation") // AsyncPlayerChatEvent thing
 public class LegacyChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 

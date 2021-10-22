@@ -13,7 +13,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  * @author yusshu (Andre Roldan)
  */
 @FunctionalInterface
-@SuppressWarnings("deprecation") // because we use AsyncPlayerChatEvent
 public interface EventCancellationStrategy<E extends Event> {
 
     /**

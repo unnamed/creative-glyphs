@@ -14,7 +14,6 @@ import team.unnamed.emojis.listener.EventListener;
  * cancels the event and manually sends the component to
  * the event recipients
  */
-@SuppressWarnings("deprecation") // AsyncPlayerChatEvent is deprecated in paper
 public class LegacyRichSurroundingChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 

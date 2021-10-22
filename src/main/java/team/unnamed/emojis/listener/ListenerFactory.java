@@ -17,7 +17,6 @@ public final class ListenerFactory {
     private ListenerFactory() {
     }
 
-    @SuppressWarnings("deprecation")
     public static EventListener<?> create(
             EmojiRegistry registry,
             EmojiComponentProvider componentProvider,
