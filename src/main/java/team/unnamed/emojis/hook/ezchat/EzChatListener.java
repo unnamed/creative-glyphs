@@ -11,8 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
+import team.unnamed.emojis.format.EmojiReplacer;
 
-@SuppressWarnings("deprecation")
 public class EzChatListener implements Listener {
 
     private final ChatFormatSerializer formatSerializer
@@ -43,7 +43,7 @@ public class EzChatListener implements Listener {
             message = ChatColor.translateAlternateColorCodes('&', message);
         }
 
-        BaseComponent[] messageComponent = LegacyComponentEmojiReplacer.replace(
+        BaseComponent[] messageComponent = EmojiReplacer.replaceRawToRich(
                 sender,
                 registry,
                 message,
