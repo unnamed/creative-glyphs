@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.LegacyComponentEmojiReplacer;
 
 @SuppressWarnings("deprecation")
 public class EzChatListener implements Listener {

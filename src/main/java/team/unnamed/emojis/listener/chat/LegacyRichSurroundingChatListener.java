@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.LegacyComponentEmojiReplacer;
+import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -41,7 +41,7 @@ public class LegacyRichSurroundingChatListener
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        BaseComponent[] translated = LegacyComponentEmojiReplacer.replace(
+        BaseComponent[] translated = EmojiReplacer.replaceRawToRich(
                 player,
                 emojiRegistry,
                 message,
