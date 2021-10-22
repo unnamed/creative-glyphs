@@ -1,4 +1,9 @@
-package team.unnamed.emojis.io;
+package team.unnamed.emojis.resourcepack;
+
+import team.unnamed.emojis.io.AssetWriter;
+import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.io.TreeOutputStream;
+import team.unnamed.emojis.io.Writeable;
 
 import java.io.IOException;
 

@@ -1,6 +1,7 @@
-package team.unnamed.emojis.io;
+package team.unnamed.emojis.resourcepack;
 
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.emojis.io.Writeable;
 
 import java.util.Objects;
 
