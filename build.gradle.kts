@@ -9,7 +9,6 @@ repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
     mavenLocal()
 }
 
@@ -19,11 +18,6 @@ dependencies {
 
     compileOnly(spigot)
     compileOnly(annotations)
-    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") {
-        exclude(group = "net.kyori", module = "adventure-api")
-        exclude(group = "net.kyori", module = "adventure-text-serializer-plain")
-        exclude(group = "net.kyori", module = "adventure-text-serializer-gson")
-    }
 
     // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
