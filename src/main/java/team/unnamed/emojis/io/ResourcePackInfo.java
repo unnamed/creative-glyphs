@@ -12,7 +12,7 @@ public class ResourcePackInfo {
 
     private final int format;
     private final String description;
-    @Nullable private final Streamable icon;
+    @Nullable private final Writeable icon;
 
     /**
      * Constructs a new resource pack info object
@@ -24,7 +24,7 @@ public class ResourcePackInfo {
     public ResourcePackInfo(
             int format,
             String description,
-            @Nullable Streamable icon
+            @Nullable Writeable icon
     ) {
         this.format = format;
         this.description = description;
@@ -40,7 +40,7 @@ public class ResourcePackInfo {
     }
 
     @Nullable
-    public Streamable getIcon() {
+    public Writeable getIcon() {
         return icon;
     }
 
@@ -66,72 +66,6 @@ public class ResourcePackInfo {
     @Override
     public int hashCode() {
         return Objects.hash(format, description, icon);
-    }
-
-    /**
-     * Creates a {@link ResourcePackWriter} instance
-     * for writing information from this instance into
-     * a resource pack
-     */
-    public ResourcePackWriter toWriter() {
-        return new ResourcePackInfoWriter(this);
-    }
-
-    /**
-     * Converts this {@link ResourcePackInfo} into a
-     * fluent {@link ResourcePackInfo.Builder}, note that
-     * modifications to the builder do not affect this
-     * instance.
-     */
-    public ResourcePackInfo.Builder toBuilder() {
-        return builder()
-                .setFormat(format)
-                .setDescription(description)
-                .setIcon(icon);
-    }
-
-    /**
-     * Returns a new and fresh fluent builder for
-     * {@link ResourcePackInfo}
-     * @see ResourcePackInfo.Builder
-     */
-    public static ResourcePackInfo.Builder builder() {
-        return new ResourcePackInfo.Builder();
-    }
-
-    /**
-     * Mutable {@link ResourcePackInfo} fluent
-     * builder
-     */
-    public static class Builder {
-
-        private int format = 7;
-        private String description = "";
-        @Nullable private Streamable icon;
-
-        public Builder setFormat(int format) {
-            this.format = format;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setIcon(@Nullable Streamable icon) {
-            this.icon = icon;
-            return this;
-        }
-
-        /**
-         * Builds the immutable instance of {@link ResourcePackInfo}
-         * with the previously provided information
-         */
-        public ResourcePackInfo build() {
-            return new ResourcePackInfo(format, description, icon);
-        }
-
     }
 
 }

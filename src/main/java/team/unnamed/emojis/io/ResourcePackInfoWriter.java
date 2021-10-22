@@ -32,10 +32,10 @@ public class ResourcePackInfoWriter
         output.closeEntry();
 
         // write the pack icon if not null
-        Streamable icon = info.getIcon();
+        Writeable icon = info.getIcon();
         if (icon != null) {
             output.useEntry("pack.png");
-            icon.transfer(output);
+            icon.write(output);
             output.closeEntry();
         }
     }

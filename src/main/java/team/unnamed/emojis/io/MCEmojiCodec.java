@@ -65,7 +65,7 @@ public class MCEmojiCodec implements EmojiCodec {
                     name,
                     permission,
                     imageLength,
-                    Streamable.ofBytes(imageBytes),
+                    Writeable.ofBytes(imageBytes),
                     height,
                     ascent,
                     character
@@ -112,7 +112,7 @@ public class MCEmojiCodec implements EmojiCodec {
 
             // image write
             dataOutput.writeShort(emoji.getDataLength());
-            emoji.getData().transfer(dataOutput);
+            emoji.getData().write(dataOutput);
         }
     }
 

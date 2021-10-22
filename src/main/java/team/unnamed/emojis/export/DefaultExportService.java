@@ -7,7 +7,7 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.io.ResourcePackInfo;
 import team.unnamed.emojis.io.ResourcePackInfoWriter;
 import team.unnamed.emojis.io.ResourcePackWriter;
-import team.unnamed.emojis.io.Streamable;
+import team.unnamed.emojis.io.Writeable;
 import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 import team.unnamed.emojis.util.Texts;
@@ -45,7 +45,7 @@ public class DefaultExportService
             writers.add(new ResourcePackInfoWriter(new ResourcePackInfo(
                     getPackFormatVersion(),
                     Texts.escapeDoubleQuotes(description),
-                    file.exists() ? Streamable.ofFile(file) : null
+                    file.exists() ? Writeable.ofFile(file) : null
             )));
         }
 
