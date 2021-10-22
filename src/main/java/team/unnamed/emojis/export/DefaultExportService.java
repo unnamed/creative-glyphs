@@ -4,8 +4,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.resourcepack.ResourcePackInfo;
-import team.unnamed.emojis.resourcepack.ResourcePackInfoWriter;
+import team.unnamed.emojis.resourcepack.PackMeta;
+import team.unnamed.emojis.resourcepack.PackMetaWriter;
 import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Writeable;
 import team.unnamed.emojis.resourcepack.EmojiAssetWriter;
@@ -42,7 +42,7 @@ public class DefaultExportService
             String description = config.getString("pack.meta.description", "Hephaestus generated");
             File file = new File(plugin.getDataFolder(), config.getString("pack.meta.icon"));
 
-            writers.add(new ResourcePackInfoWriter(new ResourcePackInfo(
+            writers.add(new PackMetaWriter(new PackMeta(
                     getPackFormatVersion(),
                     Texts.escapeDoubleQuotes(description),
                     file.exists() ? Writeable.ofFile(file) : null

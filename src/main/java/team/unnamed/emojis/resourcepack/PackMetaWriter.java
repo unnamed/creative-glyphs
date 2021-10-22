@@ -10,14 +10,14 @@ import java.io.IOException;
 /**
  * Implementation of {@link AssetWriter} that
  * writes the resource pack information.
- * @see ResourcePackInfo
+ * @see PackMeta
  */
-public class ResourcePackInfoWriter
+public class PackMetaWriter
         implements AssetWriter {
 
-    private final ResourcePackInfo info;
+    private final PackMeta info;
 
-    public ResourcePackInfoWriter(ResourcePackInfo info) {
+    public PackMetaWriter(PackMeta info) {
         this.info = info;
     }
 
