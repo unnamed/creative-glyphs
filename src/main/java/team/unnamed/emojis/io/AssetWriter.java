@@ -8,7 +8,7 @@ import java.util.Arrays;
  * it writes the information into a {@link TreeOutputStream}
  * @author yusshu (Andre Roldan)
  */
-public interface ResourcePackWriter {
+public interface AssetWriter {
 
     /**
      * Writes the resource pack assets into
@@ -21,24 +21,24 @@ public interface ResourcePackWriter {
     void write(TreeOutputStream output) throws IOException;
 
     /**
-     * Creates a {@link ResourcePackWriter} instance compound
-     * by other {@code writers}. The {@link ResourcePackWriter#write}
+     * Creates a {@link AssetWriter} instance compound
+     * by other {@code writers}. The {@link AssetWriter#write}
      * method is invoked for all the given writers
      */
-    static ResourcePackWriter compose(Iterable<? extends ResourcePackWriter> writers) {
+    static AssetWriter compose(Iterable<? extends AssetWriter> writers) {
         return output -> {
-            for (ResourcePackWriter writer : writers) {
+            for (AssetWriter writer : writers) {
                 writer.write(output);
             }
         };
     }
 
     /**
-     * Creates a {@link ResourcePackWriter} instance compound
-     * by other {@code writers}. The {@link ResourcePackWriter#write}
+     * Creates a {@link AssetWriter} instance compound
+     * by other {@code writers}. The {@link AssetWriter#write}
      * method is invoked for all the given writers
      */
-    static ResourcePackWriter compose(ResourcePackWriter... writers) {
+    static AssetWriter compose(AssetWriter... writers) {
         return compose(Arrays.asList(writers));
     }
 

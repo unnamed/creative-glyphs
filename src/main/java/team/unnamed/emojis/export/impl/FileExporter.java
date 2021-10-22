@@ -2,7 +2,7 @@ package team.unnamed.emojis.export.impl;
 
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -43,7 +43,7 @@ public class FileExporter
 
     @Override
     @Nullable
-    public UrlAndHash export(ResourcePackWriter writer) throws IOException {
+    public UrlAndHash export(AssetWriter writer) throws IOException {
         if (!target.exists() && !target.createNewFile()) {
             throw new IOException("Failed to create target resource pack file");
         }

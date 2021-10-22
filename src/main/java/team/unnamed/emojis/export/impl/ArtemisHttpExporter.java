@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -76,7 +76,7 @@ public class ArtemisHttpExporter
 
     @Override
     @NotNull
-    public UrlAndHash export(ResourcePackWriter writer) throws IOException {
+    public UrlAndHash export(AssetWriter writer) throws IOException {
 
         if (fileName == null) {
             // use 'resourcepack' as default name

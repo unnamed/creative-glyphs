@@ -6,9 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.io.ResourcePackInfo;
 import team.unnamed.emojis.io.ResourcePackInfoWriter;
-import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Writeable;
-import team.unnamed.emojis.resourcepack.EmojiResourcePackWriter;
+import team.unnamed.emojis.resourcepack.EmojiAssetWriter;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
@@ -36,7 +36,7 @@ public class DefaultExportService
     public @Nullable UrlAndHash export(EmojiRegistry registry) {
 
         ConfigurationSection config = plugin.getConfig();
-        Collection<ResourcePackWriter> writers = new HashSet<>();
+        Collection<AssetWriter> writers = new HashSet<>();
 
         if (config.getBoolean("pack.meta.write")) {
             String description = config.getString("pack.meta.description", "Hephaestus generated");
@@ -49,13 +49,13 @@ public class DefaultExportService
             )));
         }
 
-        writers.add(new EmojiResourcePackWriter(registry));
+        writers.add(new EmojiAssetWriter(registry));
 
         try {
             UrlAndHash resource = ResourceExportMethodFactory.createExporter(
                     plugin.getDataFolder(),
                     config.getString("pack.export", "into:resourcepack")
-            ).export(ResourcePackWriter.compose(writers));
+            ).export(AssetWriter.compose(writers));
             if (resource != null) {
                 plugin.getLogger().info("Uploaded resource pack to " + resource.getUrl());
             }

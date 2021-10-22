@@ -2,7 +2,7 @@ package team.unnamed.emojis.resourcepack;
 
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
 
@@ -14,11 +14,11 @@ import java.util.Iterator;
  * plugin.
  * @author yusshu (Andre Roldan)
  */
-public class EmojiResourcePackWriter implements ResourcePackWriter {
+public class EmojiAssetWriter implements AssetWriter {
 
     private final EmojiRegistry registry;
 
-    public EmojiResourcePackWriter(EmojiRegistry registry) {
+    public EmojiAssetWriter(EmojiRegistry registry) {
         this.registry = registry;
     }
 

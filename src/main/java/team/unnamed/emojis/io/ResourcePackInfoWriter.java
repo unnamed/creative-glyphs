@@ -3,12 +3,12 @@ package team.unnamed.emojis.io;
 import java.io.IOException;
 
 /**
- * Implementation of {@link ResourcePackWriter} that
+ * Implementation of {@link AssetWriter} that
  * writes the resource pack information.
  * @see ResourcePackInfo
  */
 public class ResourcePackInfoWriter
-        implements ResourcePackWriter {
+        implements AssetWriter {
 
     private final ResourcePackInfo info;
 

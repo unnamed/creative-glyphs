@@ -2,7 +2,7 @@ package team.unnamed.emojis.export.impl;
 
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.emojis.io.ResourcePackWriter;
+import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.io.TreeOutputStream;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -41,7 +41,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
 
     @Override
     @NotNull
-    public UrlAndHash export(ResourcePackWriter writer) throws IOException {
+    public UrlAndHash export(AssetWriter writer) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
