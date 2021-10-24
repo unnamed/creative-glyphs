@@ -122,7 +122,7 @@ public class EmojisPlugin extends JavaPlugin {
             this.resourcePack = new ResourcePack(
                     location.getUrl(),
                     location.getHash(),
-                    required,
+                    true,
                     "json prompt"
             );
             Bukkit.getPluginManager().registerEvents(
@@ -188,7 +188,7 @@ public class EmojisPlugin extends JavaPlugin {
         this.resourcePack = new ResourcePack(
                 location.getUrl(),
                 location.getHash(),
-                required,
+                true,
                 "json prompt"
         );
 
