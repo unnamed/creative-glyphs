@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.util.Version;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class EmojiReplacer {
      * Pattern for matching URLs
      */
     private static final Pattern URL_PATTERN
-            = Pattern.compile("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
+            = Pattern.compile("^(?:(https?)://)?([-\\w_.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
 
     /**
      * Pattern for matching emojis from a string
@@ -142,16 +143,16 @@ public class EmojiReplacer {
                 }
 
                 net.md_5.bungee.api.ChatColor format;
-                if (current == 'x' && i + 12 < message.length()) {
+                if (current == 'x' && i + 12 < message.length() && Version.CURRENT.getMinor() >= 6) {
                     StringBuilder hex = new StringBuilder("#");
                     for (int j = 0; j < 6; j++) {
                         hex.append(message.charAt(i + 2 + (j * 2)));
                     }
-                    try {
-                        format = net.md_5.bungee.api.ChatColor.of(hex.toString());
-                    } catch (IllegalArgumentException ex) {
+                    //try {
+                    //    format = net.md_5.bungee.api.ChatColor.of(hex.toString());
+                    //} catch (IllegalArgumentException ex) {
                         format = null;
-                    }
+                    //}
 
                     i += 12;
                 } else {
@@ -262,69 +263,10 @@ public class EmojiReplacer {
 
         // append remaining text
         if (message.length() - lastEnd > 0) {
-            fromLegacyText(message.substring(lastEnd), components, last.duplicate());
+            fromLegacyText(message.substring(lastEnd), components, new TextComponent(last));
         }
 
         return components.toArray(EMPTY_COMPONENT_ARRAY);
-    }
-
-    public static TextComponent replaceRichToRich(
-            Permissible permissible,
-            TextComponent origin,
-            EmojiRegistry registry,
-            EmojiComponentProvider emojiComponentProvider
-    ) {
-        List<Component> parts = new ArrayList<>();
-        String content = origin.content();
-
-        Matcher matcher = EMOJI_PATTERN.matcher(content);
-        int lastEnd = 0;
-
-        while (matcher.find()) {
-            int start = matcher.start(1);
-            int end = matcher.end(1);
-
-            if (start - lastEnd > 0) {
-                // so there's text within this emoji and the previous emoji (or text start)
-                String previous = content.substring(lastEnd, start - 1);
-                parts.add(Component.text(previous));
-            }
-
-            String emojiName = content.substring(start, end);
-            Emoji emoji = registry.get(emojiName);
-
-            if (!Permissions.canUse(permissible, emoji)) {
-                // if invalid emoji, lastEnd is the current start - 1, so it
-                // consumes the emoji and its starting colon for the next
-                // "previous" text
-                lastEnd = start - 1;
-            } else {
-                parts.add(emojiComponentProvider.toAdventureComponent(emoji));
-                // if valid emoji, lastEnd is the emoji end + 1, so it doesn't
-                // consume the emoji nor its closing colon
-                lastEnd = end + 1;
-            }
-        }
-
-        // append remaining text
-        if (content.length() - lastEnd > 0) {
-            parts.add(origin.content(content.substring(lastEnd)));
-        }
-
-        if (parts.isEmpty()) {
-            return Component.text("");
-        } else {
-            Component first = parts.get(0);
-            if (first instanceof TextComponent) {
-                parts.remove(0);
-                return ((TextComponent) first)
-                        .children(parts);
-            } else {
-                return Component.text()
-                        .append(parts)
-                        .build();
-            }
-        }
     }
 
 }
