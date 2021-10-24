@@ -63,7 +63,6 @@ tasks {
             project.sourceSets.main.get().output,
             project.sourceSets["modern"].output
         )
-        exclude("META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
 
         java {
             toolchain {
