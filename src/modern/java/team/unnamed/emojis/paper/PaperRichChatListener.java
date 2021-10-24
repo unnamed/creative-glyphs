@@ -1,10 +1,11 @@
-package team.unnamed.emojis;
+package team.unnamed.emojis.paper;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
+import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.listener.EventListener;
 

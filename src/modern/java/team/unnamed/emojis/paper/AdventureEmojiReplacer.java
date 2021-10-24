@@ -1,4 +1,4 @@
-package team.unnamed.emojis;
+package team.unnamed.emojis.paper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -8,6 +8,8 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.TextComponentSerializer;
 import org.bukkit.permissions.Permissible;
+import team.unnamed.emojis.Emoji;
+import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.format.Permissions;
