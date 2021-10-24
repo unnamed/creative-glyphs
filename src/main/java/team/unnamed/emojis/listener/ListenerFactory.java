@@ -5,7 +5,6 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.listener.chat.LegacyChatListener;
 import team.unnamed.emojis.listener.chat.LegacyRichSurroundingChatListener;
-import team.unnamed.emojis.listener.chat.PaperRichChatListener;
 
 /**
  * Static utility class for instantiating
@@ -31,8 +30,12 @@ public final class ListenerFactory {
                 Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
 
                 // if it didn't throw an exception, return its event listener
-                return new PaperRichChatListener(registry, componentProvider);
-            } catch (ClassNotFoundException ignored) {
+                // (instantiated via reflection because it's not available in
+                // compile-time classpath)
+                return (EventListener<?>) Class.forName("team.unnamed.emojis.paper.PaperRichChatListener")
+                        .getDeclaredConstructor(EmojiRegistry.class, EmojiComponentProvider.class)
+                        .newInstance(registry, componentProvider);
+            } catch (ReflectiveOperationException ignored) {
             }
         }
 
