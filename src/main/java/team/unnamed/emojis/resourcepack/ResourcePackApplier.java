@@ -15,34 +15,42 @@ import java.lang.reflect.Method;
  */
 public final class ResourcePackApplier {
 
-    private static Method SET_RESOURCE_PACK_METHOD;
-    @Nullable private static Method GET_HANDLE_METHOD;
+    private static final Method SET_RESOURCE_PACK_METHOD;
+    private static final Method GET_HANDLE_METHOD;
+    @Nullable
+    private static final Method DESERIALIZE_COMPONENT_METHOD;
 
     static {
         try {
-            try {
-                SET_RESOURCE_PACK_METHOD = Player.class
+            Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit."
+                    + Version.CURRENT + ".entity.CraftPlayer");
+
+            GET_HANDLE_METHOD = craftPlayerClass.getDeclaredMethod("getHandle");
+
+            if (Version.CURRENT.getMinor() < 17) {
+
+                // we use getHandle() and then .setResourcePack(String, String)
+                // compatible with both Spigot and Paper
+                SET_RESOURCE_PACK_METHOD = Class.forName("net.minecraft.server." + Version.CURRENT + ".EntityPlayer")
                         .getDeclaredMethod("setResourcePack", String.class, String.class);
 
-                // if there is a setResourcePack method in Player class
-                // that accepts url and hash, we don't have to use internal
-                // net.minecraft.server classes
-                GET_HANDLE_METHOD = null;
-            } catch (NoSuchMethodException ignored) {
-                // no method found in bukkit, use nms,
-                // don't worry about 1.17 naming, bukkit 1.17 should
-                // already have setResourcePack(String, String) so
-                // it won't reach this part
-                Class<?> entityPlayerClass = Class.forName(
-                        "net.minecraft.server." + Version.CURRENT + ".EntityPlayer"
-                );
-                Class<?> craftPlayerClass = Class.forName(
-                        "org.bukkit.craftbukkit." + Version.CURRENT + ".entity.CraftPlayer"
-                );
+                DESERIALIZE_COMPONENT_METHOD = null;
+            } else {
 
-                GET_HANDLE_METHOD = craftPlayerClass.getDeclaredMethod("getHandle");
-                SET_RESOURCE_PACK_METHOD = entityPlayerClass
-                        .getDeclaredMethod("setResourcePack", String.class, String.class);
+                // we use getHandle() and then setResourcePack(String, String, boolean, IChatBaseComponent)
+                // for 1.17+, compatible with both Spigot and Paper
+                SET_RESOURCE_PACK_METHOD = Class.forName("net.minecraft.server.level.EntityPlayer")
+                        .getDeclaredMethod(
+                                "setResourcePack",
+                                String.class,
+                                String.class,
+                                boolean.class,
+                                Class.forName("net.minecraft.network.chat.IChatBaseComponent")
+                        );
+
+                DESERIALIZE_COMPONENT_METHOD = Class.forName(
+                        "net.minecraft.network.chat.IChatBaseComponent$ChatSerializer"
+                ).getDeclaredMethod("a", String.class);
             }
         } catch (ReflectiveOperationException e) {
             // probably found an unsupported version of spigot
@@ -61,15 +69,28 @@ public final class ResourcePackApplier {
      * @param player Player to apply resource pack
      * @param resourcePack The applied resource pack
      */
+    @SuppressWarnings("all") // ide detects parameter mismatch
     public static void setResourcePack(Player player, ResourcePack resourcePack) {
         try {
-            SET_RESOURCE_PACK_METHOD.invoke(
-                    GET_HANDLE_METHOD == null
-                            ? player
-                            : GET_HANDLE_METHOD.invoke(player),
-                    resourcePack.getUrl(),
-                    resourcePack.getHash()
-            );
+            Object handle = GET_HANDLE_METHOD.invoke(player);
+
+            if (Version.CURRENT.getMinor() < 17) {
+                // 'required' and 'prompt' fields not supported
+                SET_RESOURCE_PACK_METHOD.invoke(
+                        handle,
+                        resourcePack.getUrl(),
+                        resourcePack.getHash()
+                );
+            } else {
+                String prompt = resourcePack.getPrompt();
+                SET_RESOURCE_PACK_METHOD.invoke(
+                        handle,
+                        resourcePack.getUrl(),
+                        resourcePack.getHash(),
+                        resourcePack.isRequired(),
+                        prompt == null ? null : DESERIALIZE_COMPONENT_METHOD.invoke(null, prompt)
+                );
+            }
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(
                     "Cannot apply resource pack",
