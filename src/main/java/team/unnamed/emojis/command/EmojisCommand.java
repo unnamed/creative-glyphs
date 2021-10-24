@@ -87,7 +87,7 @@ public class EmojisCommand implements CommandExecutor {
         if (!sender.isOp() || !sender.hasPermission("emojis.admin") || args.length == 0) {
             Iterator<Emoji> iterator = emojiRegistry.values().iterator();
             while (iterator.hasNext()) {
-                TextComponent line = new TextComponent();
+                TextComponent line = new TextComponent("");
                 for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
                     Emoji emoji = iterator.next();
                     String hover = ChatColor.translateAlternateColorCodes(
