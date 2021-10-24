@@ -1,9 +1,18 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
+
+sourceSets {
+    create("modern") {
+        java {
+            srcDir("src/modern/java")
+            compileClasspath += main.get().output
+            runtimeClasspath += main.get().output
+        }
+    }
+}
+
+val modernCompileOnly: Configuration by configurations
 
 repositories {
     mavenCentral()
@@ -16,14 +25,19 @@ dependencies {
     val spigot = "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT";
     val annotations = "org.jetbrains:annotations:21.0.0";
 
+    modernCompileOnly("io.papermc.paper:paper:1.17-R0.1-SNAPSHOT")
+
+    // Required libraries
     compileOnly(spigot)
     compileOnly(annotations)
 
     // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
 
+    // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
 
+    // Testing
     testImplementation(spigot)
     testImplementation(annotations)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
@@ -37,23 +51,37 @@ tasks {
 
     java {
         toolchain {
-            // use java 8 by default
-            languageVersion.set(JavaLanguageVersion.of(8))
+            // use java 16 by default
+            languageVersion.set(JavaLanguageVersion.of(16))
         }
     }
 
-    register<ShadowJar>("shadowJar16") {
-        group = "shadow"
+    register<Jar>("jar16") {
         description = "Builds this project using Java 16, supporting Paper 1.17+ and Minestom"
         archiveClassifier.set("all-java16")
-        from(project.sourceSets.main.get().output)
-        configurations = listOf(project.configurations.runtimeClasspath.get())
+        from(
+            project.sourceSets.main.get().output,
+            project.sourceSets["modern"].output
+        )
         exclude("META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
 
         java {
             toolchain {
                 // use java 16 in this case
                 languageVersion.set(JavaLanguageVersion.of(16))
+            }
+        }
+    }
+
+    register<Jar>("jar8") {
+        description = "Builds this project using Java 8, doesn't support Paper 1.17+ or Minestom"
+        archiveClassifier.set("all-java8")
+        from(project.sourceSets.main.get().output)
+
+        java {
+            toolchain {
+                // use java 8 in this case
+                languageVersion.set(JavaLanguageVersion.of(8))
             }
         }
     }
