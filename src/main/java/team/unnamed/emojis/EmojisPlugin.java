@@ -122,8 +122,8 @@ public class EmojisPlugin extends JavaPlugin {
             this.resourcePack = new ResourcePack(
                     location.getUrl(),
                     location.getHash(),
-                    true,
-                    "json prompt"
+                    false,
+                    null
             );
             Bukkit.getPluginManager().registerEvents(
                     new ResourcePackApplyListener(this),
@@ -188,8 +188,8 @@ public class EmojisPlugin extends JavaPlugin {
         this.resourcePack = new ResourcePack(
                 location.getUrl(),
                 location.getHash(),
-                true,
-                "json prompt"
+                false,
+                null
         );
 
         // for current players
