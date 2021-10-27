@@ -6,8 +6,28 @@
     const append = (element, children) => children
         .forEach(children => element.appendChild(children));
 
+    //#region Type Definitions
+    /**
+     * Represents an emoji for the emoji editor
+     * @typedef {object} Emoji
+     * @property {string} name The emoji name
+     * @property {string} img The emoji data in Base64
+     * @property {string} permission The emoji permission
+     * @property {number} height The emoji height
+     * @property {number} ascent The emoji ascent
+     */
+    //#endregion
+
+    /**
+     * @type {HTMLElement}
+     */
     const container = $(".emojis");
     const form = $(".file-input");
+
+    /**
+     * A registry of emojis by their name
+     * @type {Map<string, Emoji>}
+     */
     const emojis = new Map();
 
     // anchor linking
