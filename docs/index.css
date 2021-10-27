@@ -90,7 +90,7 @@ button.solid:hover {
 .text-center { text-align: center; }
 .absolute { position: absolute; }
 .relative { position: relative; }
-.mh-view { height: 100vh; }
+.mh-view { min-height: 100vh; }
 .right-0 { right: 0; }
 
 
@@ -165,11 +165,9 @@ main > div, .margin > * {
     background-color: var(--accent);
     color: white;
     opacity: 0.6;
-
-    cursor: pointer;
 }
 
-.editor .file-input.is-dragover, .editor .file-input:hover {
+.editor .file-input.is-dragover {
     opacity: 0.75;
 }
 
@@ -193,6 +191,10 @@ main > div, .margin > * {
     border-radius: 20px;
     background-color: var(--accent);
     filter: drop-shadow(0 0 10px #00000022);
+}
+
+.editor .emoji button {
+    color: var(--light-fore);
 }
 
 .editor .emoji img {
@@ -335,7 +337,7 @@ footer li {
 }
 
 .dialog {
-    color: var(--light-fore);
+    color: var(--dark-fore);
 
     padding: 20px;
     border-radius: 20px;
@@ -345,7 +347,7 @@ footer li {
 }
 
 .dialog button {
-    color: var(--light-fore);
+    color: var(--dark-fore);
     position: absolute;
     top: 18px;
     right: 19px;
