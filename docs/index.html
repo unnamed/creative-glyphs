@@ -29,10 +29,10 @@
             <span class="title">emojis</span>
         </span>
         <span>
-            <button class="anchor" data-for="features">Features</button>
-            <button class="anchor" data-for="editor">Editor</button>
+            <a href="#features"><button>Features</button></a>
+            <a href="#editor"><button>Editor</button></a>
             <button onclick="window.open('https://github.com/unnamed/emojis/wiki')">Docs</button>
-            <button class="solid anchor" data-for="download">Download now!</button>
+            <a href="#download"><button class="solid anchor">Download now!</button></a>
         </span>
     </header>
 
@@ -173,5 +173,18 @@
     </div>
 </footer>
 
-<script src="index.js"></script>
+<script src="js/dialog.js"></script>
+<script src="js/io.js"></script>
+<script src="js/index.js"></script>
+<script>
+    // make all 'a' links be smooth
+    document.querySelectorAll(`a[href^="#"]`).forEach(anchor => {
+        anchor.addEventListener("click", event => {
+            event.preventDefault();
+            document.querySelector(anchor.getAttribute("href"))
+                    .scrollIntoView({ behavior: "smooth" });
+        });
+    });
+</script>
+
 </body>
