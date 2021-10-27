@@ -10,19 +10,17 @@
     const form = $(".file-input");
     const emojis = new Map();
 
-    (function() {
-        // anchor linking
-        for (const anchor of document.getElementsByClassName("anchor")) {
-            const id = anchor.dataset["for"];
-            const target = document.getElementById(id);
-            if (target) {
-                anchor.addEventListener("click", () => target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "end"
-                }));
-            }
+    // anchor linking
+    for (const anchor of document.getElementsByClassName("anchor")) {
+        const id = anchor.dataset["for"];
+        const target = document.getElementById(id);
+        if (target) {
+            anchor.addEventListener("click", () => target.scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            }));
         }
-    })();
+    }
 
     const Dialog = (function () {
 
