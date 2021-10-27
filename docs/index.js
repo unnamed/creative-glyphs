@@ -130,14 +130,22 @@
         const ascentElement = input("ascent", parseInt, regex(/^-?\d*$/g));
         const heightElement = input("height", parseInt, regex(/^-?\d*$/g));
         const permissionElement = input("permission", v => v, regex(/^[a-z0-9_.]+$/g));
+        const deleteElement = document.createElement("button");
 
         imgElement.src = img;
         nameElement.input.value = name;
         ascentElement.input.value = ascent;
         heightElement.input.value = height;
         permissionElement.input.value = permission;
+        deleteElement.innerText = "Remove";
+
+        deleteElement.addEventListener("click", () => {
+            div.remove();
+            emojis.delete(name);
+        });
 
         append(propertiesElement, [nameElement, ascentElement, heightElement, permissionElement].map(e => e.label));
+        propertiesElement.appendChild(deleteElement);
         append(div, [imgElement, propertiesElement]);
 
         container.appendChild(div);
