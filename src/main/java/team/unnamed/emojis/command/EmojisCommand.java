@@ -1,5 +1,6 @@
 package team.unnamed.emojis.command;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -100,6 +101,10 @@ public class EmojisCommand implements CommandExecutor {
                     component.setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
                             TextComponent.fromLegacyText(hover)
+                    ));
+                    component.setClickEvent(new ClickEvent(
+                            ClickEvent.Action.SUGGEST_COMMAND,
+                            emoji.getCharacter() + ""
                     ));
                     line.addExtra(component);
                 }
