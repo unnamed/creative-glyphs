@@ -85,12 +85,18 @@ public class EmojisCommand implements CommandExecutor {
 
         // if no permission for subcommands or no arguments given,
         // just send the emoji list
-        if (!sender.isOp() || !sender.hasPermission("emojis.admin") || args.length == 0) {
+        if ((!sender.isOp() && !sender.hasPermission("emojis.admin")) || args.length == 0) {
             Iterator<Emoji> iterator = emojiRegistry.values().iterator();
             while (iterator.hasNext()) {
                 TextComponent line = new TextComponent("");
                 for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
                     Emoji emoji = iterator.next();
+
+                    if (!sender.isOp() && !sender.hasPermission(emoji.getPermission())) {
+                        i--;
+                        continue;
+                    }
+
                     String hover = ChatColor.translateAlternateColorCodes(
                             '&',
                             config.getString("messages.list.hover", "Not found")
