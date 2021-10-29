@@ -44,7 +44,7 @@ public class LegacyRichSurroundingChatListener
         BaseComponent[] translated = EmojiReplacer.replaceRawToRich(
                 player,
                 emojiRegistry,
-                message,
+                String.format(event.getFormat(), player.getName(), message),
                 emojiComponentProvider
         );
 
