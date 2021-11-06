@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -119,11 +120,16 @@ public class EmojisPlugin extends JavaPlugin {
         EventBus eventBus = EventBus.create(this);
 
         if (location != null) {
+            String prompt = getConfig().getString("application.prompt");
+            if (prompt != null) {
+                prompt = ChatColor.translateAlternateColorCodes('&', prompt);
+            }
+
             this.resourcePack = new ResourcePack(
                     location.getUrl(),
                     location.getHash(),
-                    false,
-                    null
+                    getConfig().getBoolean("feature.require-pack"),
+                    prompt
             );
             Bukkit.getPluginManager().registerEvents(
                     new ResourcePackApplyListener(this),
@@ -185,11 +191,9 @@ public class EmojisPlugin extends JavaPlugin {
     }
 
     public void updateResourcePackLocation(UrlAndHash location) {
-        this.resourcePack = new ResourcePack(
+        this.resourcePack = resourcePack.withLocation(
                 location.getUrl(),
-                location.getHash(),
-                false,
-                null
+                location.getHash()
         );
 
         // for current players
