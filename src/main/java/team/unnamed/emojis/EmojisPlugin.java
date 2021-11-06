@@ -117,6 +117,7 @@ public class EmojisPlugin extends JavaPlugin {
 
         // export
         this.exportService = new DefaultExportService(this);
+        getLogger().info("Exporting resource-pack...");
         UrlAndHash location = exportService.export(registry);
 
         EventBus eventBus = EventBus.create(this);
