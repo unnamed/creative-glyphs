@@ -1,5 +1,7 @@
 package team.unnamed.emojis;
 
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -123,6 +125,8 @@ public class EmojisPlugin extends JavaPlugin {
             String prompt = getConfig().getString("application.prompt");
             if (prompt != null) {
                 prompt = ChatColor.translateAlternateColorCodes('&', prompt);
+                // TODO: refactor this ugly code
+                prompt = ComponentSerializer.toString(TextComponent.fromLegacyText(prompt));
             }
 
             this.resourcePack = new ResourcePack(
