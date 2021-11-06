@@ -84,8 +84,8 @@ feature:
 
 application:
     # Message shown on a player first join, they are asked to use the
-    # resource pack. This feature is only available if require-pack is
-    # set to true and server version is 1.17 or superior
+    # resource pack. This feature is only available if server version
+    # is 1.17 or superior
     #
     # You can remove this option
     prompt: '&c&lHey! Please accept our resource-pack to enjoy the full experience!'
