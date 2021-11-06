@@ -10,7 +10,8 @@ import team.unnamed.emojis.Emoji;
 public class DefaultEmojiComponentProvider
         implements EmojiComponentProvider {
 
-    private static final String DEFAULT_FORMAT = "<white><emoji> <gray>:<emojiname>: <#ff8df8>/emojis";
+    private static final String DEFAULT_FORMAT = ChatColor.WHITE + "<emoji> " + ChatColor.GRAY + ":<emojiname>: "
+            + ChatColor.LIGHT_PURPLE + "/emojis";
 
     private final ConfigurationSection config;
 
