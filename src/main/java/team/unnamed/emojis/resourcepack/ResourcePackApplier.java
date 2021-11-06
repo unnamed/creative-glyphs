@@ -82,9 +82,6 @@ public final class ResourcePackApplier {
                         resourcePack.getHash()
                 );
             } else {
-                System.out.println("#1");
-                System.out.println(resourcePack.isRequired());
-                System.out.println(resourcePack.getPrompt());
                 String prompt = resourcePack.getPrompt();
                 SET_RESOURCE_PACK_METHOD.invoke(
                         handle,
