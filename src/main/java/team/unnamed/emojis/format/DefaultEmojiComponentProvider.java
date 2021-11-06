@@ -1,6 +1,7 @@
 package team.unnamed.emojis.format;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,10 +28,11 @@ public class DefaultEmojiComponentProvider
                 .replace("<emojiname>", emoji.getName());
 
         BaseComponent[] components = TextComponent.fromLegacyText(format);
-        TextComponent component = new TextComponent("");
-        for (BaseComponent extra : components) {
-            component.addExtra(extra);
-        }
+        TextComponent component = new TextComponent(emoji.getCharacter() + "");
+        component.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                components
+        ));
         return component;
     }
 
