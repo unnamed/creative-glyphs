@@ -1,12 +1,11 @@
 package team.unnamed.emojis.resourcepack;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.io.AssetWriter;
-import team.unnamed.emojis.io.Streams;
-import team.unnamed.emojis.io.TreeOutputStream;
+import team.unnamed.uracle.event.ResourcePackGenerateEvent;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Iterator;
  * plugin.
  * @author yusshu (Andre Roldan)
  */
-public class EmojiAssetWriter implements AssetWriter {
+public class EmojiAssetWriter implements Listener {
 
     private final EmojiRegistry registry;
 
@@ -29,19 +28,15 @@ public class EmojiAssetWriter implements AssetWriter {
      * <strong>Note that this method won't close the
      * given {@code output}</strong>
      */
-    @Override
-    public void write(TreeOutputStream output) throws IOException {
+    @EventHandler
+    public void write(ResourcePackGenerateEvent event) {
 
-        // write the font json file
-        output.useEntry("assets/minecraft/font/default.json");
-        Streams.writeUTF(output, createFontJson());
-        output.closeEntry();
+        // write font file
+        event.write("assets/minecraft/font/default.json", createFontJson());
 
-        // write the emojis images
+        // write emojis images
         for (Emoji emoji : registry.values()) {
-            output.useEntry("assets/minecraft/textures/emojis/" + emoji.getName() + ".png");
-            emoji.getData().write(output);
-            output.closeEntry();
+            event.write("assets/minecraft/textures/emojis/" + emoji.getName() + ".png", emoji.getData());
         }
     }
 

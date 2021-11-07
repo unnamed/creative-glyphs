@@ -4,6 +4,7 @@ import team.unnamed.emojis.Emoji;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,7 +41,7 @@ public class MCEmojiCodec implements EmojiCodec {
         for (short i = 0; i < emojiCount; i++) {
             // name read
             byte nameLength = dataInput.readByte();
-            String name = Streams.readString(dataInput, nameLength);
+            String name = readString(dataInput, nameLength);
 
             int height = dataInput.readShort();
             int ascent = dataInput.readShort();
@@ -48,7 +49,7 @@ public class MCEmojiCodec implements EmojiCodec {
 
             // permission read
             byte permissionLength = dataInput.readByte();
-            String permission = Streams.readString(dataInput, permissionLength);
+            String permission = readString(dataInput, permissionLength);
 
             // image read
             int imageLength = dataInput.readShort() & 0xFFFF;
@@ -65,7 +66,7 @@ public class MCEmojiCodec implements EmojiCodec {
                     name,
                     permission,
                     imageLength,
-                    Writeable.ofBytes(imageBytes),
+                    output -> output.write(imageBytes),
                     height,
                     ascent,
                     character
@@ -114,6 +115,30 @@ public class MCEmojiCodec implements EmojiCodec {
             dataOutput.writeShort(emoji.getDataLength());
             emoji.getData().write(dataOutput);
         }
+    }
+
+    /**
+     * Reads a string from the given {@code input}.
+     * The resulting string must have the given
+     * {@code length}.
+     */
+    private static String readString(
+            InputStream input,
+            int length
+    ) throws IOException {
+        char[] data = new char[length];
+        for (int i = 0; i < length; i++) {
+            int byte1 = input.read();
+            int byte2 = input.read();
+            if ((byte1 | byte2) < 0) {
+                // if byte1 or byte2 is -1
+                // we reached the eof
+                throw new EOFException();
+            } else {
+                data[i] = (char) ((byte1 << 8) + byte2);
+            }
+        }
+        return new String(data);
     }
 
 }

@@ -16,6 +16,7 @@ val modernCompileOnly: Configuration by configurations
 
 repositories {
     mavenCentral()
+    maven("https://repo.unnamed.team/repository/unnamed-public/")
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     mavenLocal()
@@ -30,6 +31,7 @@ dependencies {
     // Required libraries
     compileOnly(spigot)
     compileOnly(annotations)
+    compileOnly("team.unnamed:uracle:1.0.0")
 
     // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
