@@ -29,6 +29,7 @@ public class TownyChatHook
     @Override
     public void hook(Plugin hook) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getLogger().info("Successfully hooked into TownyChat!");
     }
 
     @EventHandler

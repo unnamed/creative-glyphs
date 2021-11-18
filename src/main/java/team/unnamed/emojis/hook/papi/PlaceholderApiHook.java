@@ -24,8 +24,8 @@ public class PlaceholderApiHook implements PluginHook {
 
     @Override
     public void hook(Plugin hook) {
-        new EmojiPlaceholderExpansion(plugin, registry)
-                .register();
+        new EmojiPlaceholderExpansion(plugin, registry).register();
+        plugin.getLogger().info("Successfully registered PlaceholderAPI placeholders");
     }
 
 }

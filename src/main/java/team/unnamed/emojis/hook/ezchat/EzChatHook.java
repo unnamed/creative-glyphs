@@ -33,6 +33,7 @@ public class EzChatHook implements PluginHook.Chat {
                 new EzChatListener(registry, emojiComponentProvider),
                 plugin
         );
+        plugin.getLogger().info("Successfully hooked with EzChat!");
     }
 
 }
