@@ -39,3 +39,6 @@ install unnamed ddownload faac4eec9dc3b410688903f443309fda06ff86d0 "mvn clean in
 # EzChat 2.5.0
 install FixedDev EzChat 48faa1c1464bc039ee378055b3e3947a94836087 "mvn clean install"
 
+# TownyChat 0.90
+install TownyAdvanced TownyChat dea9c433f1332a1634629b54ed41a6c9936dae55 "mvn clean install"
+

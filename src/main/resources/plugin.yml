@@ -4,7 +4,7 @@ api-version: 1.13
 version: @version@
 description: Unnamed Team's Emojis Plugin
 authors: [Yusshu]
-softdepend: [PlaceholderAPI, EzChat]
+softdepend: [PlaceholderAPI, EzChat, TownyChat]
 commands:
     emojis:
         description: Main command for the unEmojis plugin
