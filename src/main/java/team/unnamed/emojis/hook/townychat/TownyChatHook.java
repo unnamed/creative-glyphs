@@ -2,13 +2,11 @@ package team.unnamed.emojis.hook.townychat;
 
 import com.palmergames.bukkit.TownyChat.events.AsyncChatHookEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.hook.PluginHook;
 
