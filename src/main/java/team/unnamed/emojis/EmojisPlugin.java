@@ -18,6 +18,7 @@ import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
+import team.unnamed.emojis.hook.townychat.TownyChatHook;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
@@ -153,6 +154,7 @@ public class EmojisPlugin extends JavaPlugin {
 
         Set<PluginHook> hooks = PluginHookManager.create()
                 .registerHook(new EzChatHook(this, registry, emojiComponentProvider))
+                .registerHook(new TownyChatHook(this, registry))
                 .registerHook(new PlaceholderApiHook(this, registry))
                 .hook();
 
