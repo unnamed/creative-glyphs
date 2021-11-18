@@ -2,6 +2,7 @@ package team.unnamed.emojis.hook.townychat;
 
 import com.palmergames.bukkit.TownyChat.events.AsyncChatHookEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,11 +37,13 @@ public class TownyChatHook
     public void onTownyChat(AsyncChatHookEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        String color = ChatColor.translateAlternateColorCodes(
+                '&',
+                event.getChannel().getMessageColour()
+        );
 
         event.setMessage(EmojiReplacer.replaceRawToRaw(
-                player,
-                registry,
-                event.getChannel().getMessageColour() + message
+                player, registry, color + message
         ));
     }
 
