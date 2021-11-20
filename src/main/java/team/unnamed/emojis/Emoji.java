@@ -65,4 +65,17 @@ public class Emoji {
         return character;
     }
 
+    @Override
+    public String toString() {
+        return "Emoji{" +
+                "name='" + name + '\'' +
+                ", permission='" + permission + '\'' +
+                ", dataLength=" + dataLength +
+                ", data=" + data +
+                ", height=" + height +
+                ", ascent=" + ascent +
+                ", character=" + character +
+                '}';
+    }
+
 }
