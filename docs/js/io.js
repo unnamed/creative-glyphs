@@ -9,7 +9,6 @@ const EmojiIO = (function () {
     async function write(emojis) {
 
         const data = [];
-        let char = 1 << 15;
 
         // format version
         data.push(1);
@@ -26,11 +25,13 @@ const EmojiIO = (function () {
                 data.push(c >> 8, c & 0xFF);
             }
 
+            const character = emoji.character.codePointAt(0);
+
             // height, ascent and character
             data.push(
                     emoji.height >> 8, emoji.height & 0xFF,
                     emoji.ascent >> 8, emoji.ascent & 0xFF,
-                    char >> 8, char & 0xFF
+                    character >> 8, character & 0xFF
             );
 
             // permission write
@@ -48,8 +49,6 @@ const EmojiIO = (function () {
             for (let i = 0; i < len; i++) {
                 data.push(bin.charCodeAt(i));
             }
-
-            char--;
         }
 
         return new Blob(
@@ -95,7 +94,7 @@ const EmojiIO = (function () {
             // height, ascent and character
             const height = readShort();
             const ascent = readShort();
-            const character = readShort();
+            const character = String.fromCodePoint(readShort());
 
             // read permission
             const permissionLength = view[cursor++];

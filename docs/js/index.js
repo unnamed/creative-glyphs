@@ -21,6 +21,7 @@
      * @type {Map<string, Emoji>}
      */
     const emojis = new Map();
+    const emojisByChar = new Map();
 
     for (const anchor of document.getElementsByClassName("anchor")) {
         const id = anchor.dataset["for"];
@@ -30,6 +31,14 @@
                 behavior: "smooth"
             }));
         }
+    }
+
+    function generateCharacter() {
+        let character = (1 << 15) - emojisByChar.size;
+        while (emojisByChar.has(character)) {
+            character--;
+        }
+        return String.fromCodePoint(character);
     }
 
     const EditorUI = (function () {
@@ -70,7 +79,7 @@
 
                     const emoji = {
                         name: file.name.slice(0, -4), // remove .png extension
-                        character: "",
+                        character: generateCharacter(),
                         img: target.result,
                         ascent: 8,
                         height: 9,
@@ -83,6 +92,7 @@
                     }
 
                     emojis.set(emoji.name, emoji);
+                    emojisByChar.set(emoji.character, emoji);
                     EditorUI.add(emoji);
                 });
                 reader.readAsDataURL(file);
@@ -95,6 +105,7 @@
          * @param {Emoji} emoji
          */
         function add(emoji) {
+            const name = emoji.name;
             function input(property, parse, validate, current) {
                 const labelElement = document.createElement("label");
                 labelElement.innerText = property;
@@ -131,6 +142,7 @@
             propertiesElement.classList.add("properties");
 
             const nameElement = input("name", v => v, regex(/^[A-Za-z_]{1,14}$/g), emoji.name);
+            const characterElement = input("character", v => v, regex(/^.$/g), emoji.character);
             const ascentElement = input("ascent", parseInt, regex(/^-?\d*$/g), emoji.ascent);
             const heightElement = input("height", parseInt, regex(/^-?\d*$/g), emoji.height);
             const permissionElement = input("permission", v => v, regex(/^[a-z0-9_.]+$/g), emoji.permission);
@@ -144,7 +156,7 @@
                 emojis.delete(name);
             });
 
-            propertiesElement.append.apply(propertiesElement, [nameElement, ascentElement, heightElement, permissionElement].map(e => e.label));
+            propertiesElement.append.apply(propertiesElement, [nameElement, ascentElement, heightElement, permissionElement, characterElement].map(e => e.label));
             propertiesElement.appendChild(deleteElement);
             div.append(imgElement, propertiesElement);
 
@@ -168,8 +180,12 @@
                         while (emojis.has(emoji.name)) {
                             emoji.name = emoji.name + Math.floor(Math.random() * 1E5).toString(36);
                         }
+                        if (emojisByChar.has(emoji.character)) {
+                            emoji.character = generateCharacter();
+                        }
 
                         emojis.set(emoji.name, emoji);
+                        emojisByChar.set(emoji.character, emoji);
                         EditorUI.add(emoji);
                     }));
                 };
