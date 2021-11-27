@@ -65,9 +65,6 @@ messages:
         &d/emojis reload &8- &7Reload emojis from the emojis.mcemoji file
     list:
         hover: '&f<emoji> &8:<emojiname>:'
-    kick: "&2&lPlease accept the resource pack"
-    warn: "&2&lThis server supports emojis, turn on the resourcepack to see them!"
-    fail: "&cResource pack download failed, try to reconnect."
 
 
 feature:
