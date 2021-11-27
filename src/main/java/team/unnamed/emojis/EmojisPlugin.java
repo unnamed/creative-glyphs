@@ -17,6 +17,7 @@ import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.io.EmojiCodec;
 import team.unnamed.emojis.io.MCEmojiCodec;
+import team.unnamed.emojis.resourcepack.EmojiAssetWriter;
 import team.unnamed.uracle.io.Streams;
 
 import java.io.File;
@@ -102,6 +103,9 @@ public class EmojisPlugin extends JavaPlugin {
         }
 
         this.loadEmojis();
+
+        // add resource-pack generation listener
+        getServer().getPluginManager().registerEvents(new EmojiAssetWriter(registry), this);
 
         EventBus eventBus = EventBus.create(this);
 
