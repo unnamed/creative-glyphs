@@ -25,13 +25,14 @@ repositories {
 dependencies {
     val spigot = "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT";
     val annotations = "org.jetbrains:annotations:21.0.0";
+    val uracle = "team.unnamed:uracle:1.0.0"
 
     modernCompileOnly("io.papermc.paper:paper:1.17-R0.1-SNAPSHOT")
 
     // Required libraries
     compileOnly(spigot)
     compileOnly(annotations)
-    compileOnly("team.unnamed:uracle:1.0.0")
+    compileOnly(uracle)
 
     // You must run the deps.sh script to have this dependency
     compileOnly("me.fixeddev:EzChat:2.5.0")
@@ -43,6 +44,7 @@ dependencies {
     // Testing
     testImplementation(spigot)
     testImplementation(annotations)
+    testImplementation(uracle)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
