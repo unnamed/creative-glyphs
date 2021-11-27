@@ -4,6 +4,7 @@ api-version: 1.13
 version: @version@
 description: Unnamed Team's Emojis Plugin
 authors: [Yusshu]
+depend: [Uracle]
 softdepend: [PlaceholderAPI, EzChat, TownyChat]
 commands:
     emojis:
