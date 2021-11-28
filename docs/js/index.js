@@ -65,7 +65,7 @@
             const files = event.dataTransfer.files;
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                if (!file.name.endsWith(".png")) {
+                if (!file.name.toLowerCase().endsWith(".png")) {
                     Dialog.add(
                             'Error loading emoji',
                             `Cannot load ${file.name}. Invalid extension`
