@@ -142,7 +142,15 @@
             propertiesElement.classList.add("properties");
 
             const nameElement = input("name", v => v, regex(/^[A-Za-z_]{1,14}$/g), emoji.name);
-            const characterElement = input("character", v => v, regex(/^.$/g), emoji.character);
+            const characterElement = input("character", v => v, value => {
+                const valid = value.match(/^.$/g);
+                if (valid) {
+                    // update
+                    emojisByChar.delete(emoji.character);
+                    emojisByChar.set(emoji.character, emoji);
+                }
+                return valid;
+            }, emoji.character);
             const ascentElement = input("ascent", parseInt, regex(/^-?\d*$/g), emoji.ascent);
             const heightElement = input("height", parseInt, regex(/^-?\d*$/g), emoji.height);
             const permissionElement = input("permission", v => v, regex(/^[a-z0-9_.]+$/g), emoji.permission);
