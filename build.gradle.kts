@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     val spigot = "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT";
-    val annotations = "org.jetbrains:annotations:21.0.0";
+    val annotations = "org.jetbrains:annotations:22.0.0";
     val uracle = "team.unnamed:uracle:1.0.0"
 
     modernCompileOnly("io.papermc.paper:paper:1.17-R0.1-SNAPSHOT")
@@ -45,8 +45,8 @@ dependencies {
     testImplementation(spigot)
     testImplementation(annotations)
     testImplementation(uracle)
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 tasks {
