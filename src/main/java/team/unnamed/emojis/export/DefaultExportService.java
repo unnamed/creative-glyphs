@@ -70,7 +70,6 @@ public class DefaultExportService
     }
 
     private static int getPackFormatVersion() {
-        // 1 for 1.6.1–1.8.9, 2 for 1.9–1.10.2, 3 for 1.11–1.12.2, 4 for 1.13–1.14.4, 5 for 1.15–1.16.1, 6 for 1.16.2–1.16.5, and 7 for 1.17.
         Version version = Version.CURRENT;
         byte major = version.getMajor();
 
@@ -85,12 +84,12 @@ public class DefaultExportService
         if (minor < 11) return 2;
         if (minor < 13) return 3;
         if (minor < 15) return 4;
-        if (minor < 16) return 5;
-        if (minor < 17) return 6;
-        if (minor < 18) return 7;
-        failUnsupportedVersion();
 
-        return 0;
+        // Minecraft 1.15, 1.16, 1.17 and 1.18 use
+        // their minor number - 10 as resource-pack
+        // format version, this may change, so we
+        // may have to change this later
+        return minor - 10;
     }
 
 }
