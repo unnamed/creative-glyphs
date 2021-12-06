@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
-import team.unnamed.uracle.io.Writeable;
+
+import team.unnamed.emojis.io.Writeable;
 
 /**
  * Represents an emoji, has a name, size and

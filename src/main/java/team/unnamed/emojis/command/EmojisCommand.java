@@ -14,6 +14,8 @@ import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.download.EmojiImporter;
+import team.unnamed.emojis.export.ExportService;
+import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,12 +33,14 @@ public class EmojisCommand implements CommandExecutor {
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final EmojiImporter importer;
     private final EmojiRegistry emojiRegistry;
+    private final ExportService exportService;
     private final ConfigurationSection config;
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
         this.importer = plugin.getImporter();
         this.emojiRegistry = plugin.getRegistry();
+        this.exportService = plugin.getExportService();
         this.config = plugin.getConfig();
         this.plugin = plugin;
     }
@@ -48,8 +52,12 @@ public class EmojisCommand implements CommandExecutor {
 
             emojiRegistry.update(emojis);
             plugin.saveEmojis();
+            UrlAndHash resource = exportService.export(emojiRegistry);
 
-            // todo: force uracle re-export and application
+            // update
+            if (resource != null) {
+                plugin.updateResourcePackLocation(resource);
+            }
         } catch (IOException e) {
             sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
                     " contact an administrator to read the console.");
