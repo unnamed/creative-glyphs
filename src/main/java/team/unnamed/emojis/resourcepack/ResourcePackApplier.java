@@ -38,10 +38,10 @@ public final class ResourcePackApplier {
             } else {
 
                 // we use getHandle() and then setResourcePack(String, String, boolean, IChatBaseComponent)
-                // for 1.17+, compatible with both Spigot and Paper
+                // for 1.17 or "a" method for and 1.18, compatible with both Spigot and Paper
                 SET_RESOURCE_PACK_METHOD = Class.forName("net.minecraft.server.level.EntityPlayer")
                         .getDeclaredMethod(
-                                "setResourcePack",
+                                Version.CURRENT.getMinor() == 17 ? "setResourcePack" : "a",
                                 String.class,
                                 String.class,
                                 boolean.class,
