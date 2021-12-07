@@ -3,7 +3,7 @@ name: unemojis
 api-version: 1.13
 version: @version@
 description: Unnamed Team's Emojis Plugin
-authors: [Yusshu]
+author: UnnamedTeam
 softdepend: [PlaceholderAPI, EzChat, TownyChat]
 commands:
     emojis:
