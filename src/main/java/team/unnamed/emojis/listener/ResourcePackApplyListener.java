@@ -19,18 +19,18 @@ import java.util.UUID;
 public class ResourcePackApplyListener implements Listener {
 
     private final Map<UUID, Integer> retries = new HashMap<>();
-    private final ResourcePack resourcePack;
+    private final EmojisPlugin plugin;
     private final FileConfiguration config;
 
     public ResourcePackApplyListener(EmojisPlugin plugin) {
-        this.resourcePack = plugin.getResourcePack();
+        this.plugin = plugin;
         this.config = plugin.getConfig();
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ResourcePackApplier.setResourcePack(player, resourcePack);
+        ResourcePackApplier.setResourcePack(player, plugin.getResourcePack());
     }
 
     @EventHandler

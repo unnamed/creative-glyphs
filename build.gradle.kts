@@ -36,7 +36,7 @@ dependencies {
 
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
-    compileOnly("com.palmergames.bukkit:TownyChat:0.90") // deps.sh
+    compileOnly("com.palmergames.bukkit:TownyChat:0.91") // deps.sh
 
     // Testing
     testImplementation(spigot)
