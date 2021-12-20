@@ -15,6 +15,7 @@ import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.download.EmojiImporter;
 import team.unnamed.emojis.export.ExportService;
+import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class EmojisCommand implements CommandExecutor {
                 for (int i = 0; i < EMOJIS_PER_LINE && iterator.hasNext(); i++) {
                     Emoji emoji = iterator.next();
 
-                    if (!sender.isOp() && !sender.hasPermission(emoji.getPermission())) {
+                    if (!Permissions.canUse(player, emoji)) {
                         i--;
                         continue;
                     }
