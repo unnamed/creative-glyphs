@@ -57,6 +57,15 @@ public class EmojiReplacer {
         textLoop:
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
+
+            Emoji literal = registry.getByChar(c);
+            if (Permissions.canUse(permissible, literal)) {
+                // player entered a literal emoji character,
+                // and they do not have permissions to use
+                // it, simply skip this character
+                continue;
+            }
+
             if (c == ChatColor.COLOR_CHAR) {
                 if (i + 1 < text.length()) {
                     char code = text.charAt(++i);
