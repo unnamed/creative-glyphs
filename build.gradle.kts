@@ -18,6 +18,7 @@ repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://nexus.scarsz.me/content/repositories/releases/") // DiscordSRV
     mavenLocal()
 }
 
@@ -37,6 +38,7 @@ dependencies {
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
     compileOnly("com.palmergames.bukkit:TownyChat:0.91") // deps.sh
+    compileOnly("com.discordsrv:discordsrv:1.24.0")
 
     // Testing
     testImplementation(spigot)
