@@ -237,42 +237,80 @@ public class EmojiReplacer {
             String message,
             EmojiComponentProvider emojiComponentProvider
     ) {
-        List<TextComponent> components = new ArrayList<>();
-        Matcher matcher = EMOJI_PATTERN.matcher(message);
-        int lastEnd = 0;
 
+        List<TextComponent> components = new ArrayList<>();
+        StringBuilder pre = new StringBuilder();
+        StringBuilder name = new StringBuilder();
         TextComponent last = new TextComponent();
 
-        while (matcher.find()) {
-            int start = matcher.start(1);
-            int end = matcher.end(1);
+        textLoop:
+        for (int i = 0; i < message.length(); i++) {
+            char c = message.charAt(i);
+            Emoji literal = registry.getByChar(c);
 
-            if (start - lastEnd > 0) {
-                // so there's text within this emoji and the previous emoji (or text start)
-                String previous = message.substring(lastEnd, start - 1);
-                fromLegacyText(previous, components, new TextComponent(last));
-                last = components.get(components.size() - 1);
+            if (Permissions.canUse(permissible, literal)) {
+                // player entered a literal emoji character,
+                // and they do not have permissions to use
+                // it, simply skip this character
+                continue;
             }
 
-            String emojiName = message.substring(start, end);
-            Emoji emoji = registry.get(emojiName);
+            if (c == ':') {
+                // found the start of an emoji, try to
+                // replace it
+                while (++i < message.length()) {
+                    char current = message.charAt(i);
 
-            if (!Permissions.canUse(permissible, emoji)) {
-                // if invalid emoji, lastEnd is the current start - 1, so it
-                // consumes the emoji and its starting colon for the next
-                // "previous" text
-                lastEnd = start - 1;
-            } else {
-                components.add(emojiComponentProvider.toComponent(emoji));
-                // if valid emoji, lastEnd is the emoji end + 1, so it doesn't
-                // consume the emoji nor its closing colon
-                lastEnd = end + 1;
+                    if (current != ':') {
+                        // not the end of the emoji,
+                        // append this character to
+                        // the emoji name
+                        name.append(current);
+                    } else {
+                        // end of the emoji found
+                        if (name.length() < 1) {
+                            pre.append(':');
+                            continue;
+                        }
+
+                        String nameStr = name.toString();
+                        Emoji emoji = registry.get(nameStr);
+
+                        if (!Permissions.canUse(permissible, emoji)) {
+                            pre.append(':').append(nameStr);
+
+                            // continue searching for emojis, starting
+                            // from the end of this invalid emoji
+                            name.setLength(0);
+                            continue;
+                        }
+
+                        // so there's text within this emoji and the previous emoji (or text start)
+                        String previous = pre.toString();
+                        fromLegacyText(previous, components, new TextComponent(last));
+                        pre.setLength(0);
+                        last = components.get(components.size() - 1);
+
+                        components.add(emojiComponentProvider.toComponent(emoji));
+                        name.setLength(0);
+                        continue textLoop;
+                    }
+                }
+                pre.append(':').append(name);
+                continue;
             }
+
+            // append normal character to the builder
+            pre.append(c);
         }
 
         // append remaining text
-        if (message.length() - lastEnd > 0) {
-            fromLegacyText(message.substring(lastEnd), components, new TextComponent(last));
+        if (pre.length() > 0) {
+            fromLegacyText(
+                    pre.toString(),
+                    components,
+                    new TextComponent(last)
+            );
         }
 
         return components.toArray(EMPTY_COMPONENT_ARRAY);
