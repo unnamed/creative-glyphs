@@ -5,6 +5,7 @@ import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.GameChatMessagePreProcessEvent;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.Component;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.TextReplacementConfig;
+import github.scarsz.discordsrv.dependencies.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
@@ -37,32 +38,33 @@ public class DiscordSRVHook
 
         @Subscribe
         public void onMessagePreProcess(GameChatMessagePreProcessEvent event) {
-            Component component = event.getMessageComponent()
-                    .replaceText(TextReplacementConfig.builder()
-                            .match(ANY)
-                            .replacement((result, builder) -> {
-                                StringBuilder replaced = new StringBuilder();
-                                String content = builder.content();
+            Component input = event.getMessageComponent();
+            Component output = input.replaceText(TextReplacementConfig.builder()
+                    .match(ANY)
+                    .replacement((result, builder) -> {
+                        StringBuilder replaced = new StringBuilder();
+                        String content = builder.content();
 
-                                for (int i = 0; i < content.length(); i++) {
-                                    char c = content.charAt(i);
-                                    Emoji emoji = registry.getByChar(c);
+                        for (int i = 0; i < content.length(); i++) {
+                            char c = content.charAt(i);
+                            Emoji emoji = registry.getByChar(c);
 
-                                    if (emoji == null) {
-                                        // let it be
-                                        replaced.append(c);
-                                    } else {
-                                        // emoji found, replace by its name
-                                        replaced.append(':')
-                                                .append(emoji.getName())
-                                                .append(':');
-                                    }
-                                }
+                            if (emoji == null) {
+                                // let it be
+                                replaced.append(c);
+                            } else {
+                                // emoji found, replace by its name
+                                replaced.append(':')
+                                        .append(emoji.getName())
+                                        .append(':');
+                            }
+                        }
 
-                                return builder.content(replaced.toString());
-                            })
-                            .build());
-            event.setMessageComponent(component);
+                        return builder.content(replaced.toString());
+                    })
+                    .build());
+
+            event.setMessageComponent(output);
         }
 
     }
