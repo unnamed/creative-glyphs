@@ -20,6 +20,9 @@ import java.util.regex.Pattern;
  */
 public class EmojiReplacer {
 
+    private static final char EMOJI_START = ':';
+    private static final char EMOJI_END = ':';
+
     /**
      * Pattern for matching URLs
      */
@@ -88,43 +91,46 @@ public class EmojiReplacer {
                 } else {
                     builder.append(c);
                 }
-            } else if (c == ':') {
-                while (++i < text.length()) {
-                    char current = text.charAt(i);
-                    if (current == ':') {
-                        if (name.length() < 1) {
-                            builder.append(':');
-                            continue;
-                        }
-                        String nameStr = name.toString();
-                        Emoji emoji = registry.get(nameStr);
-                        if (!Permissions.canUse(permissible, emoji)) {
-                            builder
-                                    .append(':')
-                                    .append(nameStr);
-                            name.setLength(0);
-                            continue;
-                        } else {
-                            boolean previousColors = lastColors.length() > 0;
-                            if (previousColors) {
-                                builder.append(WHITE_PREFIX);
-                            }
-                            builder.append(emoji.getCharacter());
-
-                            if (previousColors) {
-                                builder.append(lastColors);
-                            }
-                        }
-                        name.setLength(0);
-                        continue textLoop;
-                    } else {
-                        name.append(current);
-                    }
-                }
-                builder.append(':').append(name);
-            } else {
-                builder.append(c);
+                continue;
             }
+
+            if (c != EMOJI_START) {
+                builder.append(c);
+                continue;
+            }
+
+            while (++i < text.length()) {
+                char current = text.charAt(i);
+                if (current == EMOJI_END) {
+                    if (name.length() < 1) {
+                        builder.append(EMOJI_START);
+                        continue;
+                    }
+                    String nameStr = name.toString();
+                    Emoji emoji = registry.get(nameStr);
+
+                    if (!Permissions.canUse(permissible, emoji)) {
+                        builder.append(EMOJI_START).append(nameStr);
+                        name.setLength(0);
+                        continue;
+                    } else {
+                        boolean previousColors = lastColors.length() > 0;
+                        if (previousColors) {
+                            builder.append(WHITE_PREFIX);
+                        }
+                        builder.append(emoji.getCharacter());
+                        if (previousColors) {
+                            builder.append(lastColors);
+                        }
+                    }
+                    name.setLength(0);
+                    continue textLoop;
+                } else {
+                    name.append(current);
+                }
+            }
+
+            builder.append(EMOJI_START).append(name);
         }
         return builder.toString();
     }
@@ -255,13 +261,13 @@ public class EmojiReplacer {
                 continue;
             }
 
-            if (c == ':') {
+            if (c == EMOJI_START) {
                 // found the start of an emoji, try to
                 // replace it
                 while (++i < message.length()) {
                     char current = message.charAt(i);
 
-                    if (current != ':') {
+                    if (current != EMOJI_END) {
                         // not the end of the emoji,
                         // append this character to
                         // the emoji name
@@ -269,7 +275,7 @@ public class EmojiReplacer {
                     } else {
                         // end of the emoji found
                         if (name.length() < 1) {
-                            pre.append(':');
+                            pre.append(EMOJI_START);
                             continue;
                         }
 
@@ -277,7 +283,7 @@ public class EmojiReplacer {
                         Emoji emoji = registry.get(nameStr);
 
                         if (!Permissions.canUse(permissible, emoji)) {
-                            pre.append(':').append(nameStr);
+                            pre.append(EMOJI_START).append(nameStr);
 
                             // continue searching for emojis, starting
                             // from the end of this invalid emoji
@@ -296,7 +302,7 @@ public class EmojiReplacer {
                         continue textLoop;
                     }
                 }
-                pre.append(':').append(name);
+                pre.append(EMOJI_END).append(name);
                 continue;
             }
 
