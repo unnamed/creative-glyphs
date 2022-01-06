@@ -16,6 +16,7 @@ import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.format.DefaultEmojiComponentProvider;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
+import team.unnamed.emojis.hook.discordsrv.DiscordSRVHook;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.hook.townychat.TownyChatHook;
@@ -156,6 +157,7 @@ public class EmojisPlugin extends JavaPlugin {
                 .registerHook(new EzChatHook(this, registry, emojiComponentProvider))
                 .registerHook(new TownyChatHook(this, registry))
                 .registerHook(new PlaceholderApiHook(this, registry))
+                .registerHook(new DiscordSRVHook(registry))
                 .hook();
 
         if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {
