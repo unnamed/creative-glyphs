@@ -62,7 +62,7 @@ public class EmojiReplacer {
             char c = text.charAt(i);
 
             Emoji literal = registry.getByChar(c);
-            if (Permissions.canUse(permissible, literal)) {
+            if (!Permissions.canUse(permissible, literal)) {
                 // player entered a literal emoji character,
                 // and they do not have permissions to use
                 // it, simply skip this character
@@ -254,7 +254,7 @@ public class EmojiReplacer {
             char c = message.charAt(i);
             Emoji literal = registry.getByChar(c);
 
-            if (Permissions.canUse(permissible, literal)) {
+            if (!Permissions.canUse(permissible, literal)) {
                 // player entered a literal emoji character,
                 // and they do not have permissions to use
                 // it, simply skip this character
