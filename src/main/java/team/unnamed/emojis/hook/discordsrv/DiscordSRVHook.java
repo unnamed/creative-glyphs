@@ -30,37 +30,41 @@ public class DiscordSRVHook
 
     @Override
     public void hook(Plugin hook) {
-        DiscordSRV.api.subscribe(this);
+        DiscordSRV.api.subscribe(new DiscordSRVListener());
     }
 
-    @Subscribe
-    public void onMessagePreProcess(GameChatMessagePreProcessEvent event) {
-        Component component = event.getMessageComponent()
-                .replaceText(TextReplacementConfig.builder()
-                        .match(ANY)
-                        .replacement((result, builder) -> {
-                            StringBuilder replaced = new StringBuilder();
-                            String content = builder.content();
+    private class DiscordSRVListener {
 
-                            for (int i = 0; i < content.length(); i++) {
-                                char c = content.charAt(i);
-                                Emoji emoji = registry.getByChar(c);
+        @Subscribe
+        public void onMessagePreProcess(GameChatMessagePreProcessEvent event) {
+            Component component = event.getMessageComponent()
+                    .replaceText(TextReplacementConfig.builder()
+                            .match(ANY)
+                            .replacement((result, builder) -> {
+                                StringBuilder replaced = new StringBuilder();
+                                String content = builder.content();
 
-                                if (emoji == null) {
-                                    // let it be
-                                    replaced.append(c);
-                                } else {
-                                    // emoji found, replace by its name
-                                    replaced.append(':')
-                                            .append(emoji.getName())
-                                            .append(':');
+                                for (int i = 0; i < content.length(); i++) {
+                                    char c = content.charAt(i);
+                                    Emoji emoji = registry.getByChar(c);
+
+                                    if (emoji == null) {
+                                        // let it be
+                                        replaced.append(c);
+                                    } else {
+                                        // emoji found, replace by its name
+                                        replaced.append(':')
+                                                .append(emoji.getName())
+                                                .append(':');
+                                    }
                                 }
-                            }
 
-                            return builder.content(replaced.toString());
-                        })
-                        .build());
-        event.setMessageComponent(component);
+                                return builder.content(replaced.toString());
+                            })
+                            .build());
+            event.setMessageComponent(component);
+        }
+
     }
 
 }
