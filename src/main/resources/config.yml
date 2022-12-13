@@ -34,7 +34,7 @@ format:
 
     # Configuration for when running on a Paper server
     paper:
-        emoji: '<white><emoji> <gray>:<emojiname>: <#ff8df8>/emojis'
+        emoji: '&f<emoji> &7:<emojiname>: &d/emojis'
 
     # Configuration for when not running on a Paper server
     legacy:
