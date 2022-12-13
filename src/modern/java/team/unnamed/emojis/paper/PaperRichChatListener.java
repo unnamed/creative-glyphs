@@ -2,15 +2,16 @@ package team.unnamed.emojis.paper;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
+import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
+import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implementation for listening to Paper's AsyncChatEvent,
@@ -19,6 +20,7 @@ import java.util.List;
  *
  * Thank you PaperMC <3
  */
+@SuppressWarnings("unused") // instantiated via reflection
 public class PaperRichChatListener
         implements EventListener<AsyncChatEvent> {
 
@@ -41,34 +43,23 @@ public class PaperRichChatListener
     @Override
     public void execute(AsyncChatEvent event) {
         Player player = event.getPlayer();
-        Component message = event.message();
-        event.message(replaceEmojisRecursively(player, message));
+        event.message(event.message().replaceText(replacementConfig -> replacementConfig
+                .match(EmojiReplacer.EMOJI_PATTERN)
+                .replacement((result, builder) -> {
+                    String emojiName = result.group(1);
+                    Emoji emoji = emojiRegistry.get(emojiName);
+
+                    if (!Permissions.canUse(player, emoji)) {
+                        // can't use this emoji, return the same component
+                        return builder;
+                    }
+
+                    return toAdventureComponent(emojiComponentProvider.toComponent(emoji));
+                })));
     }
 
-    private Component replaceEmojisRecursively(Permissible permissible, Component component) {
-
-        Component newComponent = component;
-
-        if (component instanceof TextComponent) {
-            newComponent = AdventureEmojiReplacer.replaceRichToRich(
-                    permissible,
-                    (TextComponent) component,
-                    emojiRegistry,
-                    emojiComponentProvider
-            );
-        }
-
-        List<Component> children = new ArrayList<>(component.children());
-
-        for (int i = 0; i < children.size(); i++) {
-            Component child = children.get(i);
-            Component newChild = replaceEmojisRecursively(permissible, child);
-            children.set(i, newChild);
-        }
-
-        children.addAll(0, newComponent.children());
-
-        return newComponent.children(children);
+    private static Component toAdventureComponent(BaseComponent component) {
+        return GsonComponentSerializer.gson().deserialize(ComponentSerializer.toString(component));
     }
 
 }
