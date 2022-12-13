@@ -18,8 +18,8 @@ repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://nexus.scarsz.me/content/repositories/releases/") // DiscordSRV
-    maven("https://jitpack.io/") // JDA
+    maven("https://nexus.scarsz.me/content/groups/public/") // DiscordSRV
+    maven("https://m2.dv8tion.net/releases") // JDA - Required by DiscordSRV
     maven("https://oss.sonatype.org/content/repositories/snapshots/") // adventure-platform
     mavenLocal()
 }
@@ -40,14 +40,7 @@ dependencies {
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
     compileOnly("com.palmergames.bukkit:TownyChat:0.91") // deps.sh
-    compileOnly("com.discordsrv:discordsrv:1.24.0") {
-      exclude(group = "net.dv8tion", module = "JDA")
-      exclude(group = "net.kyori", module = "adventure-platform-bukkit")
-      exclude(group = "net.kyori", module = "adventure-text-minimessage")
-    }
-    compileOnly("com.github.DV8FromTheWorld:JDA:v4.4.0")
-    compileOnly("net.kyori:adventure-platform-bukkit:4.0.2-SNAPSHOT")
-    compileOnly("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
+    compileOnly("com.discordsrv:discordsrv:1.26.0")
 
     // Testing
     testImplementation(spigot)
