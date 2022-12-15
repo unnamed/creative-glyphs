@@ -12,9 +12,6 @@ pack:
     #     -> Similar to file:filename but if the file exists,
     #        it will merge the contents instead of overwriting
     #        them (ZIP)
-    # -> upload:authorization:url
-    #     -> Uploads the resource pack to the given URL (ZIP)
-    #     -> Use 'none' as authorization if no authorization
     # -> into:folderName
     #     -> Writes the resource pack as files into the given
     #        folder name, if it doesn't start with '/', it will

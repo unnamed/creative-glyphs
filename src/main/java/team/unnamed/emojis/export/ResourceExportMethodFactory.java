@@ -1,6 +1,5 @@
 package team.unnamed.emojis.export;
 
-import team.unnamed.emojis.export.impl.ArtemisHttpExporter;
 import team.unnamed.emojis.export.impl.FileExporter;
 import team.unnamed.emojis.export.impl.MCPacksHttpExporter;
 import team.unnamed.emojis.io.TreeOutputStream;
@@ -36,23 +35,6 @@ public final class ResourceExportMethodFactory {
                 String filename = String.join(":", Arrays.copyOfRange(args, 1, args.length));
                 return new FileExporter(new File(folder, filename))
                         .setMergeZip(method.equals("mergezipfile"));
-            }
-            case "upload": {
-                if (args.length < 3) {
-                    throw new IllegalArgumentException(
-                            "Invalid format for upload export: '" + format
-                                    + "'. Use: 'upload:authorization:url'"
-                    );
-                }
-                String authorization = args[1];
-                String url = String.join(":", Arrays.copyOfRange(args, 2, args.length));
-
-                if (authorization.equalsIgnoreCase("none")) {
-                    authorization = null;
-                }
-
-                return new ArtemisHttpExporter(url)
-                        .setAuthorization(authorization);
             }
             case "mcpacks": {
                 return new MCPacksHttpExporter();
