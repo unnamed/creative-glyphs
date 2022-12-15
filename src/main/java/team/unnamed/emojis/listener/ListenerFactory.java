@@ -62,7 +62,7 @@ public final class ListenerFactory {
         } else {
             LOGGER.info("Using Bukkit flat chat listener");
             // use the ugly legacy flat chat listener
-            return new LegacyChatListener(registry);
+            return new LegacyChatListener(plugin, registry);
         }
     }
 

@@ -4,9 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -20,10 +18,11 @@ import team.unnamed.emojis.listener.EventListener;
 public class LegacyChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 
-    private final Plugin plugin = JavaPlugin.getPlugin(EmojisPlugin.class); // todo: ugly
+    private final Plugin plugin;
     private final EmojiRegistry emojiRegistry;
 
-    public LegacyChatListener(EmojiRegistry emojiRegistry) {
+    public LegacyChatListener(Plugin plugin, EmojiRegistry emojiRegistry) {
+        this.plugin = plugin;
         this.emojiRegistry = emojiRegistry;
     }
 
