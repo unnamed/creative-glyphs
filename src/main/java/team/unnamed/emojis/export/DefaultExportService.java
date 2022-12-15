@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.resourcepack.PackMeta;
 import team.unnamed.emojis.resourcepack.PackMetaWriter;
 import team.unnamed.emojis.io.AssetWriter;
@@ -14,9 +15,12 @@ import team.unnamed.emojis.util.Texts;
 import team.unnamed.emojis.util.Version;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
 
 /**
  * Default implementation of {@link ExportService},
@@ -40,7 +44,20 @@ public class DefaultExportService
 
         if (config.getBoolean("pack.meta.write")) {
             String description = config.getString("pack.meta.description", "Hephaestus generated");
-            File file = new File(plugin.getDataFolder(), config.getString("pack.meta.icon"));
+            File file = new File(plugin.getDataFolder(), "icon.png");
+
+            if (!file.exists()) {
+                plugin.getLogger().warning("Resource-pack icon not found " +
+                        "(must be at unemojis/icon.png), using a default one");
+                try (OutputStream output = new FileOutputStream(file)) {
+                    Streams.pipe(
+                            plugin.getResource("icon.png"),
+                            output
+                    );
+                } catch (IOException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Failed to create a default resource-pack icon", e);
+                }
+            }
 
             writers.add(new PackMetaWriter(new PackMeta(
                     getPackFormatVersion(),

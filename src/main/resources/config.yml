@@ -1,8 +1,6 @@
 pack:
     meta:
         write: true
-        # The resource-pack icon (in the plugin folder)
-        icon: 'icon.png'
         # The resource-pack description
         description: 'Custom server pack'
     # How to generate the resource pack
