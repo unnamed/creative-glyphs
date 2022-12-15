@@ -32,9 +32,18 @@ pack:
 
 format:
 
-    # Configuration for when running on a Paper server
-    paper:
-        emoji: '&f<emoji> &7:<emojiname>: &d/emojis'
+    # The text displayed when the player hovers an emoji
+    # in a player message. Available placeholders:
+    # - <emoji>: The Emoji character itself
+    # - <emojiname>: The Emoji name
+    hover:
+        # Format to use when MiniMessage is supported by the server (Paper 1.18+)
+        # If not specified, it uses the legacy ampersand formatting
+        # mini-message: '<emoji> <gray>:<emojiname>: <#ff8df8>/emojis'
+
+        # Format to use by default (Spigot, Paper 1.17 and olders)
+        # Uses the legacy ampersand formatting
+        legacy: '&f<emoji> &7:<emojiname>: &d/emojis'
 
     # Configuration for when not running on a Paper server
     legacy:

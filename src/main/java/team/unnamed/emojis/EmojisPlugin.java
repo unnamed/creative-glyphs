@@ -163,6 +163,7 @@ public class EmojisPlugin extends JavaPlugin {
         if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {
             // if no chat plugin hooks, let's register our own listener
             eventBus.register(ListenerFactory.create(
+                    this,
                     registry,
                     new DefaultEmojiComponentProvider(getConfig()),
                     cancellationStrategy,

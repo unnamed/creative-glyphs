@@ -1,6 +1,7 @@
 package team.unnamed.emojis.listener;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.EmojiComponentProvider;
@@ -22,6 +23,7 @@ public final class ListenerFactory {
     }
 
     public static EventListener<?> create(
+            Plugin plugin,
             EmojiRegistry registry,
             EmojiComponentProvider componentProvider,
             EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy,
@@ -40,8 +42,8 @@ public final class ListenerFactory {
                 // (instantiated via reflection because it's not available in
                 // compile-time classpath)
                 return (EventListener<?>) Class.forName("team.unnamed.emojis.paper.PaperRichChatListener")
-                        .getDeclaredConstructor(EmojiRegistry.class, EmojiComponentProvider.class)
-                        .newInstance(registry, componentProvider);
+                        .getDeclaredConstructor(Plugin.class, EmojiRegistry.class)
+                        .newInstance(plugin, registry);
             } catch (ReflectiveOperationException ignored) {
                 LOGGER.info("Failed to instantiate Paper chat listener");
             }

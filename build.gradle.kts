@@ -16,6 +16,7 @@ val modernCompileOnly: Configuration by configurations
 
 repositories {
     mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://nexus.scarsz.me/content/groups/public/") // DiscordSRV
@@ -29,6 +30,7 @@ dependencies {
     val annotations = "org.jetbrains:annotations:22.0.0";
 
     modernCompileOnly("io.papermc.paper:paper:1.17-R0.1-SNAPSHOT")
+    modernCompileOnly("net.kyori:adventure-text-minimessage:4.12.0")
 
     // Required libraries
     compileOnly(spigot)
