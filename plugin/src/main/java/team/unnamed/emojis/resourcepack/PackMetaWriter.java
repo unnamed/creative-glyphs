@@ -1,5 +1,6 @@
 package team.unnamed.emojis.resourcepack;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.file.FileTree;
@@ -26,7 +27,10 @@ public class PackMetaWriter implements FileTreeWriter {
     @Override
     public void write(FileTree tree) {
 
-        String description = plugin.getConfig().getString("pack.meta.description", "Hephaestus generated");
+        String description = ChatColor.translateAlternateColorCodes(
+                '&',
+                plugin.getConfig().getString("pack.meta.description", "Emojis generated")
+        );
         File file = new File(plugin.getDataFolder(), "icon.png");
 
         if (!file.exists()) {
