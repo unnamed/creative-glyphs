@@ -1,5 +1,6 @@
 package team.unnamed.emojis.resourcepack;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.creative.base.Writable;
@@ -79,6 +80,7 @@ public class PackMetaWriter implements FileTreeWriter {
         // their minor number - 10 as resource-pack
         // format version, this may change, so we
         // may have to change this later
+        if (Bukkit.getBukkitVersion().startsWith("1.19.3")) return 12; // 1.19.3 uses 12
         return minor - 10;
     }
 
