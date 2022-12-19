@@ -36,31 +36,31 @@ public class Emoji {
         this.character = character;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public String getPermission() {
+    public String permission() {
         return permission;
     }
 
-    public int getDataLength() {
+    public int dataLength() {
         return dataLength;
     }
 
-    public Writable getData() {
+    public Writable data() {
         return data;
     }
 
-    public int getHeight() {
+    public int height() {
         return height;
     }
 
-    public int getAscent() {
+    public int ascent() {
         return ascent;
     }
 
-    public char getCharacter() {
+    public char character() {
         return character;
     }
 

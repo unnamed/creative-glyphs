@@ -18,11 +18,11 @@ public class ResourcePack extends UrlAndHash {
         this.prompt = prompt;
     }
 
-    public boolean isRequired() {
+    public boolean required() {
         return required;
     }
 
-    public @Nullable String getPrompt() {
+    public @Nullable String prompt() {
         return prompt;
     }
 

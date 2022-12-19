@@ -133,8 +133,8 @@ public class EmojisPlugin extends JavaPlugin {
             }
 
             this.resourcePack = new ResourcePack(
-                    location.getUrl(),
-                    location.getHash(),
+                    location.url(),
+                    location.hash(),
                     getConfig().getBoolean("feature.require-pack"),
                     prompt
             );
@@ -202,8 +202,8 @@ public class EmojisPlugin extends JavaPlugin {
 
     public void updateResourcePackLocation(UrlAndHash location) {
         this.resourcePack = resourcePack.withLocation(
-                location.getUrl(),
-                location.getHash()
+                location.url(),
+                location.hash()
         );
 
         // for current players

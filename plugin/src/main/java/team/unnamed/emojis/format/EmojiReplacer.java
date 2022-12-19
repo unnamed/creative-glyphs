@@ -118,7 +118,7 @@ public class EmojiReplacer {
                         if (previousColors) {
                             builder.append(WHITE_PREFIX);
                         }
-                        builder.append(emoji.getCharacter());
+                        builder.append(emoji.character());
                         if (previousColors) {
                             builder.append(lastColors);
                         }
@@ -158,7 +158,7 @@ public class EmojiReplacer {
                 }
 
                 net.md_5.bungee.api.ChatColor format;
-                if (current == 'x' && i + 12 < message.length() && Version.CURRENT.getMinor() >= 6) {
+                if (current == 'x' && i + 12 < message.length() && Version.CURRENT.minor() >= 6) {
                     StringBuilder hex = new StringBuilder("#");
                     for (int j = 0; j < 6; j++) {
                         hex.append(message.charAt(i + 2 + (j * 2)));

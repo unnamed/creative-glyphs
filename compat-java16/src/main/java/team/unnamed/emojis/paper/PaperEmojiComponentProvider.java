@@ -40,7 +40,7 @@ public class PaperEmojiComponentProvider {
                 hoverComponent = MiniMessage.miniMessage().deserialize(
                         source,
                         resolver("emoji", Tag.selfClosingInserting(emojiComponent(emoji))),
-                        resolver("emojiname", Tag.inserting(Component.text(emoji.getName())))
+                        resolver("emojiname", Tag.inserting(Component.text(emoji.name())))
                 );
             } else if (infoSupportMiniMessage
                     && (config.contains("format.hover.legacy", true)
@@ -65,8 +65,8 @@ public class PaperEmojiComponentProvider {
             if (legacyFormat != null) {
                 hoverComponent = LegacyComponentSerializer.legacyAmpersand().deserialize(
                         legacyFormat
-                                .replace("<emoji>", emoji.getCharacter() + "")
-                                .replace("<emojiname>", emoji.getName())
+                                .replace("<emoji>", emoji.character() + "")
+                                .replace("<emojiname>", emoji.name())
                 );
             }
         }
@@ -84,7 +84,7 @@ public class PaperEmojiComponentProvider {
     private TextComponent.Builder emojiComponent(Emoji emoji) {
         return Component.text()
                 .color(NamedTextColor.WHITE) // text color affects character texture
-                .content(Character.toString(emoji.getCharacter())); // use the emoji character
+                .content(Character.toString(emoji.character())); // use the emoji character
                 // TODO: We could use an specialized font for emojis
                 // .font(emojisFont)
     }

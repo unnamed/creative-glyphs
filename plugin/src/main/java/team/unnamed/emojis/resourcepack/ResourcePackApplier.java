@@ -27,7 +27,7 @@ public final class ResourcePackApplier {
 
             GET_HANDLE_METHOD = craftPlayerClass.getDeclaredMethod("getHandle");
 
-            if (Version.CURRENT.getMinor() < 17) {
+            if (Version.CURRENT.minor() < 17) {
 
                 // we use getHandle() and then .setResourcePack(String, String)
                 // compatible with both Spigot and Paper
@@ -41,7 +41,7 @@ public final class ResourcePackApplier {
                 // for 1.17 or "a" method for and 1.18, compatible with both Spigot and Paper
                 SET_RESOURCE_PACK_METHOD = Class.forName("net.minecraft.server.level.EntityPlayer")
                         .getDeclaredMethod(
-                                Version.CURRENT.getMinor() == 17 ? "setResourcePack" : "a",
+                                Version.CURRENT.minor() == 17 ? "setResourcePack" : "a",
                                 String.class,
                                 String.class,
                                 boolean.class,
@@ -74,20 +74,20 @@ public final class ResourcePackApplier {
         try {
             Object handle = GET_HANDLE_METHOD.invoke(player);
 
-            if (Version.CURRENT.getMinor() < 17) {
+            if (Version.CURRENT.minor() < 17) {
                 // 'required' and 'prompt' fields not supported
                 SET_RESOURCE_PACK_METHOD.invoke(
                         handle,
-                        resourcePack.getUrl(),
-                        resourcePack.getHash()
+                        resourcePack.url(),
+                        resourcePack.hash()
                 );
             } else {
-                String prompt = resourcePack.getPrompt();
+                String prompt = resourcePack.prompt();
                 SET_RESOURCE_PACK_METHOD.invoke(
                         handle,
-                        resourcePack.getUrl(),
-                        resourcePack.getHash(),
-                        resourcePack.isRequired(),
+                        resourcePack.url(),
+                        resourcePack.hash(),
+                        resourcePack.required(),
                         prompt == null ? null : DESERIALIZE_COMPONENT_METHOD.invoke(null, prompt)
                 );
             }

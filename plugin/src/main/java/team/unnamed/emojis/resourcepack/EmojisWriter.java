@@ -41,21 +41,21 @@ public class EmojisWriter implements FileTreeWriter {
 
         for (Emoji emoji : emojis) {
 
-            Key textureKey = Key.key(Key.MINECRAFT_NAMESPACE, "emojis/" + emoji.getName());
+            Key textureKey = Key.key(Key.MINECRAFT_NAMESPACE, "emojis/" + emoji.name());
 
             // write emoji image
             tree.write(
                     Texture.builder()
                             .key(textureKey)
-                            .data(emoji.getData())
+                            .data(emoji.data())
                             .build()
             );
 
             providers.add(
                     FontProvider.bitMap()
-                            .height(emoji.getHeight())
-                            .ascent(emoji.getAscent())
-                            .characters(Character.toString(emoji.getCharacter()))
+                            .height(emoji.height())
+                            .ascent(emoji.ascent())
+                            .characters(Character.toString(emoji.character()))
                             .file(textureKey)
                             .build()
             );

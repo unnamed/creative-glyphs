@@ -10,11 +10,11 @@ public class UrlAndHash {
         this.hash = hash;
     }
 
-    public String getUrl() {
+    public String url() {
         return url;
     }
 
-    public String getHash() {
+    public String hash() {
         return hash;
     }
 

@@ -20,8 +20,8 @@ public class EmojiRegistry {
     }
 
     public void add(Emoji emoji) {
-        registry.put(emoji.getName(), emoji);
-        characters.put(emoji.getCharacter(), emoji);
+        registry.put(emoji.name(), emoji);
+        characters.put(emoji.character(), emoji);
     }
 
     public void update(Collection<Emoji> emojis) {
@@ -33,8 +33,8 @@ public class EmojiRegistry {
         Map<Character, Emoji> newCharacters = new HashMap<>();
 
         for (Emoji emoji : emojis) {
-            newRegistry.put(emoji.getName(), emoji);
-            newCharacters.put(emoji.getCharacter(), emoji);
+            newRegistry.put(emoji.name(), emoji);
+            newCharacters.put(emoji.character(), emoji);
         }
         // update the registry
         registry = newRegistry;

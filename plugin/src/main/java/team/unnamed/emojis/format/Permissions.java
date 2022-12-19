@@ -17,7 +17,7 @@ public final class Permissions {
         if (emoji == null) {
             return false;
         } else {
-            String permission = emoji.getPermission();
+            String permission = emoji.permission();
             return permission.isEmpty() || permissible.hasPermission(permission);
         }
     }

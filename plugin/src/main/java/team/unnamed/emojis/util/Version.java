@@ -13,7 +13,7 @@ public class Version {
     public static final String VERSION_STRING
             = Bukkit.getServer().getClass().getName().split(Pattern.quote("."))[3];
 
-    public static final Version CURRENT = getVersionOfString(VERSION_STRING);
+    public static final Version CURRENT = parseString(VERSION_STRING);
 
     private final byte major;
     private final byte minor;
@@ -25,15 +25,15 @@ public class Version {
         this.patch = patch;
     }
 
-    public byte getMajor() {
+    public byte major() {
         return major;
     }
 
-    public byte getMinor() {
+    public byte minor() {
         return minor;
     }
 
-    public byte getPatch() {
+    public byte patch() {
         return patch;
     }
 
@@ -49,7 +49,7 @@ public class Version {
      * @throws NumberFormatException If major, minor or patch versions
      *                               are not bytes
      */
-    public static Version getVersionOfString(String versionString) {
+    public static Version parseString(String versionString) {
         String[] args = versionString.split(Pattern.quote("_"));
         byte major = Byte.parseByte(args[0].substring(1));
         byte minor = Byte.parseByte(args[1]);

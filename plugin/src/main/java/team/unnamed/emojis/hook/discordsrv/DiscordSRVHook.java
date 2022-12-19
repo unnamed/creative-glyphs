@@ -5,7 +5,6 @@ import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.GameChatMessagePreProcessEvent;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.Component;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.TextReplacementConfig;
-import github.scarsz.discordsrv.dependencies.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
@@ -55,7 +54,7 @@ public class DiscordSRVHook
                             } else {
                                 // emoji found, replace by its name
                                 replaced.append(':')
-                                        .append(emoji.getName())
+                                        .append(emoji.name())
                                         .append(':');
                             }
                         }

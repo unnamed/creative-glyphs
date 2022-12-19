@@ -31,7 +31,7 @@ public class EmojiPlaceholderExpansion
         if (emoji == null) {
             return null;
         } else {
-            return String.valueOf(emoji.getCharacter());
+            return String.valueOf(emoji.character());
         }
     }
 

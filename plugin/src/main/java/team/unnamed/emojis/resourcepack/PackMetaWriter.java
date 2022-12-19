@@ -57,13 +57,13 @@ public class PackMetaWriter implements FileTreeWriter {
 
     private static int getPackFormatVersion() {
         Version version = Version.CURRENT;
-        byte major = version.getMajor();
+        byte major = version.major();
 
         if (major != 1) {
             failUnsupportedVersion();
         }
 
-        byte minor = version.getMinor();
+        byte minor = version.minor();
 
         if (minor < 6) failUnsupportedVersion();
         if (minor < 9) return 1;

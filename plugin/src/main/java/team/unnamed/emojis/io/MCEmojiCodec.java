@@ -95,25 +95,25 @@ public class MCEmojiCodec implements EmojiCodec {
         // write all emojis
         for (Emoji emoji : emojis) {
 
-            String name = emoji.getName();
-            String permission = emoji.getPermission();
+            String name = emoji.name();
+            String permission = emoji.permission();
 
             // write name
             dataOutput.writeByte(name.length());
             dataOutput.writeChars(name);
 
             // height, ascent and character
-            dataOutput.writeShort(emoji.getHeight());
-            dataOutput.writeShort(emoji.getAscent());
-            dataOutput.writeChar(emoji.getCharacter());
+            dataOutput.writeShort(emoji.height());
+            dataOutput.writeShort(emoji.ascent());
+            dataOutput.writeChar(emoji.character());
 
             // write permission
             dataOutput.writeByte(permission.length());
             dataOutput.writeChars(permission);
 
             // image write
-            dataOutput.writeShort(emoji.getDataLength());
-            emoji.getData().write(dataOutput);
+            dataOutput.writeShort(emoji.dataLength());
+            emoji.data().write(dataOutput);
         }
     }
 
