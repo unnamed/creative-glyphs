@@ -20,12 +20,9 @@ dependencies {
     compileOnly(annotations)
     implementation("team.unnamed:creative-api:0.5.1-SNAPSHOT")
 
-    // You must run the deps.sh script to have this dependency
-    compileOnly("me.fixeddev:EzChat:2.5.0")
-
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
-    compileOnly("com.palmergames.bukkit:TownyChat:0.91") // deps.sh
+    compileOnly(files("../lib/TownyChat-0.91.jar", "../lib/EzChat-2.5.0-with-dependencies.jar"))
     compileOnly("com.discordsrv:discordsrv:1.26.0")
 
     // Testing
