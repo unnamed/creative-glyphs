@@ -17,7 +17,7 @@ public final class ResourceExportMethodFactory {
     private ResourceExportMethodFactory() {
     }
 
-    public static ResourceExporter createExporter(File folder, String format)
+    public static ResourceExporter createExporter(File pluginFolder, String format)
             throws IOException {
         String[] args = format.split(":");
         String method = args[0].toLowerCase();
@@ -33,7 +33,7 @@ public final class ResourceExportMethodFactory {
                 }
 
                 String filename = String.join(":", Arrays.copyOfRange(args, 1, args.length));
-                return new FileExporter(new File(folder, filename))
+                return new FileExporter(new File(pluginFolder, filename))
                         .setMergeZip(method.equals("mergezipfile"));
             }
             case "mcpacks": {
@@ -54,10 +54,12 @@ public final class ResourceExportMethodFactory {
                 if (folderFormat.startsWith("/")) {
                     targetFolder = new File(folderFormat);
                 } else if (folderFormat.startsWith("@")) {
-                    targetFolder = new File(folderFormat.substring(1));
+                    targetFolder = new File(
+                            pluginFolder.getParentFile(), // The <server>/plugins folder
+                            folderFormat.substring(1)
+                    );
                 } else {
-                    File pluginsFolder = folder.getParentFile();
-                    targetFolder = new File(pluginsFolder, folderFormat);
+                    targetFolder = new File(pluginFolder, folderFormat);
                 }
 
                 return writer -> {
