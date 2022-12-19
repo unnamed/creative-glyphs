@@ -1,11 +1,9 @@
 package team.unnamed.emojis.io;
 
-import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -50,26 +48,6 @@ public final class Streams {
     }
 
     /**
-     * Returns the bytes from the given {@code string}
-     * expected to be encoded using hexadecimal characters
-     * (0-9a-f), string length must be even
-     */
-    public static byte[] getBytesFromHex(String string) {
-        int length = string.length();
-        if (length % 2 != 0) {
-            throw new IllegalArgumentException("Invalid hex string: "
-                    + string + ". It must be even!");
-        }
-        byte[] bytes = new byte[length / 2];
-        for (int i = 0; i < length; i += 2) {
-            int firstPart = Character.digit(string.charAt(i), 16);
-            int secondPart = Character.digit(string.charAt(i + 1), 16);
-            bytes[i / 2] = (byte) ((firstPart << 4) + secondPart);
-        }
-        return bytes;
-    }
-
-    /**
      * Writes the given {@code string} into
      * the specified {@code output} using the
      * UTF-8 charset
@@ -106,15 +84,6 @@ public final class Streams {
             }
         }
         return new String(data);
-    }
-
-    /**
-     * Creates a {@link ByteArrayInputStream} for reading
-     * the given {@code string} using the specified {@code charset}
-     */
-    public static InputStream fromString(String string, Charset charset) {
-        byte[] bytes = string.getBytes(charset);
-        return new ByteArrayInputStream(bytes);
     }
 
 }

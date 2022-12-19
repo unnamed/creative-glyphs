@@ -1,10 +1,10 @@
 package team.unnamed.emojis.export.impl;
 
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.creative.file.FileTree;
+import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
-import team.unnamed.emojis.io.TreeOutputStream;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.BufferedOutputStream;
@@ -46,7 +46,7 @@ public class FileExporter
 
     @Override
     @Nullable
-    public UrlAndHash export(AssetWriter writer) throws IOException {
+    public UrlAndHash export(FileTreeWriter writer) throws IOException {
         if (!target.exists() && !target.createNewFile()) {
             throw new IOException("Failed to create target resource pack file");
         }
@@ -63,19 +63,15 @@ public class FileExporter
                 );
             }
 
-            try (TreeOutputStream output = TreeOutputStream.forZip(
-                    new ZipOutputStream(new FileOutputStream(tmpTarget))
-            )) {
+            try (FileTree tree = FileTree.zip(new ZipOutputStream(new FileOutputStream(tmpTarget)))) {
                 try (ZipInputStream input = new ZipInputStream(new FileInputStream(target))) {
                     ZipEntry entry;
                     while ((entry = input.getNextEntry()) != null) {
-                        output.useEntry(entry.getName());
-                        Streams.pipe(input, output);
-                        output.closeEntry();
+                        tree.write(entry.getName(), w -> Streams.pipe(input, w));
                     }
                 }
 
-                writer.write(output);
+                writer.write(tree);
             }
 
             // delete old file
@@ -87,7 +83,7 @@ public class FileExporter
                 throw new IOException("Cannot move temporary file to original ZIP file");
             }
         } else {
-            try (TreeOutputStream output = TreeOutputStream.forZip(
+            try (FileTree output = FileTree.zip(
                     new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target))))
             ) {
                 writer.write(output);

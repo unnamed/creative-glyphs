@@ -1,5 +1,6 @@
 package team.unnamed.emojis.io;
 
+import team.unnamed.creative.base.Writable;
 import team.unnamed.emojis.Emoji;
 
 import java.io.DataInputStream;
@@ -65,7 +66,7 @@ public class MCEmojiCodec implements EmojiCodec {
                     name,
                     permission,
                     imageLength,
-                    Writeable.ofBytes(imageBytes),
+                    Writable.bytes(imageBytes),
                     height,
                     ascent,
                     character

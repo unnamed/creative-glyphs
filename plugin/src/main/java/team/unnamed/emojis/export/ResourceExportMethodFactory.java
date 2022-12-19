@@ -1,9 +1,9 @@
 package team.unnamed.emojis.export;
 
 import org.bukkit.plugin.Plugin;
+import team.unnamed.creative.file.FileTree;
 import team.unnamed.emojis.export.impl.FileExporter;
 import team.unnamed.emojis.export.impl.MCPacksHttpExporter;
-import team.unnamed.emojis.io.TreeOutputStream;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public final class ResourceExportMethodFactory {
                 }
 
                 return writer -> {
-                    try (TreeOutputStream output = TreeOutputStream.forFolder(targetFolder)) {
+                    try (FileTree output = FileTree.directory(targetFolder)) {
                         writer.write(output);
                     }
                     plugin.getLogger().info("Exported resource pack to folder: " + targetFolder);

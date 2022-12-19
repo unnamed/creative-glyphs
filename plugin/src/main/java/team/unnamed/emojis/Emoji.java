@@ -1,7 +1,6 @@
 package team.unnamed.emojis;
 
-
-import team.unnamed.emojis.io.Writeable;
+import team.unnamed.creative.base.Writable;
 
 /**
  * Represents an emoji, has a name, size and
@@ -13,7 +12,7 @@ public class Emoji {
     private final String permission;
 
     private final int dataLength;
-    private final Writeable data;
+    private final Writable data;
 
     private final int height;
     private final int ascent;
@@ -23,7 +22,7 @@ public class Emoji {
             String name,
             String permission,
             int dataLength,
-            Writeable data,
+            Writable data,
             int height,
             int ascent,
             char character
@@ -49,7 +48,7 @@ public class Emoji {
         return dataLength;
     }
 
-    public Writeable getData() {
+    public Writable getData() {
         return data;
     }
 

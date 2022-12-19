@@ -1,10 +1,10 @@
 package team.unnamed.emojis.export.impl;
 
 import org.jetbrains.annotations.NotNull;
+import team.unnamed.creative.file.FileTree;
+import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.emojis.export.ResourceExporter;
-import team.unnamed.emojis.io.AssetWriter;
 import team.unnamed.emojis.io.Streams;
-import team.unnamed.emojis.io.TreeOutputStream;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
 
     @Override
     @NotNull
-    public UrlAndHash export(AssetWriter writer) throws IOException {
+    public UrlAndHash export(FileTreeWriter writer) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -76,13 +76,8 @@ public class MCPacksHttpExporter implements ResourceExporter {
                 throw new IOException("Cannot find SHA-1 algorithm");
             }
 
-            TreeOutputStream treeOutput = TreeOutputStream.forZip(
-                    new ZipOutputStream(new DigestOutputStream(output, digest))
-            );
-            try {
+            try (FileTree treeOutput = FileTree.zip(new ZipOutputStream(new DigestOutputStream(output, digest)))) {
                 writer.write(treeOutput);
-            } finally {
-                treeOutput.finish();
             }
 
             byte[] hash = digest.digest();
