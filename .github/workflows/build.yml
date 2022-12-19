@@ -11,7 +11,5 @@ jobs:
                 uses: 'actions/setup-java@v1'
                 with:
                     java-version: 16
-            -   name: 'download dependencies'
-                run: './deps.sh'
             -   name: 'build'
-                run: './gradlew build'
+                run: './gradlew shadowJar'
