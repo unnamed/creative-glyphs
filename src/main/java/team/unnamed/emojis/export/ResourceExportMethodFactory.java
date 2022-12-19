@@ -1,5 +1,6 @@
 package team.unnamed.emojis.export;
 
+import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.export.impl.FileExporter;
 import team.unnamed.emojis.export.impl.MCPacksHttpExporter;
 import team.unnamed.emojis.io.TreeOutputStream;
@@ -17,8 +18,9 @@ public final class ResourceExportMethodFactory {
     private ResourceExportMethodFactory() {
     }
 
-    public static ResourceExporter createExporter(File pluginFolder, String format)
+    public static ResourceExporter createExporter(Plugin plugin, String format)
             throws IOException {
+        File pluginFolder = plugin.getDataFolder();
         String[] args = format.split(":");
         String method = args[0].toLowerCase();
 
@@ -33,11 +35,11 @@ public final class ResourceExportMethodFactory {
                 }
 
                 String filename = String.join(":", Arrays.copyOfRange(args, 1, args.length));
-                return new FileExporter(new File(pluginFolder, filename))
+                return new FileExporter(new File(pluginFolder, filename), plugin.getLogger())
                         .setMergeZip(method.equals("mergezipfile"));
             }
             case "mcpacks": {
-                return new MCPacksHttpExporter();
+                return new MCPacksHttpExporter(plugin.getLogger());
             }
             case "into": {
                 if (args.length < 2) {
@@ -66,6 +68,7 @@ public final class ResourceExportMethodFactory {
                     try (TreeOutputStream output = TreeOutputStream.forFolder(targetFolder)) {
                         writer.write(output);
                     }
+                    plugin.getLogger().info("Exported resource pack to folder: " + targetFolder);
                     return null;
                 };
             }

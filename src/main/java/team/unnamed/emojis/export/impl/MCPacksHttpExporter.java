@@ -15,6 +15,7 @@ import java.net.URL;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -33,9 +34,11 @@ public class MCPacksHttpExporter implements ResourceExporter {
     private static final String BOUNDARY = "HephaestusBoundary";
     private static final String LINE_FEED = "\r\n";
 
+    private final Logger logger;
     private final URL url;
 
-    public MCPacksHttpExporter() throws MalformedURLException {
+    public MCPacksHttpExporter(Logger logger) throws MalformedURLException {
+        this.logger = logger;
         this.url = new URL(UPLOAD_URL);
     }
 
@@ -104,10 +107,10 @@ public class MCPacksHttpExporter implements ResourceExporter {
         // execute request and close, no response expected
         connection.getInputStream().close();
 
-        return new UrlAndHash(
-                DOWNLOAD_URL_TEMPLATE.replace("%HASH%", hashString),
-                hashString
-        );
+        String url = DOWNLOAD_URL_TEMPLATE.replace("%HASH%", hashString);
+        logger.info("Uploaded resource-pack to: " + url);
+
+        return new UrlAndHash(url, hashString);
     }
 
     private char hex(int c) {

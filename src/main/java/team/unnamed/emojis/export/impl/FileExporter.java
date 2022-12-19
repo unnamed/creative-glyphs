@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -24,10 +25,12 @@ public class FileExporter
         implements ResourceExporter {
 
     private final File target;
+    private final Logger logger;
     private boolean mergeZip;
 
-    public FileExporter(File target) {
+    public FileExporter(File target, Logger logger) {
         this.target = target;
+        this.logger = logger;
     }
 
     /**
@@ -91,6 +94,7 @@ public class FileExporter
             }
         }
 
+        logger.info("Exported resource-pack to file: " + target);
         return null;
     }
 }
