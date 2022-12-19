@@ -6,11 +6,7 @@
 Bukkit plugin extending the default Minecraft chat by adding emojis
 
 ## Building
-Building in Java 16 *(Supports Paper 1.17+)*, result will be `build/libs/emojis-<version>-all-java16.jar`
 ```shell
-./gradlew jar16
+./gradlew shadowJar
 ```
-Building in Java 8 *(No support for Paper 1.17+)*, result will be `build/libs/emojis-<version>-all-java8.jar`
-```shell
-./gradlew jar8
-```
+Plugin JAR will be `plugin/build/libs/emojis-plugin-<version>-all.jar`
