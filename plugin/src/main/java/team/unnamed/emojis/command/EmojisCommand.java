@@ -103,15 +103,15 @@ public class EmojisCommand implements CommandExecutor {
                             config.getString("messages.list.hover", "Not found")
                     )
                             .replace("<emojiname>", emoji.name())
-                            .replace("<emoji>", emoji.character() + "");
-                    TextComponent component = new TextComponent(emoji.character() + " ");
+                            .replace("<emoji>", emoji.replacement());
+                    TextComponent component = new TextComponent(emoji.replacement());
                     component.setHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
                             TextComponent.fromLegacyText(hover)
                     ));
                     component.setClickEvent(new ClickEvent(
                             ClickEvent.Action.SUGGEST_COMMAND,
-                            emoji.character() + ""
+                            emoji.replacement()
                     ));
                     line.addExtra(component);
                 }

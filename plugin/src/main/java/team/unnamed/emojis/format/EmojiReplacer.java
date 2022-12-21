@@ -118,7 +118,7 @@ public class EmojiReplacer {
                         if (previousColors) {
                             builder.append(WHITE_PREFIX);
                         }
-                        builder.append(emoji.character());
+                        builder.append(emoji.replacement());
                         if (previousColors) {
                             builder.append(lastColors);
                         }

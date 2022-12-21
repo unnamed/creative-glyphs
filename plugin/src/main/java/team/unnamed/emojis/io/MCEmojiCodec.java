@@ -105,7 +105,7 @@ public class MCEmojiCodec implements EmojiCodec {
             // height, ascent and character
             dataOutput.writeShort(emoji.height());
             dataOutput.writeShort(emoji.ascent());
-            dataOutput.writeChar(emoji.character());
+            dataOutput.writeChar(emoji.replacement().charAt(0));
 
             // write permission
             dataOutput.writeByte(permission.length());

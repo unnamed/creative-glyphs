@@ -65,7 +65,7 @@ public class PaperEmojiComponentProvider {
             if (legacyFormat != null) {
                 hoverComponent = LegacyComponentSerializer.legacyAmpersand().deserialize(
                         legacyFormat
-                                .replace("<emoji>", emoji.character() + "")
+                                .replace("<emoji>", emoji.replacement())
                                 .replace("<emojiname>", emoji.name())
                 );
             }
@@ -84,7 +84,7 @@ public class PaperEmojiComponentProvider {
     private TextComponent.Builder emojiComponent(Emoji emoji) {
         return Component.text()
                 .color(NamedTextColor.WHITE) // text color affects character texture
-                .content(Character.toString(emoji.character())); // use the emoji character
+                .content(emoji.replacement()); // use the emoji character
                 // TODO: We could use an specialized font for emojis
                 // .font(emojisFont)
     }

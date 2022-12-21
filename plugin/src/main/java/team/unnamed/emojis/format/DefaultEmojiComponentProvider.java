@@ -25,11 +25,11 @@ public class DefaultEmojiComponentProvider
                 '&',
                         config.getString("format.paper.emoji", DEFAULT_FORMAT)
         )
-                .replace("<emoji>", emoji.character() + "")
+                .replace("<emoji>", emoji.replacement())
                 .replace("<emojiname>", emoji.name());
 
         BaseComponent[] components = TextComponent.fromLegacyText(format);
-        TextComponent component = new TextComponent(emoji.character() + "");
+        TextComponent component = new TextComponent(emoji.replacement());
         component.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
                 components

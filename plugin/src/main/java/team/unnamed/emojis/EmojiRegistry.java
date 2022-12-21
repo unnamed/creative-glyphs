@@ -9,19 +9,19 @@ import java.util.Map;
 public class EmojiRegistry {
 
     private Map<String, Emoji> registry = new HashMap<>();
-    private Map<Character, Emoji> characters = new HashMap<>();
+    private Map<String, Emoji> characters = new HashMap<>();
 
     public @Nullable Emoji get(String name) {
         return registry.get(name);
     }
 
     public @Nullable Emoji getByChar(char c) {
-        return characters.get(c);
+        return characters.get(Character.toString(c));
     }
 
     public void add(Emoji emoji) {
         registry.put(emoji.name(), emoji);
-        characters.put(emoji.character(), emoji);
+        characters.put(emoji.replacement(), emoji);
     }
 
     public void update(Collection<Emoji> emojis) {
@@ -30,11 +30,11 @@ public class EmojiRegistry {
         // map with an inconsistent state for some nanoseconds
         // (I'm paranoid)
         Map<String, Emoji> newRegistry = new HashMap<>();
-        Map<Character, Emoji> newCharacters = new HashMap<>();
+        Map<String, Emoji> newCharacters = new HashMap<>();
 
         for (Emoji emoji : emojis) {
             newRegistry.put(emoji.name(), emoji);
-            newCharacters.put(emoji.character(), emoji);
+            newCharacters.put(emoji.replacement(), emoji);
         }
         // update the registry
         registry = newRegistry;

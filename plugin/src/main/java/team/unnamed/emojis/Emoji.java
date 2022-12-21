@@ -64,6 +64,10 @@ public class Emoji {
         return character;
     }
 
+    public String replacement() {
+        return Character.toString(character);
+    }
+
     @Override
     public String toString() {
         return "Emoji{" +

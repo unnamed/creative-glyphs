@@ -55,7 +55,7 @@ public class EmojisWriter implements FileTreeWriter {
                     FontProvider.bitMap()
                             .height(emoji.height())
                             .ascent(emoji.ascent())
-                            .characters(Character.toString(emoji.character()))
+                            .characters(emoji.replacement())
                             .file(textureKey)
                             .build()
             );

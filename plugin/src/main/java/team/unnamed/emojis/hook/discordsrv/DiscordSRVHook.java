@@ -59,7 +59,7 @@ public class DiscordSRVHook
                         // TODO: Add hover
                         return Component.text()
                                 .color(NamedTextColor.WHITE)
-                                .content(Character.toString(emoji.character()));
+                                .content(emoji.replacement());
                     })));
         }
 
