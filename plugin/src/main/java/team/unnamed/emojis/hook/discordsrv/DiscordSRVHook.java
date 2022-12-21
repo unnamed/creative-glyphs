@@ -2,15 +2,22 @@ package team.unnamed.emojis.hook.discordsrv;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
+import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent;
 import github.scarsz.discordsrv.api.events.GameChatMessagePreProcessEvent;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Emote;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Guild;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.Component;
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.TextReplacementConfig;
+import github.scarsz.discordsrv.dependencies.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.format.EmojiReplacer;
 import team.unnamed.emojis.hook.PluginHook;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class DiscordSRVHook
@@ -36,7 +43,35 @@ public class DiscordSRVHook
     private class DiscordSRVListener {
 
         @Subscribe
+        public void onMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
+            event.setMinecraftMessage(event.getMinecraftMessage().replaceText(replacementConfig -> replacementConfig
+                    .match(EmojiReplacer.EMOJI_PATTERN)
+                    .replacement((result, builder) -> {
+                        String emojiName = result.group(1);
+                        Emoji emoji = registry.get(emojiName);
+
+                        if (emoji == null) {
+                            // TODO: Check linked account
+                            // can't use this emoji, return the same component
+                            return builder;
+                        }
+
+                        // TODO: Add hover
+                        return Component.text()
+                                .color(NamedTextColor.WHITE)
+                                .content(Character.toString(emoji.character()));
+                    })));
+        }
+
+        @Subscribe
         public void onMessagePreProcess(GameChatMessagePreProcessEvent event) {
+
+            DiscordSRV discordSRV = DiscordSRV.getPlugin();
+            String channelId = discordSRV.getChannels().get(event.getChannel());
+            TextChannel channel = discordSRV.getJda().getTextChannelById(channelId);
+            Guild guild = channel.getGuild();
+            boolean webhook = isGoingToBeSentToAWebHook(event);
+
             Component input = event.getMessageComponent();
             Component output = input.replaceText(TextReplacementConfig.builder()
                     .match(ANY)
@@ -52,18 +87,32 @@ public class DiscordSRVHook
                                 // let it be
                                 replaced.append(c);
                             } else {
-                                // emoji found, replace by its name
-                                replaced.append(':')
-                                        .append(emoji.name())
-                                        .append(':');
+                                List<Emote> emotes = guild.getEmotesByName(emoji.name(), true);
+                                Emote emote = emotes.isEmpty() ? null : emotes.get(0);
+
+                                if (emote != null && webhook) {
+                                    replaced.append("<:")
+                                            .append(emote.getName())
+                                            .append(':')
+                                            .append(emote.getId())
+                                            .append(">");
+                                } else {
+                                    // emoji found, replace by its name
+                                    replaced.append(':')
+                                            .append(emoji.name())
+                                            .append(':');
+                                }
                             }
                         }
 
                         return builder.content(replaced.toString());
                     })
                     .build());
-
             event.setMessageComponent(output);
+        }
+
+        private boolean isGoingToBeSentToAWebHook(GameChatMessagePreProcessEvent event) {
+            return DiscordSRV.config().getBoolean("Experiment_WebhookChatMessageDelivery");
         }
 
     }
