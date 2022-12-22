@@ -3,6 +3,7 @@ package team.unnamed.emojis.command;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,8 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EmojisCommand implements CommandExecutor {
 
@@ -31,7 +30,6 @@ public class EmojisCommand implements CommandExecutor {
 
     private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final EmojiImporter importer;
     private final EmojiRegistry emojiRegistry;
     private final ExportService exportService;
@@ -51,14 +49,21 @@ public class EmojisCommand implements CommandExecutor {
             URL url = new URL(API_URL.replace("%id%", id));
             Collection<Emoji> emojis = importer.importHttp(url);
 
-            emojiRegistry.update(emojis);
-            plugin.saveEmojis();
-            UrlAndHash resource = exportService.export(emojiRegistry);
+            // synchronous update and save
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                emojiRegistry.update(emojis);
+                plugin.saveEmojis();
 
-            // update
-            if (resource != null) {
-                plugin.updateResourcePackLocation(resource);
-            }
+                // asynchronous export
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    UrlAndHash resource = exportService.export(emojiRegistry);
+
+                    // update
+                    if (resource != null) {
+                        plugin.updateResourcePackLocation(resource);
+                    }
+                });
+            });
         } catch (IOException e) {
             sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
                     " contact an administrator to read the console.");
@@ -128,7 +133,7 @@ public class EmojisCommand implements CommandExecutor {
                 }
 
                 String downloadId = args[1];
-                executor.submit(() -> execute(sender, downloadId));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> execute(sender, downloadId));
                 break;
             }
 

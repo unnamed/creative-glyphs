@@ -1,6 +1,8 @@
 package team.unnamed.emojis;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.emojis.event.EmojiListUpdateEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +38,10 @@ public class EmojiRegistry {
             newRegistry.put(emoji.name(), emoji);
             newCharacters.put(emoji.replacement(), emoji);
         }
+
+        // call emoji list update event
+        Bukkit.getPluginManager().callEvent(new EmojiListUpdateEvent(registry, newRegistry));
+
         // update the registry
         registry = newRegistry;
         characters = newCharacters;

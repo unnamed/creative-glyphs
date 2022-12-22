@@ -63,9 +63,11 @@ tasks {
     shadowJar {
         from(project.sourceSets.main.get().output)
 
-        val buildTask = project(":emojis-compat-java16").tasks.named("jar")
-        dependsOn(buildTask)
-        from(zipTree(buildTask.map { out -> out.outputs.files.singleFile }))
+        arrayOf("java16", "java17").forEach {
+            val buildTask = project(":emojis-compat-$it").tasks.named("jar")
+            dependsOn(buildTask)
+            from(zipTree(buildTask.map { out -> out.outputs.files.singleFile }))
+        }
 
         // relocate libraries
         // TODO: Remove when creative-manage is ready

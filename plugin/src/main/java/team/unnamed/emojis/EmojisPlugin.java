@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.EmojisCommand;
@@ -37,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -173,6 +175,30 @@ public class EmojisPlugin extends JavaPlugin {
                     "compat.listener-priority",
                     "HIGHEST"
             ).toUpperCase()));
+        }
+
+        Class<?> playerJoinListenerClass;
+        try {
+            playerJoinListenerClass = Class.forName("team.unnamed.emojis.compat.java17.EmojiCompletionsListener");
+
+            // check if methods required to make completions work exist
+            // (they may not exist in Spigot)
+            Player.class.getDeclaredMethod("addAdditionalChatCompletions", Collection.class);
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+            // do not make it work
+            playerJoinListenerClass = null;
+        }
+
+        if (playerJoinListenerClass != null) {
+            try {
+                Listener listener = (Listener) playerJoinListenerClass
+                        .getDeclaredConstructor(EmojiRegistry.class)
+                        .newInstance(registry);
+                getServer().getPluginManager().registerEvents(listener, this);
+            } catch (ReflectiveOperationException e) {
+                getLogger().log(Level.SEVERE, "Failed to instantiate" +
+                        " EmojiCompletionsListener, no completions available", e);
+            }
         }
     }
 
