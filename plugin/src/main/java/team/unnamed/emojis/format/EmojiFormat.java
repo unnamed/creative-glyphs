@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * Utility class for replacing emojis in strings
  * @author yusshu (Andre Roldan)
  */
-public class EmojiReplacer {
+public class EmojiFormat {
 
     private static final char EMOJI_START = ':';
     private static final char EMOJI_END = ':';
@@ -36,9 +36,8 @@ public class EmojiReplacer {
     // The exact same that EMOJI_NAME_PATTERN_STRING but accepting uppercase characters
     public static final @RegExp String EMOJI_USAGE_PATTERN_STRING = EMOJI_START + "([A-Za-z0-9_]{1,14})" + EMOJI_END;
 
-    /**
-     * Pattern for matching emojis from a string
-     */
+    public static final Pattern EMOJI_PERMISSION_PATTERN = Pattern.compile(EMOJI_PERMISSION_PATTERN_STRING);
+    public static final Pattern EMOJI_NAME_PATTERN = Pattern.compile(EMOJI_NAME_PATTERN_STRING);
     public static final Pattern EMOJI_USAGE_PATTERN = Pattern.compile(EMOJI_USAGE_PATTERN_STRING);
 
     // convenience constant holding an empty component array

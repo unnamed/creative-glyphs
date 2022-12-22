@@ -2,6 +2,7 @@ package team.unnamed.emojis.io;
 
 import team.unnamed.creative.base.Writable;
 import team.unnamed.emojis.Emoji;
+import team.unnamed.emojis.format.EmojiFormat;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -43,6 +44,11 @@ public class MCEmojiCodec implements EmojiCodec {
             byte nameLength = dataInput.readByte();
             String name = Streams.readString(dataInput, nameLength);
 
+            if (!EmojiFormat.EMOJI_NAME_PATTERN.matcher(name).matches()) {
+                throw new IOException("Invalid emoji name: '" + name + "', must match pattern: "
+                        + EmojiFormat.EMOJI_NAME_PATTERN_STRING);
+            }
+
             int height = dataInput.readShort();
             int ascent = dataInput.readShort();
             char character = dataInput.readChar();
@@ -50,6 +56,11 @@ public class MCEmojiCodec implements EmojiCodec {
             // permission read
             byte permissionLength = dataInput.readByte();
             String permission = Streams.readString(dataInput, permissionLength);
+
+            if (!EmojiFormat.EMOJI_PERMISSION_PATTERN.matcher(permission).matches()) {
+                throw new IOException("Invalid emoji permission: '" + permission + "', for emoji '"
+                        + name + "'. Must match pattern: " + EmojiFormat.EMOJI_PERMISSION_PATTERN_STRING);
+            }
 
             // image read
             int imageLength = dataInput.readShort() & 0xFFFF;

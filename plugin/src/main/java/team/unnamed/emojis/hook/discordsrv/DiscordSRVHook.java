@@ -14,11 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.hook.PluginHook;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class DiscordSRVHook
@@ -46,7 +45,7 @@ public class DiscordSRVHook
         @Subscribe
         public void onMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
             event.setMinecraftMessage(event.getMinecraftMessage().replaceText(replacementConfig -> replacementConfig
-                    .match(EmojiReplacer.EMOJI_USAGE_PATTERN)
+                    .match(EmojiFormat.EMOJI_USAGE_PATTERN)
                     .replacement((result, builder) -> {
                         String emojiName = result.group(1);
                         Emoji emoji = registry.getIgnoreCase(emojiName);

@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -37,7 +37,7 @@ public class PaperRichChatListener
     public void execute(AsyncChatEvent event) {
         Player player = event.getPlayer();
         event.message(event.message().replaceText(replacementConfig -> replacementConfig
-                .match(EmojiReplacer.EMOJI_USAGE_PATTERN)
+                .match(EmojiFormat.EMOJI_USAGE_PATTERN)
                 .replacement((result, builder) -> {
                     String emojiName = result.group(1);
                     Emoji emoji = emojiRegistry.getIgnoreCase(emojiName);

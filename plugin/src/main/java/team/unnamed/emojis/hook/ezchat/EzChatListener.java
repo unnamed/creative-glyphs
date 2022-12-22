@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.EmojiFormat;
 
 public class EzChatListener implements Listener {
 
@@ -43,7 +43,7 @@ public class EzChatListener implements Listener {
             message = ChatColor.translateAlternateColorCodes('&', message);
         }
 
-        BaseComponent[] messageComponent = EmojiReplacer.replaceRawToRich(
+        BaseComponent[] messageComponent = EmojiFormat.replaceRawToRich(
                 sender,
                 registry,
                 message,

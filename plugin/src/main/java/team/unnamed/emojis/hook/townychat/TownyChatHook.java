@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiReplacer;
+import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.hook.PluginHook;
 
 public class TownyChatHook
@@ -42,7 +42,7 @@ public class TownyChatHook
                 event.getChannel().getMessageColour()
         );
 
-        event.setMessage(EmojiReplacer.replaceRawToRaw(
+        event.setMessage(EmojiFormat.replaceRawToRaw(
                 player, registry, color + message
         ));
     }
