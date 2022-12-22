@@ -19,7 +19,7 @@ import java.util.Collection;
  */
 public class MCEmojiCodec implements EmojiCodec {
 
-    private static final byte VERSION = 1;
+    // current version: 2
 
     @Override
     public Collection<Emoji> read(InputStream input) throws IOException {
@@ -29,7 +29,7 @@ public class MCEmojiCodec implements EmojiCodec {
         DataInputStream dataInput = new DataInputStream(input);
 
         byte formatVersion = dataInput.readByte();
-        if (formatVersion != VERSION) {
+        if (formatVersion != 1 && formatVersion != 2) {
             // Currently, there are no other versions
             throw new IOException("Invalid format version: '"
                     + formatVersion + "'. Are you from the future?"
@@ -63,7 +63,10 @@ public class MCEmojiCodec implements EmojiCodec {
             }
 
             // image read
-            int imageLength = dataInput.readShort() & 0xFFFF;
+            // FIX (from version 2): uses an int instead of an unsigned short to represent image lengths
+            int imageLength = formatVersion == 1
+                    ? (dataInput.readShort() & 0xFFFF)
+                    : dataInput.readInt();
 
             byte[] imageBytes = new byte[imageLength];
             int read = input.read(imageBytes); // save the image bytes
@@ -96,9 +99,20 @@ public class MCEmojiCodec implements EmojiCodec {
         // not in a try-with-resources because this shouldn't close the
         // original output stream
         DataOutputStream dataOutput = new DataOutputStream(output);
+        byte formatVersion = 1;
+
+        // TODO: Remove, only for backwards-compatibility
+        for (Emoji emoji : emojis) {
+            // if an emoji data length is >= than an unsigned short
+            // max value, we must use the format version 2, that fixes it
+            if (emoji.dataLength() >= 0xFFFF) {
+                formatVersion = 2;
+                break;
+            }
+        }
 
         // write current MCEmoji format
-        dataOutput.write(VERSION);
+        dataOutput.write(formatVersion);
 
         // write emoji length
         dataOutput.writeByte(emojis.size());
@@ -123,7 +137,11 @@ public class MCEmojiCodec implements EmojiCodec {
             dataOutput.writeChars(permission);
 
             // image write
-            dataOutput.writeShort(emoji.dataLength());
+            if (formatVersion == 1) {
+                dataOutput.writeShort(emoji.dataLength());
+            } else {
+                dataOutput.writeInt(emoji.dataLength()); // fix from format version 2
+            }
             emoji.data().write(dataOutput);
         }
     }
