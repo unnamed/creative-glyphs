@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.permissions.Permissible;
+import org.intellij.lang.annotations.RegExp;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.util.Version;
@@ -29,11 +30,16 @@ public class EmojiReplacer {
     private static final Pattern URL_PATTERN
             = Pattern.compile("^(?:(https?)://)?([-\\w_.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
 
+    public static final @RegExp String EMOJI_NAME_PATTERN_STRING = "[a-z0-9_]{1,14}";
+    public static final @RegExp String EMOJI_PERMISSION_PATTERN_STRING = "[A-Za-z0-9_.]*";
+
+    // The exact same that EMOJI_NAME_PATTERN_STRING but accepting uppercase characters
+    public static final @RegExp String EMOJI_USAGE_PATTERN_STRING = EMOJI_START + "([A-Za-z0-9_]{1,14})" + EMOJI_END;
+
     /**
      * Pattern for matching emojis from a string
      */
-    public static final Pattern EMOJI_PATTERN
-            = Pattern.compile(":([A-Za-z_-]{1,14}):");
+    public static final Pattern EMOJI_USAGE_PATTERN = Pattern.compile(EMOJI_USAGE_PATTERN_STRING);
 
     // convenience constant holding an empty component array
     private static final BaseComponent[] EMPTY_COMPONENT_ARRAY
@@ -51,7 +57,7 @@ public class EmojiReplacer {
             EmojiRegistry registry,
             CharSequence text
     ) {
-
+        // TODO: Make this be consistent with EMOJI_USAGE_PATTERN
         StringBuilder builder = new StringBuilder();
         StringBuilder name = new StringBuilder();
 
@@ -107,7 +113,7 @@ public class EmojiReplacer {
                         continue;
                     }
                     String nameStr = name.toString();
-                    Emoji emoji = registry.get(nameStr);
+                    Emoji emoji = registry.getIgnoreCase(nameStr);
 
                     if (!Permissions.canUse(permissible, emoji)) {
                         builder.append(EMOJI_START).append(nameStr);
@@ -280,7 +286,7 @@ public class EmojiReplacer {
                         }
 
                         String nameStr = name.toString();
-                        Emoji emoji = registry.get(nameStr);
+                        Emoji emoji = registry.getIgnoreCase(nameStr);
 
                         if (!Permissions.canUse(permissible, emoji)) {
                             pre.append(EMOJI_START).append(nameStr);

@@ -6,6 +6,7 @@ import team.unnamed.emojis.event.EmojiListUpdateEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class EmojiRegistry {
@@ -15,6 +16,10 @@ public class EmojiRegistry {
 
     public @Nullable Emoji get(String name) {
         return registry.get(name);
+    }
+
+    public @Nullable Emoji getIgnoreCase(String name) {
+        return get(name.toLowerCase(Locale.ROOT));
     }
 
     public @Nullable Emoji getByChar(char c) {

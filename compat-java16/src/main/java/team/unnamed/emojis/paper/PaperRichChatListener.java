@@ -37,10 +37,10 @@ public class PaperRichChatListener
     public void execute(AsyncChatEvent event) {
         Player player = event.getPlayer();
         event.message(event.message().replaceText(replacementConfig -> replacementConfig
-                .match(EmojiReplacer.EMOJI_PATTERN)
+                .match(EmojiReplacer.EMOJI_USAGE_PATTERN)
                 .replacement((result, builder) -> {
                     String emojiName = result.group(1);
-                    Emoji emoji = emojiRegistry.get(emojiName);
+                    Emoji emoji = emojiRegistry.getIgnoreCase(emojiName);
 
                     if (!Permissions.canUse(player, emoji)) {
                         // can't use this emoji, return the same component
