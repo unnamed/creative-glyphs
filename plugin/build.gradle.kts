@@ -9,6 +9,7 @@ repositories {
     maven("https://nexus.scarsz.me/content/groups/public/") // DiscordSRV
     maven("https://m2.dv8tion.net/releases") // JDA - Required by DiscordSRV
     maven("https://repo.unnamed.team/repository/unnamed-public/") // creative
+    maven("https://repo.essentialsx.net/releases/") // EssentialsDiscord
 }
 
 dependencies {
@@ -24,6 +25,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.10")
     compileOnly(files("../lib/TownyChat-0.91.jar", "../lib/EzChat-2.5.0-with-dependencies.jar"))
     compileOnly("com.discordsrv:discordsrv:1.26.0")
+    compileOnly("net.essentialsx:EssentialsXDiscord:2.19.7")
 
     // Testing
     testImplementation(spigot)
@@ -39,7 +41,7 @@ bukkit {
     apiVersion = "1.13"
     description = "Unnamed Team's Emojis Plugin"
     author = "Unnamed Team"
-    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV")
+    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "EssentialsDiscord")
     commands {
         create("emojis") {
             description = "Main command for the unemojis plugin"
