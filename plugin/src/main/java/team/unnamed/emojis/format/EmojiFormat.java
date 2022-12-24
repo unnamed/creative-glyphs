@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
  */
 public class EmojiFormat {
 
-    private static final char EMOJI_START = ':';
-    private static final char EMOJI_END = ':';
+    private static final char USAGE_START = ':';
+    private static final char USAGE_END = ':';
 
     /**
      * Pattern for matching URLs
@@ -30,21 +30,25 @@ public class EmojiFormat {
     private static final Pattern URL_PATTERN
             = Pattern.compile("^(?:(https?)://)?([-\\w_.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
 
-    public static final @RegExp String EMOJI_NAME_PATTERN_STRING = "[a-z0-9_]{1,14}";
-    public static final @RegExp String EMOJI_PERMISSION_PATTERN_STRING = "[A-Za-z0-9_.]*";
+    public static final @RegExp String NAME_PATTERN_STR = "[a-z0-9_]{1,14}";
+    public static final @RegExp String PERMISSION_PATTERN_STR = "[A-Za-z0-9_.]*";
 
     // The exact same that EMOJI_NAME_PATTERN_STRING but accepting uppercase characters
-    public static final @RegExp String EMOJI_USAGE_PATTERN_STRING = EMOJI_START + "([A-Za-z0-9_]{1,14})" + EMOJI_END;
+    public static final @RegExp String USAGE_PATTERN_STR = USAGE_START + "([A-Za-z0-9_]{1,14})" + USAGE_END;
 
-    public static final Pattern EMOJI_PERMISSION_PATTERN = Pattern.compile(EMOJI_PERMISSION_PATTERN_STRING);
-    public static final Pattern EMOJI_NAME_PATTERN = Pattern.compile(EMOJI_NAME_PATTERN_STRING);
-    public static final Pattern EMOJI_USAGE_PATTERN = Pattern.compile(EMOJI_USAGE_PATTERN_STRING);
+    public static final Pattern PERMISSION_PATTERN = Pattern.compile(PERMISSION_PATTERN_STR);
+    public static final Pattern NAME_PATTERN = Pattern.compile(NAME_PATTERN_STR);
+    public static final Pattern USAGE_PATTERN = Pattern.compile(USAGE_PATTERN_STR);
 
     // convenience constant holding an empty component array
     private static final BaseComponent[] EMPTY_COMPONENT_ARRAY
             = new BaseComponent[0];
 
     private static final String WHITE_PREFIX = ChatColor.WHITE.toString();
+
+    public static String usageOf(Emoji emoji) {
+        return USAGE_START + emoji.name() + USAGE_END;
+    }
 
     /**
      * Replaces the emojis in the given {@code text}
@@ -99,23 +103,23 @@ public class EmojiFormat {
                 continue;
             }
 
-            if (c != EMOJI_START) {
+            if (c != USAGE_START) {
                 builder.append(c);
                 continue;
             }
 
             while (++i < text.length()) {
                 char current = text.charAt(i);
-                if (current == EMOJI_END) {
+                if (current == USAGE_END) {
                     if (name.length() < 1) {
-                        builder.append(EMOJI_START);
+                        builder.append(USAGE_START);
                         continue;
                     }
                     String nameStr = name.toString();
                     Emoji emoji = registry.getIgnoreCase(nameStr);
 
                     if (!Permissions.canUse(permissible, emoji)) {
-                        builder.append(EMOJI_START).append(nameStr);
+                        builder.append(USAGE_START).append(nameStr);
                         name.setLength(0);
                         continue;
                     } else {
@@ -135,7 +139,7 @@ public class EmojiFormat {
                 }
             }
 
-            builder.append(EMOJI_START).append(name);
+            builder.append(USAGE_START).append(name);
         }
         return builder.toString();
     }
@@ -266,13 +270,13 @@ public class EmojiFormat {
                 continue;
             }
 
-            if (c == EMOJI_START) {
+            if (c == USAGE_START) {
                 // found the start of an emoji, try to
                 // replace it
                 while (++i < message.length()) {
                     char current = message.charAt(i);
 
-                    if (current != EMOJI_END) {
+                    if (current != USAGE_END) {
                         // not the end of the emoji,
                         // append this character to
                         // the emoji name
@@ -280,7 +284,7 @@ public class EmojiFormat {
                     } else {
                         // end of the emoji found
                         if (name.length() < 1) {
-                            pre.append(EMOJI_START);
+                            pre.append(USAGE_START);
                             continue;
                         }
 
@@ -288,7 +292,7 @@ public class EmojiFormat {
                         Emoji emoji = registry.getIgnoreCase(nameStr);
 
                         if (!Permissions.canUse(permissible, emoji)) {
-                            pre.append(EMOJI_START).append(nameStr);
+                            pre.append(USAGE_START).append(nameStr);
 
                             // continue searching for emojis, starting
                             // from the end of this invalid emoji
@@ -307,7 +311,7 @@ public class EmojiFormat {
                         continue textLoop;
                     }
                 }
-                pre.append(EMOJI_END).append(name);
+                pre.append(USAGE_END).append(name);
                 continue;
             }
 

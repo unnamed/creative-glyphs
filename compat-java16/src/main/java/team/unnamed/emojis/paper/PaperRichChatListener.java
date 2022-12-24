@@ -37,7 +37,7 @@ public class PaperRichChatListener
     public void execute(AsyncChatEvent event) {
         Player player = event.getPlayer();
         event.message(event.message().replaceText(replacementConfig -> replacementConfig
-                .match(EmojiFormat.EMOJI_USAGE_PATTERN)
+                .match(EmojiFormat.USAGE_PATTERN)
                 .replacement((result, builder) -> {
                     String emojiName = result.group(1);
                     Emoji emoji = emojiRegistry.getIgnoreCase(emojiName);

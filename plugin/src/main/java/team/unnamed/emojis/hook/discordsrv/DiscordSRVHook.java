@@ -45,7 +45,7 @@ public class DiscordSRVHook
         @Subscribe
         public void onMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
             event.setMinecraftMessage(event.getMinecraftMessage().replaceText(replacementConfig -> replacementConfig
-                    .match(EmojiFormat.EMOJI_USAGE_PATTERN)
+                    .match(EmojiFormat.USAGE_PATTERN)
                     .replacement((result, builder) -> {
                         String emojiName = result.group(1);
                         Emoji emoji = registry.getIgnoreCase(emojiName);

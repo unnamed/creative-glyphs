@@ -9,6 +9,7 @@ import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.event.EmojiListUpdateEvent;
+import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.Permissions;
 
 import java.util.Collection;
@@ -52,7 +53,7 @@ public class EmojiCompletionsListener implements Listener {
         for (Map.Entry<String, Emoji> entry : oldRegistry.entrySet()) {
             String name = entry.getKey();
             if (!newRegistry.containsKey(name)) {
-                removedCompletions.add(':' + name + ':');
+                removedCompletions.add(EmojiFormat.usageOf(entry.getValue()));
             }
         }
 
@@ -66,7 +67,7 @@ public class EmojiCompletionsListener implements Listener {
         Collection<String> completions = new HashSet<>();
         for (Emoji emoji : emojis) {
             if (Permissions.canUse(object, emoji)) {
-                completions.add(':' + emoji.name() + ':');
+                completions.add(EmojiFormat.usageOf(emoji));
             }
         }
         return completions;
