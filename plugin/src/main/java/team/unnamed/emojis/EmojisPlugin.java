@@ -28,6 +28,7 @@ import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.io.EmojiCodec;
 import team.unnamed.emojis.io.MCEmojiCodec;
+import team.unnamed.emojis.metrics.Metrics;
 import team.unnamed.emojis.resourcepack.ResourcePack;
 import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -200,6 +201,9 @@ public class EmojisPlugin extends JavaPlugin {
                         " EmojiCompletionsListener, no completions available", e);
             }
         }
+
+        // Metrics
+        new Metrics(this, 17168);
     }
 
     public EmojiRegistry getRegistry() {
