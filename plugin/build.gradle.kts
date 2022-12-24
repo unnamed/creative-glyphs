@@ -18,7 +18,7 @@ dependencies {
     // Required libraries
     compileOnly(spigot)
     compileOnly(annotations)
-    implementation("team.unnamed:creative-api:0.5.2-SNAPSHOT")
+    implementation("team.unnamed:creative-api:0.5.3-SNAPSHOT")
 
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
