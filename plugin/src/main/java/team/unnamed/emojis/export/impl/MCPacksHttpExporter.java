@@ -76,8 +76,11 @@ public class MCPacksHttpExporter implements ResourceExporter {
                 throw new IOException("Cannot find SHA-1 algorithm");
             }
 
-            try (FileTree treeOutput = FileTree.zip(new ZipOutputStream(new DigestOutputStream(output, digest)))) {
+            FileTree treeOutput = FileTree.zip(new ZipOutputStream(new DigestOutputStream(output, digest)));
+            try {
                 writer.write(treeOutput);
+            } finally {
+                treeOutput.finish();
             }
 
             byte[] hash = digest.digest();
