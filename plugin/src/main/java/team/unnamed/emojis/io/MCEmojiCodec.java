@@ -1,6 +1,6 @@
 package team.unnamed.emojis.io;
 
-import team.unnamed.creative.base.Writable;
+import org.intellij.lang.annotations.Subst;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.format.EmojiFormat;
 
@@ -13,13 +13,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Implementation of {@link EmojiCodec} for reading
- * and writing emojis from/to the MCEmoji format
+ * <p>Implementation of {@link EmojiCodec} for reading
+ * and writing emojis from/to the MCEmoji format</p>
+ *
+ * <p>This implementation currently supports MCEmoji
+ * format versions [ 1, 2, 3 ]</p>
+ *
  * @author yusshu (Andre Roldan)
  */
 public class MCEmojiCodec implements EmojiCodec {
 
-    // current version: 2
+    // newest version: 3
 
     @Override
     public Collection<Emoji> read(InputStream input) throws IOException {
@@ -29,7 +33,7 @@ public class MCEmojiCodec implements EmojiCodec {
         DataInputStream dataInput = new DataInputStream(input);
 
         byte formatVersion = dataInput.readByte();
-        if (formatVersion != 1 && formatVersion != 2) {
+        if (formatVersion != 1 && formatVersion != 2 && formatVersion != 3) {
             // Currently, there are no other versions
             throw new IOException("Invalid format version: '"
                     + formatVersion + "'. Are you from the future?"
@@ -42,31 +46,32 @@ public class MCEmojiCodec implements EmojiCodec {
         for (short i = 0; i < emojiCount; i++) {
             // name read
             byte nameLength = dataInput.readByte();
-            String name = Streams.readString(dataInput, nameLength);
-
-            if (!EmojiFormat.EMOJI_NAME_PATTERN.matcher(name).matches()) {
-                throw new IOException("Invalid emoji name: '" + name + "', must match pattern: "
-                        + EmojiFormat.EMOJI_NAME_PATTERN_STRING);
-            }
+            @Subst("emoji") String name = Streams.readString(dataInput, nameLength);
 
             int height = dataInput.readShort();
             int ascent = dataInput.readShort();
-            char character = dataInput.readChar();
+
+            // character read
+            // FEATURE (from version 3): uses an int instead of an unsigned short to represent
+            //   characters, so it now supports UTF-16 surrogate pairs
+            int character = formatVersion >= 3
+                    ? dataInput.readInt()
+                    : dataInput.readShort() & 0xFFFF;
 
             // permission read
             byte permissionLength = dataInput.readByte();
-            String permission = Streams.readString(dataInput, permissionLength);
+            @Subst("emojis.emoji") String permission = Streams.readString(dataInput, permissionLength);
 
-            if (!EmojiFormat.EMOJI_PERMISSION_PATTERN.matcher(permission).matches()) {
+            if (!EmojiFormat.PERMISSION_PATTERN.matcher(permission).matches()) {
                 throw new IOException("Invalid emoji permission: '" + permission + "', for emoji '"
-                        + name + "'. Must match pattern: " + EmojiFormat.EMOJI_PERMISSION_PATTERN_STRING);
+                        + name + "'. Must match pattern: " + EmojiFormat.PERMISSION_PATTERN_STR);
             }
 
             // image read
             // FIX (from version 2): uses an int instead of an unsigned short to represent image lengths
-            int imageLength = formatVersion == 1
-                    ? (dataInput.readShort() & 0xFFFF)
-                    : dataInput.readInt();
+            int imageLength = formatVersion >= 2
+                    ? dataInput.readInt()
+                    : (dataInput.readShort() & 0xFFFF);
 
             byte[] imageBytes = new byte[imageLength];
             int read = input.read(imageBytes); // save the image bytes
@@ -76,15 +81,14 @@ public class MCEmojiCodec implements EmojiCodec {
                         + imageLength + "', found: '" + read + "'");
             }
 
-            emojis[i] = new Emoji(
-                    name,
-                    permission,
-                    imageLength,
-                    Writable.bytes(imageBytes),
-                    height,
-                    ascent,
-                    character
-            );
+            emojis[i] = Emoji.builder()
+                    .name(name)
+                    .permission(permission)
+                    .data(imageBytes)
+                    .height(height)
+                    .ascent(ascent)
+                    .character(character)
+                    .build();
         }
 
         return Arrays.asList(emojis);
@@ -106,8 +110,11 @@ public class MCEmojiCodec implements EmojiCodec {
             // if an emoji data length is >= than an unsigned short
             // max value, we must use the format version 2, that fixes it
             if (emoji.dataLength() >= 0xFFFF) {
-                formatVersion = 2;
-                break;
+                formatVersion = formatVersion < 2 ? 2 : formatVersion;
+            }
+
+            if (!Character.isBmpCodePoint(emoji.character())) {
+                formatVersion = formatVersion < 3 ? 3 : formatVersion;
             }
         }
 
@@ -130,17 +137,21 @@ public class MCEmojiCodec implements EmojiCodec {
             // height, ascent and character
             dataOutput.writeShort(emoji.height());
             dataOutput.writeShort(emoji.ascent());
-            dataOutput.writeChar(emoji.replacement().charAt(0));
+            if (formatVersion >= 3) {
+                dataOutput.writeInt(emoji.character());
+            } else {
+                dataOutput.writeChar((char) emoji.character());
+            }
 
             // write permission
             dataOutput.writeByte(permission.length());
             dataOutput.writeChars(permission);
 
             // image write
-            if (formatVersion == 1) {
-                dataOutput.writeShort(emoji.dataLength());
-            } else {
+            if (formatVersion >= 2) {
                 dataOutput.writeInt(emoji.dataLength()); // fix from format version 2
+            } else {
+                dataOutput.writeShort(emoji.dataLength());
             }
             emoji.data().write(dataOutput);
         }
