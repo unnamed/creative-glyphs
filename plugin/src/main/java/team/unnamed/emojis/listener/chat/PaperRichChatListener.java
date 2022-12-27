@@ -1,11 +1,11 @@
-package team.unnamed.emojis.paper;
+package team.unnamed.emojis.listener.chat;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiFormat;
+import team.unnamed.emojis.format.processor.MessageProcessor;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -16,16 +16,15 @@ import team.unnamed.emojis.listener.EventListener;
  *
  * Thank you PaperMC <3
  */
-@SuppressWarnings("unused") // instantiated via reflection
 public class PaperRichChatListener
         implements EventListener<AsyncChatEvent> {
 
     private final EmojiRegistry emojiRegistry;
-    private final PaperEmojiComponentProvider emojiComponentProvider;
+    private final MessageProcessor<Component, Component> messageProcessor;
 
     public PaperRichChatListener(Plugin plugin, EmojiRegistry emojiRegistry) {
         this.emojiRegistry = emojiRegistry;
-        this.emojiComponentProvider = new PaperEmojiComponentProvider(plugin);
+        this.messageProcessor = MessageProcessor.component(plugin);
     }
 
     @Override
@@ -36,19 +35,11 @@ public class PaperRichChatListener
     @Override
     public void execute(AsyncChatEvent event) {
         Player player = event.getPlayer();
-        event.message(event.message().replaceText(replacementConfig -> replacementConfig
-                .match(EmojiFormat.USAGE_PATTERN)
-                .replacement((result, builder) -> {
-                    String emojiName = result.group(1);
-                    Emoji emoji = emojiRegistry.getIgnoreCase(emojiName);
-
-                    if (!Permissions.canUse(player, emoji)) {
-                        // can't use this emoji, return the same component
-                        return builder;
-                    }
-
-                    return emojiComponentProvider.componentOf(emoji);
-                })));
+        event.message(messageProcessor.process(
+                event.message(),
+                emojiRegistry,
+                Permissions.permissionTest(player)
+        ));
     }
 
 }

@@ -1,4 +1,4 @@
-package team.unnamed.emojis.compat.java17;
+package team.unnamed.emojis.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class EmojiCompletionsListener implements Listener {
 
     private final EmojiRegistry registry;

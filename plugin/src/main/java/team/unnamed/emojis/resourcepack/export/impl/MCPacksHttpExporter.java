@@ -1,9 +1,9 @@
-package team.unnamed.emojis.export.impl;
+package team.unnamed.emojis.resourcepack.export.impl;
 
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.file.FileTreeWriter;
-import team.unnamed.emojis.export.ResourceExporter;
+import team.unnamed.emojis.resourcepack.export.ResourceExporter;
 import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 

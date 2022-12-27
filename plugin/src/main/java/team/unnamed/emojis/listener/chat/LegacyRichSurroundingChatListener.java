@@ -3,9 +3,10 @@ package team.unnamed.emojis.listener.chat;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.EmojiFormat;
+import team.unnamed.emojis.format.Permissions;
+import team.unnamed.emojis.format.processor.MessageProcessor;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.EventListener;
 
@@ -18,17 +19,17 @@ public class LegacyRichSurroundingChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 
     private final EmojiRegistry emojiRegistry;
-    private final EmojiComponentProvider emojiComponentProvider;
     private final EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy;
+    private final MessageProcessor<String, BaseComponent[]> messageProcessor;
 
     public LegacyRichSurroundingChatListener(
+            Plugin plugin,
             EmojiRegistry emojiRegistry,
-            EmojiComponentProvider emojiComponentProvider,
             EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy
     ) {
         this.emojiRegistry = emojiRegistry;
-        this.emojiComponentProvider = emojiComponentProvider;
         this.cancellationStrategy = cancellationStrategy;
+        this.messageProcessor = MessageProcessor.stringToLegacyComponent(plugin);
     }
 
     @Override
@@ -41,11 +42,10 @@ public class LegacyRichSurroundingChatListener
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        BaseComponent[] translated = EmojiFormat.replaceRawToRich(
-                player,
-                emojiRegistry,
+        BaseComponent[] translated = messageProcessor.process(
                 String.format(event.getFormat(), player.getName(), message),
-                emojiComponentProvider
+                emojiRegistry,
+                Permissions.permissionTest(player)
         );
 
         for (Player recipient : event.getRecipients()) {

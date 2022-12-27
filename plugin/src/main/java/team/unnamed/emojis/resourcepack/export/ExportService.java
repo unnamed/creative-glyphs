@@ -1,4 +1,4 @@
-package team.unnamed.emojis.export;
+package team.unnamed.emojis.resourcepack.export;
 
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.EmojiRegistry;

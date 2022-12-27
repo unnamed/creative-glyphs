@@ -1,4 +1,4 @@
-package team.unnamed.emojis.paper;
+package team.unnamed.emojis.format.representation;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -13,13 +13,14 @@ import team.unnamed.emojis.Emoji;
 
 import static net.kyori.adventure.text.minimessage.tag.resolver.TagResolver.resolver;
 
-public class PaperEmojiComponentProvider {
+final class ComponentEmojiRepresentationProvider
+        implements EmojiRepresentationProvider<Component> {
 
     private final Plugin plugin;
     private final boolean isMiniMessageAvailable;
     private boolean infoSupportMiniMessage = true;
 
-    public PaperEmojiComponentProvider(Plugin plugin) {
+    ComponentEmojiRepresentationProvider(Plugin plugin) {
         this.plugin = plugin;
         this.isMiniMessageAvailable = isMiniMessageAvailable();
 
@@ -29,7 +30,8 @@ public class PaperEmojiComponentProvider {
         }
     }
 
-    public Component componentOf(Emoji emoji) {
+    @Override
+    public Component represent(Emoji emoji) {
 
         ConfigurationSection config = plugin.getConfig();
 
@@ -43,8 +45,8 @@ public class PaperEmojiComponentProvider {
                         resolver("emojiname", Tag.inserting(Component.text(emoji.name())))
                 );
             } else if (infoSupportMiniMessage
-                    && (config.contains("format.hover.legacy", true)
-                    || config.contains("format.paper.emoji", true))) {
+                    && (config.getString("format.hover.legacy", null) != null
+                    || config.getString("format.paper.emoji", null) != null)) {
                 // MiniMessage is supported but mini-message format is not set, warn
                 plugin.getLogger().warning("MiniMessage format is supported by the server, " +
                         "but you are not using it, we recommend using it " +

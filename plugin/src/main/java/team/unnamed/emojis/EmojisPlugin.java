@@ -6,15 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.EmojisCommand;
-import team.unnamed.emojis.download.EmojiImporter;
-import team.unnamed.emojis.export.DefaultExportService;
-import team.unnamed.emojis.export.ExportService;
-import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.DefaultEmojiComponentProvider;
+import team.unnamed.emojis.editor.EmojiImporter;
+import team.unnamed.emojis.resourcepack.export.DefaultExportService;
+import team.unnamed.emojis.resourcepack.export.ExportService;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.discordsrv.DiscordSRVHook;
@@ -22,6 +19,7 @@ import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.hook.townychat.TownyChatHook;
 import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.listener.EmojiCompletionsListener;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
@@ -150,14 +148,13 @@ public class EmojisPlugin extends JavaPlugin {
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
                 .setExecutor(new EmojisCommand(this));
 
-        EmojiComponentProvider emojiComponentProvider = new DefaultEmojiComponentProvider(getConfig());
         EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy =
                 "clearRecipients".equals(getConfig().getString(""))
                         ? EventCancellationStrategy.removingRecipients()
                         : EventCancellationStrategy.cancellingDefault();
 
         Set<PluginHook> hooks = PluginHookManager.create()
-                .registerHook(new EzChatHook(this, registry, emojiComponentProvider))
+                .registerHook(new EzChatHook(this, registry))
                 .registerHook(new TownyChatHook(this, registry))
                 .registerHook(new PlaceholderApiHook(this, registry))
                 .registerHook(new DiscordSRVHook(registry))
@@ -168,7 +165,6 @@ public class EmojisPlugin extends JavaPlugin {
             eventBus.register(ListenerFactory.create(
                     this,
                     registry,
-                    new DefaultEmojiComponentProvider(getConfig()),
                     cancellationStrategy,
                     getConfig().getBoolean("compat.use-paper-listener"),
                     getConfig().getBoolean("format.legacy.rich")
@@ -178,28 +174,14 @@ public class EmojisPlugin extends JavaPlugin {
             ).toUpperCase()));
         }
 
-        Class<?> playerJoinListenerClass;
         try {
-            playerJoinListenerClass = Class.forName("team.unnamed.emojis.compat.java17.EmojiCompletionsListener");
-
             // check if methods required to make completions work exist
             // (they may not exist in Spigot)
             Player.class.getDeclaredMethod("addAdditionalChatCompletions", Collection.class);
-        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
-            // do not make it work
-            playerJoinListenerClass = null;
-        }
 
-        if (playerJoinListenerClass != null) {
-            try {
-                Listener listener = (Listener) playerJoinListenerClass
-                        .getDeclaredConstructor(EmojiRegistry.class)
-                        .newInstance(registry);
-                getServer().getPluginManager().registerEvents(listener, this);
-            } catch (ReflectiveOperationException e) {
-                getLogger().log(Level.SEVERE, "Failed to instantiate" +
-                        " EmojiCompletionsListener, no completions available", e);
-            }
+            // register emoji completions listener
+            getServer().getPluginManager().registerEvents(new EmojiCompletionsListener(registry), this);
+        } catch (NoSuchMethodException ignored) {
         }
 
         // Metrics

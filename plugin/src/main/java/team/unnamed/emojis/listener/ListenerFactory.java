@@ -4,9 +4,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.format.EmojiComponentProvider;
 import team.unnamed.emojis.listener.chat.LegacyChatListener;
 import team.unnamed.emojis.listener.chat.LegacyRichSurroundingChatListener;
+import team.unnamed.emojis.listener.chat.PaperRichChatListener;
 
 import java.util.logging.Logger;
 
@@ -25,7 +25,6 @@ public final class ListenerFactory {
     public static EventListener<?> create(
             Plugin plugin,
             EmojiRegistry registry,
-            EmojiComponentProvider componentProvider,
             EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy,
             boolean paper,
             boolean rich
@@ -39,11 +38,7 @@ public final class ListenerFactory {
                 LOGGER.info("Paper detected, trying to use Paper chat listener");
 
                 // if it didn't throw an exception, return its event listener
-                // (instantiated via reflection because it's not available in
-                // compile-time classpath)
-                return (EventListener<?>) Class.forName("team.unnamed.emojis.paper.PaperRichChatListener")
-                        .getDeclaredConstructor(Plugin.class, EmojiRegistry.class)
-                        .newInstance(plugin, registry);
+                return new PaperRichChatListener(plugin, registry);
             } catch (ReflectiveOperationException ignored) {
                 LOGGER.info("Failed to instantiate Paper chat listener");
             }
@@ -55,8 +50,8 @@ public final class ListenerFactory {
             // this another ugly legacy that may generate compatibility
             // problems with other plugins...
             return new LegacyRichSurroundingChatListener(
+                    plugin,
                     registry,
-                    componentProvider,
                     cancellationStrategy
             );
         } else {

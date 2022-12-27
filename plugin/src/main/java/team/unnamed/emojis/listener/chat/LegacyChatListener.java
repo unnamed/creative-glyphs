@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiFormat;
+import team.unnamed.emojis.format.processor.MessageProcessor;
+import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
 
 /**
@@ -38,8 +39,11 @@ public class LegacyChatListener
         ChatColor color = ChatColor.getByChar(plugin.getConfig()
                 .getString("format.legacy.color", "f").charAt(0));
 
-        String newMessage = EmojiFormat.replaceRawToRaw(player, emojiRegistry, color + message);
-        event.setMessage(newMessage);
+        event.setMessage(MessageProcessor.string().process(
+                color + message,
+                emojiRegistry,
+                Permissions.permissionTest(player)
+        ));
     }
 
 }

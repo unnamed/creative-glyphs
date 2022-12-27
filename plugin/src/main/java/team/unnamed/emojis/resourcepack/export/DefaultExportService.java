@@ -1,4 +1,4 @@
-package team.unnamed.emojis.export;
+package team.unnamed.emojis.resourcepack.export;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
