@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.resourcepack.ResourcePack;
 import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 
 import java.util.HashMap;
