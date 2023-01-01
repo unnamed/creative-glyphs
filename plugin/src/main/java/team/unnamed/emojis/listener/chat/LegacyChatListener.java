@@ -1,6 +1,7 @@
 package team.unnamed.emojis.listener.chat;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
@@ -36,14 +37,36 @@ public class LegacyChatListener
     public void execute(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        ChatColor color = ChatColor.getByChar(plugin.getConfig()
-                .getString("format.legacy.color", "f").charAt(0));
+        String messagePrefix = getMessagePrefix();
 
         event.setMessage(MessageProcessor.string().process(
-                color + message,
+                messagePrefix + message,
                 emojiRegistry,
                 Permissions.permissionTest(player)
         ));
+    }
+
+    private String getMessagePrefix() {
+        ConfigurationSection config = plugin.getConfig();
+        String prefix = config.getString("format.legacy.message-prefix", null);
+
+        if (prefix != null) {
+            return ChatColor.translateAlternateColorCodes('&', prefix);
+        } else {
+            String legacyColor = config.getString("format.legacy.color", null);
+
+            if (legacyColor == null) {
+                // no prefix
+                return "";
+            } else if (legacyColor.length() == 1) {
+                // backwards compatibility
+                // TODO: Remove, backwards compatibility
+                return ChatColor.getByChar(legacyColor) + "";
+            } else {
+                // same behavior as new, but new path is recommended
+                return ChatColor.translateAlternateColorCodes('&', legacyColor);
+            }
+        }
     }
 
 }

@@ -42,9 +42,9 @@ format:
 
     # Configuration for when not running on a Paper server
     legacy:
-        # Initial message color, because we can't get it
-        # from other plugins using AsyncPlayerChatEvent
-        color: 'f'
+        # Initial message prefix, because we can't obtain it
+        # from other plugins when using AsyncPlayerChatEvent
+        message-prefix: '&f'
 
         # Using components in legacy servers can affect
         # compatibility with other plugins since we need
