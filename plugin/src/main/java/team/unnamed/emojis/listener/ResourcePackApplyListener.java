@@ -73,7 +73,7 @@ public class ResourcePackApplyListener implements Listener {
     }
 
     private void handleFailedPack(Player player) {
-        if (config.getBoolean("feature.require-pack")) {
+        if (plugin.getResourcePack().required()) {
             player.kickPlayer(getAndFormat("messages.fail"));
         } else {
             player.sendMessage(getAndFormat("messages.warn"));

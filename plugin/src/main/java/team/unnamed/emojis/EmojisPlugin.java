@@ -126,7 +126,11 @@ public class EmojisPlugin extends JavaPlugin {
         EventBus eventBus = EventBus.create(this);
 
         if (location != null) {
-            String prompt = getConfig().getString("application.prompt");
+            // TODO: Remove support for 'application.prompt'
+            String prompt = getConfig().getString("application.prompt", null);
+            if (prompt == null) {
+                prompt = getConfig().getString("pack.prompt", null);
+            }
             if (prompt != null) {
                 prompt = ChatColor.translateAlternateColorCodes('&', prompt);
                 // TODO: refactor this ugly code
@@ -136,7 +140,8 @@ public class EmojisPlugin extends JavaPlugin {
             this.resourcePack = new ResourcePack(
                     location.url(),
                     location.hash(),
-                    getConfig().getBoolean("feature.require-pack"),
+                    // TODO: Remove support for "feature.require-pack"
+                    getConfig().getBoolean("feature.require-pack", false) || getConfig().getBoolean("pack.required", false),
                     prompt
             );
             Bukkit.getPluginManager().registerEvents(

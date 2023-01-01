@@ -25,6 +25,18 @@ pack:
     #        them :)
     export: 'mcpacks'
 
+    # True if the player NEEDS to accept the resource-pack, false if the resource-pack
+    # installation is optional
+    #
+    # If the pack is required (true) it will kick players who decline or can't download it
+    # If the pack is not required (false= they will get a warning instead
+    required: false
+
+    # (Optional) Message shown to players when they join for the first time
+    # They are asked to use the server resource pack and this message is
+    # shown in the screen
+    prompt: '&dµŋemojis &8| &aInfo &8| &7Please accept our resource-pack to enjoy the full experience!'
+
 format:
 
     # The text displayed when the player hovers an emoji
@@ -74,18 +86,3 @@ messages:
     kick: '&dµŋemojis &8| &cError &8| &7You must accept the server resource-pack to join the server'
     warn: '&dµŋemojis &8| &eWarn &8| &7This server supports emojis, enable the server resource-pack to see them!'
     fail: '&dµŋemojis &8| &cError &8| &7Resource pack download failed, try to reconnect'
-
-
-feature:
-    # True if the player NEEDS to accept the resource-pack, false if the resource-pack
-    # installation is optional
-    #
-    # If the pack is required (true) it will kick players who decline or can't download it
-    # If the pack is not required (false= they will get a warning instead
-    require-pack: false
-
-application:
-    # (Optional) Message shown to players when they join for the first time
-    # They are asked to use the server resource pack and this message is
-    # shown in the screen
-    prompt: '&dµŋemojis &8| &aInfo &8| &7Please accept our resource-pack to enjoy the full experience!'
