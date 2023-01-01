@@ -35,8 +35,7 @@ public final class ListenerFactory {
                 // check for modern AsyncChatEvent
                 Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
 
-                LOGGER.info("Paper detected, trying to use Paper chat listener");
-
+                LOGGER.info("Using Paper rich chat listener");
                 // if it didn't throw an exception, return its event listener
                 return new PaperRichChatListener(plugin, registry);
             } catch (ReflectiveOperationException ignored) {
