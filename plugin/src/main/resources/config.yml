@@ -85,9 +85,7 @@ feature:
     require-pack: false
 
 application:
-    # Message shown on a player first join, they are asked to use the
-    # resource pack. This feature is only available if server version
-    # is 1.17 or superior
-    #
-    # You can remove this option
+    # (Optional) Message shown to players when they join for the first time
+    # They are asked to use the server resource pack and this message is
+    # shown in the screen
     prompt: '&dµŋemojis &8| &aInfo &8| &7Please accept our resource-pack to enjoy the full experience!'
