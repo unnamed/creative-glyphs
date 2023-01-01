@@ -37,9 +37,9 @@ public class EmojisCommand implements CommandExecutor {
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
-        this.importer = plugin.getImporter();
-        this.emojiRegistry = plugin.getRegistry();
-        this.exportService = plugin.getExportService();
+        this.importer = plugin.importer();
+        this.emojiRegistry = plugin.registry();
+        this.exportService = plugin.exportService();
         this.config = plugin.getConfig();
         this.plugin = plugin;
     }

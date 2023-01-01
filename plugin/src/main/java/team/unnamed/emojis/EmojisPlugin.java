@@ -193,27 +193,27 @@ public class EmojisPlugin extends JavaPlugin {
         new Metrics(this, 17168);
     }
 
-    public EmojiRegistry getRegistry() {
+    public EmojiRegistry registry() {
         return registry;
     }
 
-    public EmojiImporter getImporter() {
+    public EmojiImporter importer() {
         return importer;
     }
 
-    public EmojiCodec getCodec() {
+    public EmojiCodec codec() {
         return codec;
     }
 
-    public ExportService getExportService() {
+    public ExportService exportService() {
         return exportService;
     }
 
-    public ResourcePack getResourcePack() {
+    public ResourcePack pack() {
         return resourcePack;
     }
 
-    public void setResourcePack(ResourcePack resourcePack) {
+    public void pack(ResourcePack resourcePack) {
         this.resourcePack = resourcePack;
     }
 

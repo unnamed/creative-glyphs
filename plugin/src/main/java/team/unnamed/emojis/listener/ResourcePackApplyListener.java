@@ -29,7 +29,7 @@ public class ResourcePackApplyListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ResourcePackApplier.setResourcePack(player, plugin.getResourcePack());
+        ResourcePackApplier.setResourcePack(player, plugin.pack());
     }
 
     @EventHandler
@@ -73,7 +73,7 @@ public class ResourcePackApplyListener implements Listener {
     }
 
     private void handleFailedPack(Player player) {
-        if (plugin.getResourcePack().required()) {
+        if (plugin.pack().required()) {
             player.kickPlayer(getAndFormat("messages.fail"));
         } else {
             player.sendMessage(getAndFormat("messages.warn"));
