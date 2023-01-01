@@ -26,10 +26,10 @@ public class EmojiRegistry {
         return characters.get(Character.toString(c));
     }
 
-    public @Nullable Emoji getByCodepoint(int codepoint) {
+    public @Nullable Emoji getByCodePoint(int codePoint) {
         return characters.get(
                 new StringBuilder()
-                        .appendCodePoint(codepoint)
+                        .appendCodePoint(codePoint)
                         .toString()
         );
     }

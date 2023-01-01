@@ -84,14 +84,14 @@ public class DiscordSRVHook
 
                             if (!Character.isBmpCodePoint(codePoint)) {
                                 // two characters were used to represent this
-                                // codepoint so skip this thing
+                                // code point so skip this thing
                                 i++;
                             }
 
-                            Emoji emoji = registry.getByCodepoint(codePoint);
+                            Emoji emoji = registry.getByCodePoint(codePoint);
 
                             if (emoji == null) {
-                                // codepoint did not represent an emoji, just append it
+                                // code point did not represent an emoji, just append it
                                 replaced.appendCodePoint(codePoint);
                             } else {
                                 List<Emote> emotes = guild.getEmotesByName(emoji.name(), true);

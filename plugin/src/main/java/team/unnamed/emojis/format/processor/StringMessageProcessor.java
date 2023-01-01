@@ -109,21 +109,21 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < message.length(); i++) {
-            int codepoint = message.codePointAt(i);
+            int codePoint = message.codePointAt(i);
 
-            if (!Character.isBmpCodePoint(codepoint)) {
+            if (!Character.isBmpCodePoint(codePoint)) {
                 // two characters were used to represent this
-                // codepoint so skip this thing
+                // code point so skip this thing
                 i++;
             }
 
-            Emoji emoji = registry.getByCodepoint(codepoint);
+            Emoji emoji = registry.getByCodePoint(codePoint);
 
             if (emoji == null) {
-                // codepoint did not represent an emoji, just append it
-                builder.appendCodePoint(codepoint);
+                // code point did not represent an emoji, just append it
+                builder.appendCodePoint(codePoint);
             } else {
-                // codepoint represents an emoji, we must change it to its usage
+                // code point represents an emoji, we must change it to its usage
                 builder.append(EmojiFormat.usageOf(emoji));
             }
         }
