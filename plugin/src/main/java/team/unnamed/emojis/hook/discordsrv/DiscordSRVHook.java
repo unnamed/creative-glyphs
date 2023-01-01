@@ -80,12 +80,19 @@ public class DiscordSRVHook
                         String content = builder.content();
 
                         for (int i = 0; i < content.length(); i++) {
-                            char c = content.charAt(i);
-                            Emoji emoji = registry.getByChar(c);
+                            int codePoint = content.codePointAt(i);
+
+                            if (!Character.isBmpCodePoint(codePoint)) {
+                                // two characters were used to represent this
+                                // codepoint so skip this thing
+                                i++;
+                            }
+
+                            Emoji emoji = registry.getByCodepoint(codePoint);
 
                             if (emoji == null) {
-                                // let it be
-                                replaced.append(c);
+                                // codepoint did not represent an emoji, just append it
+                                replaced.appendCodePoint(codePoint);
                             } else {
                                 List<Emote> emotes = guild.getEmotesByName(emoji.name(), true);
                                 Emote emote = emotes.isEmpty() ? null : emotes.get(0);
