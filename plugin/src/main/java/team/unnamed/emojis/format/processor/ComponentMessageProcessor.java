@@ -1,14 +1,18 @@
 package team.unnamed.emojis.format.processor;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.representation.EmojiRepresentationProvider;
 
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 final class ComponentMessageProcessor implements MessageProcessor<Component, Component> {
+
+    private static final Pattern ANY = Pattern.compile(".*", Pattern.MULTILINE);
 
     private final EmojiRepresentationProvider<Component> representationProvider;
 
@@ -31,6 +35,16 @@ final class ComponentMessageProcessor implements MessageProcessor<Component, Com
 
                     return representationProvider.represent(emoji);
                 }));
+    }
+
+    @Override
+    public Component flatten(Component message, EmojiRegistry registry) {
+        return message.replaceText(TextReplacementConfig.builder()
+                .match(ANY)
+                .replacement((result, builder) ->
+                        // delegate to String MessageProcessor
+                        builder.content(MessageProcessor.string().flatten(builder.content(), registry)))
+                .build());
     }
 
 }

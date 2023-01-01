@@ -103,4 +103,32 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
         return builder.toString();
     }
 
+    @Override
+    public String flatten(String message, EmojiRegistry registry) {
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < message.length(); i++) {
+            int codepoint = message.codePointAt(i);
+
+            if (!Character.isBmpCodePoint(codepoint)) {
+                // two characters were used to represent this
+                // codepoint so skip this thing
+                i++;
+            }
+
+            Emoji emoji = registry.getByCodepoint(codepoint);
+
+            if (emoji == null) {
+                // codepoint did not represent an emoji, just append it
+                builder.appendCodePoint(codepoint);
+            } else {
+                // codepoint represents an emoji, we must change it to its usage
+                builder.append(EmojiFormat.usageOf(emoji));
+            }
+        }
+
+        return builder.toString();
+    }
+
 }

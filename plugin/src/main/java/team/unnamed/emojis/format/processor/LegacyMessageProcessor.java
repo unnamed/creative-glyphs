@@ -107,6 +107,12 @@ final class LegacyMessageProcessor implements MessageProcessor<String, BaseCompo
         return components.toArray(EMPTY_COMPONENT_ARRAY);
     }
 
+    @Override
+    public String flatten(String message, EmojiRegistry registry) {
+        // delegate to the String MessageProcessor
+        return MessageProcessor.string().flatten(message, registry);
+    }
+
     private static void fromLegacyText(
             String message,
             List<TextComponent> components,

@@ -14,6 +14,8 @@ public interface MessageProcessor<TInput, TOutput> {
 
     TOutput process(TInput message, EmojiRegistry registry, Predicate<Emoji> usageChecker);
 
+    TInput flatten(TInput message, EmojiRegistry registry);
+
     default TOutput process(TInput message, EmojiRegistry registry) {
         // has permission to use all the emojis
         return process(message, registry, emoji -> true);
