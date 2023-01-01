@@ -1,6 +1,6 @@
 package team.unnamed.emojis;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import team.unnamed.emojis.format.processor.MessageProcessor;
 
@@ -8,9 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReplacementTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ProcessingTest {
 
     private static final Map<String, String> EXPECTATIONS;
+    private static final EmojiRegistry REGISTRY = new EmojiRegistry();
 
     static {
         // key replaces to value
@@ -37,13 +40,9 @@ public class ReplacementTest {
         );
 
         EXPECTATIONS = Collections.unmodifiableMap(expectations);
-    }
 
-    @Test
-    public void test() {
-
-        EmojiRegistry registry = new EmojiRegistry();
-        registry.add(
+        // fill registry
+        REGISTRY.add(
                 Emoji.builder()
                         .name("test")
                         .permission("")
@@ -53,11 +52,33 @@ public class ReplacementTest {
                         .character('\u03bc')
                         .build()
         );
+    }
 
+    @Test
+    @DisplayName("Test direct processing")
+    public void test_direct_processing() {
         for (Map.Entry<String, String> expectation : EXPECTATIONS.entrySet()) {
-            Assertions.assertEquals(
+            assertEquals(
                     expectation.getValue(),
-                    MessageProcessor.string().process(expectation.getKey(), registry)
+                    MessageProcessor.string().process(expectation.getKey(), REGISTRY)
+            );
+        }
+    }
+
+    @Test
+    @DisplayName("Test flattening")
+    public void test_flattening() {
+        for (Map.Entry<String, String> expectation : EXPECTATIONS.entrySet()) {
+            String input = expectation.getKey();
+//            String output = expectation.getValue();
+//
+//            assertEquals(
+//                    input,
+//                    MessageProcessor.string().flatten(output, REGISTRY)
+//            );
+            assertEquals(
+                    input,
+                    MessageProcessor.string().flatten(input, REGISTRY)
             );
         }
     }
