@@ -43,7 +43,7 @@ bukkit {
     apiVersion = "1.13"
     description = "Unnamed Team's Emojis Plugin"
     author = "Unnamed Team"
-    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV")
+    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "LPC")
     commands {
         create("emojis") {
             description = "Main command for the unemojis plugin"

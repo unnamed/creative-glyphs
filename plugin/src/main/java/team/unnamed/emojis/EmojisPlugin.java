@@ -10,6 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.EmojisCommand;
 import team.unnamed.emojis.editor.EmojiImporter;
+import team.unnamed.emojis.listener.EventListener;
 import team.unnamed.emojis.resourcepack.export.DefaultExportService;
 import team.unnamed.emojis.resourcepack.export.ExportService;
 import team.unnamed.emojis.hook.PluginHook;
@@ -39,6 +40,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
@@ -167,16 +169,20 @@ public class EmojisPlugin extends JavaPlugin {
 
         if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {
             // if no chat plugin hooks, let's register our own listener
-            eventBus.register(ListenerFactory.create(
+            EventPriority priority = EventPriority.valueOf(getConfig().getString(
+                    "compat.listener-priority",
+                    "HIGHEST"
+            ).toUpperCase(Locale.ROOT));
+
+            EventListener<?> chatListener = ListenerFactory.create(
                     this,
                     registry,
                     cancellationStrategy,
                     getConfig().getBoolean("compat.use-paper-listener"),
                     getConfig().getBoolean("format.legacy.rich")
-            ), EventPriority.valueOf(getConfig().getString(
-                    "compat.listener-priority",
-                    "HIGHEST"
-            ).toUpperCase()));
+            );
+
+            eventBus.register(chatListener, priority);
         }
 
         try {
