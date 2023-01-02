@@ -45,7 +45,7 @@ public class DiscordSRVHook
         @Subscribe
         public void onMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
             event.setMinecraftMessage(event.getMinecraftMessage().replaceText(replacementConfig -> replacementConfig
-                    .match(EmojiFormat.EMOJI_USAGE_PATTERN)
+                    .match(EmojiFormat.USAGE_PATTERN)
                     .replacement((result, builder) -> {
                         String emojiName = result.group(1);
                         Emoji emoji = registry.getIgnoreCase(emojiName);
@@ -80,12 +80,19 @@ public class DiscordSRVHook
                         String content = builder.content();
 
                         for (int i = 0; i < content.length(); i++) {
-                            char c = content.charAt(i);
-                            Emoji emoji = registry.getByChar(c);
+                            int codePoint = content.codePointAt(i);
+
+                            if (!Character.isBmpCodePoint(codePoint)) {
+                                // two characters were used to represent this
+                                // code point so skip this thing
+                                i++;
+                            }
+
+                            Emoji emoji = registry.getByCodePoint(codePoint);
 
                             if (emoji == null) {
-                                // let it be
-                                replaced.append(c);
+                                // code point did not represent an emoji, just append it
+                                replaced.appendCodePoint(codePoint);
                             } else {
                                 List<Emote> emotes = guild.getEmotesByName(emoji.name(), true);
                                 Emote emote = emotes.isEmpty() ? null : emotes.get(0);

@@ -1,4 +1,4 @@
-package team.unnamed.emojis.download;
+package team.unnamed.emojis.editor;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

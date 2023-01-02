@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.resourcepack.ResourcePack;
 import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class ResourcePackApplyListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ResourcePackApplier.setResourcePack(player, plugin.getResourcePack());
+        ResourcePackApplier.setResourcePack(player, plugin.pack());
     }
 
     @EventHandler
@@ -74,7 +73,7 @@ public class ResourcePackApplyListener implements Listener {
     }
 
     private void handleFailedPack(Player player) {
-        if (config.getBoolean("feature.require-pack")) {
+        if (plugin.pack().required()) {
             player.kickPlayer(getAndFormat("messages.fail"));
         } else {
             player.sendMessage(getAndFormat("messages.warn"));

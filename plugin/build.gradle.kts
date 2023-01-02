@@ -13,13 +13,17 @@ repositories {
 }
 
 dependencies {
-    val spigot = "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT";
+    val serverApi = "io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT";
     val annotations = "org.jetbrains:annotations:22.0.0";
 
     // Required libraries
-    compileOnly(spigot)
+    compileOnly(serverApi)
     compileOnly(annotations)
-    implementation("team.unnamed:creative-api:0.5.2-SNAPSHOT")
+    implementation("team.unnamed:creative-api:0.5.3-SNAPSHOT")
+
+    // Optional libraries
+    compileOnly("net.kyori:adventure-api:4.12.0")
+    compileOnly("net.kyori:adventure-text-minimessage:4.12.0")
 
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
@@ -28,7 +32,7 @@ dependencies {
     compileOnly("net.essentialsx:EssentialsXDiscord:2.19.7")
 
     // Testing
-    testImplementation(spigot)
+    testImplementation(serverApi)
     testImplementation(annotations)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
@@ -41,7 +45,7 @@ bukkit {
     apiVersion = "1.13"
     description = "Unnamed Team's Emojis Plugin"
     author = "Unnamed Team"
-    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "EssentialsDiscord")
+    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "LPC", "EssentialsDiscord")
     commands {
         create("emojis") {
             description = "Main command for the unemojis plugin"
@@ -57,19 +61,12 @@ tasks {
 
     java {
         toolchain {
-            // use java 8 by default
-            languageVersion.set(JavaLanguageVersion.of(8))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 
     shadowJar {
         from(project.sourceSets.main.get().output)
-
-        arrayOf("java16", "java17").forEach {
-            val buildTask = project(":emojis-compat-$it").tasks.named("jar")
-            dependsOn(buildTask)
-            from(zipTree(buildTask.map { out -> out.outputs.files.singleFile }))
-        }
 
         // relocate libraries
         // TODO: Remove when creative-manage is ready

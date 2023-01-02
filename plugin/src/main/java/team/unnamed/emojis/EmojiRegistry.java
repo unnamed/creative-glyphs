@@ -26,6 +26,14 @@ public class EmojiRegistry {
         return characters.get(Character.toString(c));
     }
 
+    public @Nullable Emoji getByCodePoint(int codePoint) {
+        return characters.get(
+                new StringBuilder()
+                        .appendCodePoint(codePoint)
+                        .toString()
+        );
+    }
+
     public void add(Emoji emoji) {
         registry.put(emoji.name(), emoji);
         characters.put(emoji.replacement(), emoji);

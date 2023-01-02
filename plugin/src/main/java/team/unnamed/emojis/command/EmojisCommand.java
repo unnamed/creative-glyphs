@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojiRegistry;
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.download.EmojiImporter;
-import team.unnamed.emojis.export.ExportService;
+import team.unnamed.emojis.editor.EmojiImporter;
+import team.unnamed.emojis.resourcepack.export.ExportService;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
@@ -37,9 +37,9 @@ public class EmojisCommand implements CommandExecutor {
     private final EmojisPlugin plugin;
 
     public EmojisCommand(EmojisPlugin plugin) {
-        this.importer = plugin.getImporter();
-        this.emojiRegistry = plugin.getRegistry();
-        this.exportService = plugin.getExportService();
+        this.importer = plugin.importer();
+        this.emojiRegistry = plugin.registry();
+        this.exportService = plugin.exportService();
         this.config = plugin.getConfig();
         this.plugin = plugin;
     }

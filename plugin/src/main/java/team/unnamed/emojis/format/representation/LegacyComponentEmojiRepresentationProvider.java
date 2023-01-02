@@ -1,29 +1,29 @@
-package team.unnamed.emojis.format;
+package team.unnamed.emojis.format.representation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
 
-public class DefaultEmojiComponentProvider
-        implements EmojiComponentProvider {
+final class LegacyComponentEmojiRepresentationProvider
+        implements EmojiRepresentationProvider<TextComponent> {
 
     private static final String DEFAULT_FORMAT = ChatColor.WHITE + "<emoji> " + ChatColor.GRAY + ":<emojiname>: "
             + ChatColor.LIGHT_PURPLE + "/emojis";
 
-    private final ConfigurationSection config;
+    private final Plugin plugin;
 
-    public DefaultEmojiComponentProvider(ConfigurationSection config) {
-        this.config = config;
+    LegacyComponentEmojiRepresentationProvider(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
-    public TextComponent toComponent(Emoji emoji) {
+    public TextComponent represent(Emoji emoji) {
         String format = ChatColor.translateAlternateColorCodes(
                 '&',
-                        config.getString("format.paper.emoji", DEFAULT_FORMAT)
+                        plugin.getConfig().getString("format.paper.emoji", DEFAULT_FORMAT)
         )
                 .replace("<emoji>", emoji.replacement())
                 .replace("<emojiname>", emoji.name());

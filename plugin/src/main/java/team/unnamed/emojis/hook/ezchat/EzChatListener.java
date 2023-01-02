@@ -9,9 +9,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiComponentProvider;
-import team.unnamed.emojis.format.EmojiFormat;
+import team.unnamed.emojis.format.Permissions;
+import team.unnamed.emojis.format.processor.MessageProcessor;
 
 public class EzChatListener implements Listener {
 
@@ -19,14 +20,14 @@ public class EzChatListener implements Listener {
             = new ChatFormatSerializer();
 
     private final EmojiRegistry registry;
-    private final EmojiComponentProvider emojiComponentProvider;
+    private final MessageProcessor<String, BaseComponent[]> messageProcessor;
 
     public EzChatListener(
-            EmojiRegistry registry,
-            EmojiComponentProvider emojiComponentProvider
+            Plugin plugin,
+            EmojiRegistry registry
     ) {
         this.registry = registry;
-        this.emojiComponentProvider = emojiComponentProvider;
+        this.messageProcessor = MessageProcessor.stringToLegacyComponent(plugin);
     }
 
     @EventHandler
@@ -43,12 +44,7 @@ public class EzChatListener implements Listener {
             message = ChatColor.translateAlternateColorCodes('&', message);
         }
 
-        BaseComponent[] messageComponent = EmojiFormat.replaceRawToRich(
-                sender,
-                registry,
-                message,
-                emojiComponentProvider
-        );
+        BaseComponent[] messageComponent = messageProcessor.process(message, registry, Permissions.permissionTest(sender));
 
         if (!format.isUsePlaceholderApi()) {
             EasyTextComponent component = formatSerializer.constructJsonMessage(format, sender);

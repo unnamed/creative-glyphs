@@ -1,9 +1,9 @@
-package team.unnamed.emojis.export;
+package team.unnamed.emojis.resourcepack.export;
 
 import org.bukkit.plugin.Plugin;
 import team.unnamed.creative.file.FileTree;
-import team.unnamed.emojis.export.impl.FileExporter;
-import team.unnamed.emojis.export.impl.MCPacksHttpExporter;
+import team.unnamed.emojis.resourcepack.export.impl.FileExporter;
+import team.unnamed.emojis.resourcepack.export.impl.MCPacksHttpExporter;
 
 import java.io.File;
 import java.io.IOException;

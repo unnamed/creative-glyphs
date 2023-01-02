@@ -1,11 +1,13 @@
 package team.unnamed.emojis.listener.chat;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.EmojiRegistry;
-import team.unnamed.emojis.format.EmojiFormat;
+import team.unnamed.emojis.format.processor.MessageProcessor;
+import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
 
 /**
@@ -35,11 +37,36 @@ public class LegacyChatListener
     public void execute(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        ChatColor color = ChatColor.getByChar(plugin.getConfig()
-                .getString("format.legacy.color", "f").charAt(0));
+        String messagePrefix = getMessagePrefix();
 
-        String newMessage = EmojiFormat.replaceRawToRaw(player, emojiRegistry, color + message);
-        event.setMessage(newMessage);
+        event.setMessage(MessageProcessor.string().process(
+                messagePrefix + message,
+                emojiRegistry,
+                Permissions.permissionTest(player)
+        ));
+    }
+
+    private String getMessagePrefix() {
+        ConfigurationSection config = plugin.getConfig();
+        String prefix = config.getString("format.legacy.message-prefix", null);
+
+        if (prefix != null) {
+            return ChatColor.translateAlternateColorCodes('&', prefix);
+        } else {
+            String legacyColor = config.getString("format.legacy.color", null);
+
+            if (legacyColor == null) {
+                // no prefix
+                return "";
+            } else if (legacyColor.length() == 1) {
+                // backwards compatibility
+                // TODO: Remove, backwards compatibility
+                return ChatColor.getByChar(legacyColor) + "";
+            } else {
+                // same behavior as new, but new path is recommended
+                return ChatColor.translateAlternateColorCodes('&', legacyColor);
+            }
+        }
     }
 
 }

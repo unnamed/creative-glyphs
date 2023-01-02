@@ -23,7 +23,19 @@ pack:
     #     -> Uses https://mc-packs.net/ to upload the result,
     #        it's a free resource-pack host, you can donate to
     #        them :)
-    export: "mcpacks"
+    export: 'mcpacks'
+
+    # True if the player NEEDS to accept the resource-pack, false if the resource-pack
+    # installation is optional
+    #
+    # If the pack is required (true) it will kick players who decline or can't download it
+    # If the pack is not required (false= they will get a warning instead
+    required: false
+
+    # (Optional) Message shown to players when they join for the first time
+    # They are asked to use the server resource pack and this message is
+    # shown in the screen
+    prompt: '&dµŋemojis &8| &aInfo &8| &7Please accept our resource-pack to enjoy the full experience!'
 
 format:
 
@@ -42,9 +54,9 @@ format:
 
     # Configuration for when not running on a Paper server
     legacy:
-        # Initial message color, because we can't get it
-        # from other plugins using AsyncPlayerChatEvent
-        color: 'f'
+        # Initial message prefix, because we can't obtain it
+        # from other plugins when using AsyncPlayerChatEvent
+        message-prefix: '&f'
 
         # Using components in legacy servers can affect
         # compatibility with other plugins since we need
@@ -71,21 +83,6 @@ messages:
         &8-----------------------------------------------------
     list:
         hover: '&f<emoji> &8:<emojiname>:'
-    kick: "&dµŋemojis &8| &cError &8| &7You must accept the server resource-pack to join the server"
-    warn: "&dµŋemojis &8| &eWarn &8| &7This server supports emojis, enable the server resource-pack to see them!"
-    fail: "&dµŋemojis &8| &cError &8| &7Resource pack download failed, try to reconnect."
-
-
-feature:
-    # require-pack is if the player NEEDS to accept the resourcepack.
-    # If the pack is required it will kick players who decline or fail to download it.
-    # If the pack isnt required they will get a warning instead.
-    require-pack: false
-
-application:
-    # Message shown on a player first join, they are asked to use the
-    # resource pack. This feature is only available if server version
-    # is 1.17 or superior
-    #
-    # You can remove this option
-    prompt: '&dµŋemojis &8| &aInfo &8| &7Please accept our resource-pack to enjoy the full experience!'
+    kick: '&dµŋemojis &8| &cError &8| &7You must accept the server resource-pack to join the server'
+    warn: '&dµŋemojis &8| &eWarn &8| &7This server supports emojis, enable the server resource-pack to see them!'
+    fail: '&dµŋemojis &8| &cError &8| &7Resource pack download failed, try to reconnect'
