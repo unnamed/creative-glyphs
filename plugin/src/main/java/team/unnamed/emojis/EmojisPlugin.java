@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import team.unnamed.emojis.command.EmojisCommand;
+import team.unnamed.emojis.command.RootCommand;
 import team.unnamed.emojis.editor.EmojiImporter;
 import team.unnamed.emojis.listener.EventListener;
 import team.unnamed.emojis.resourcepack.export.DefaultExportService;
@@ -153,7 +153,7 @@ public class EmojisPlugin extends JavaPlugin {
         }
 
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
-                .setExecutor(new EmojisCommand(this));
+                .setExecutor(new RootCommand(this).asExecutor());
 
         EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy =
                 "clearRecipients".equals(getConfig().getString(""))
