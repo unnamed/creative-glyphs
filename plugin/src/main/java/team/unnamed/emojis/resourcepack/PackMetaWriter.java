@@ -8,7 +8,7 @@ import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.creative.metadata.Metadata;
 import team.unnamed.creative.metadata.PackMeta;
-import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.object.serialization.Streams;
 import team.unnamed.emojis.util.Version;
 
 import java.io.File;

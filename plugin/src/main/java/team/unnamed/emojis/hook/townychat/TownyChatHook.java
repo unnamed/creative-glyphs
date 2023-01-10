@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.processor.MessageProcessor;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.hook.PluginHook;
@@ -16,9 +16,9 @@ public class TownyChatHook
         implements PluginHook.Chat, Listener {
 
     private final Plugin plugin;
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
-    public TownyChatHook(Plugin plugin, EmojiRegistry registry) {
+    public TownyChatHook(Plugin plugin, EmojiStore registry) {
         this.plugin = plugin;
         this.registry = registry;
     }

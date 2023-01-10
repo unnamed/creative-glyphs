@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.emojis.command.RootCommand;
-import team.unnamed.emojis.editor.EmojiImporter;
+import team.unnamed.emojis.object.cloud.EmojiImporter;
 import team.unnamed.emojis.listener.EventListener;
 import team.unnamed.emojis.resourcepack.export.DefaultExportService;
 import team.unnamed.emojis.resourcepack.export.ExportService;
@@ -19,106 +19,47 @@ import team.unnamed.emojis.hook.discordsrv.DiscordSRVHook;
 import team.unnamed.emojis.hook.ezchat.EzChatHook;
 import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.hook.townychat.TownyChatHook;
-import team.unnamed.emojis.io.Streams;
 import team.unnamed.emojis.listener.EmojiCompletionsListener;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
-import team.unnamed.emojis.io.EmojiCodec;
-import team.unnamed.emojis.io.MCEmojiCodec;
 import team.unnamed.emojis.metrics.Metrics;
 import team.unnamed.emojis.resourcepack.ResourcePack;
 import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
+import team.unnamed.emojis.object.store.EmojiStore;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class EmojisPlugin extends JavaPlugin {
 
-    private EmojiRegistry registry;
+    private EmojiStore registry;
     private ResourcePack resourcePack;
 
-    private EmojiCodec codec;
     private EmojiImporter importer;
 
     private ExportService exportService;
-    private File database;
-
-    private File makeDatabase() throws IOException {
-        File file = new File(getDataFolder(), "emojis.mcemoji");
-        if (!file.exists()) {
-            if (!file.createNewFile()) {
-                // this should never happen because we already
-                // checked for its existence with File#exists
-                throw new IOException("Cannot create file, already created?");
-            }
-
-            try (OutputStream output = new FileOutputStream(file)) {
-                try (InputStream input = getResource("emojis.mcemoji")) {
-                    if (input != null) {
-                        // if there's a default 'emojis.mcemoji'
-                        // file in our resources, copy it
-                        Streams.pipe(input, output);
-                    } else {
-                        // if there isn't, write zero emojis
-                        // to the created file, so next reads
-                        // don't fail
-                        codec.write(output, Collections.emptySet());
-                    }
-                }
-            }
-        }
-        return file;
-    }
-
-    public void loadEmojis() {
-        try (InputStream input = new FileInputStream(database)) {
-            registry.update(codec.read(input));
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot load emojis", e);
-        }
-        getLogger().info("Loaded " + registry.values().size() + " emojis.");
-    }
-
-    public void saveEmojis() {
-        try (OutputStream output = new FileOutputStream(database)) {
-            codec.write(output, registry.values());
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot save emojis", e);
-        }
-        getLogger().info("Saved " + registry.values().size() + " emojis.");
-    }
 
     @Override
     public void onEnable() {
 
         saveDefaultConfig();
 
-        this.registry = new EmojiRegistry();
-        this.codec = new MCEmojiCodec();
-        this.importer = new EmojiImporter(this.codec);
-
         try {
-            this.database = makeDatabase();
+            this.registry = EmojiStore.create(this);
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Cannot create database file", e);
-            this.setEnabled(false);
+            getLogger().severe("Cannot create emoji store...");
+            setEnabled(false);
             return;
         }
+        this.importer = new EmojiImporter();
 
-        this.loadEmojis();
+        this.registry.load();
 
         // export
         this.exportService = new DefaultExportService(this);
@@ -199,16 +140,12 @@ public class EmojisPlugin extends JavaPlugin {
         new Metrics(this, 17168);
     }
 
-    public EmojiRegistry registry() {
+    public EmojiStore registry() {
         return registry;
     }
 
     public EmojiImporter importer() {
         return importer;
-    }
-
-    public EmojiCodec codec() {
-        return codec;
     }
 
     public ExportService exportService() {

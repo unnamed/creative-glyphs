@@ -4,7 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.creative.file.FileTreeWriter;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.resourcepack.EmojisWriter;
 import team.unnamed.emojis.resourcepack.PackMetaWriter;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -26,7 +26,7 @@ public class DefaultExportService
     }
 
     @Override
-    public @Nullable UrlAndHash export(EmojiRegistry registry) {
+    public @Nullable UrlAndHash export(EmojiStore registry) {
 
         ConfigurationSection config = plugin.getConfig();
         FileTreeWriter writer = tree -> {};

@@ -41,7 +41,7 @@ public class UpdateSubCommand implements CommandRunnable {
             // synchronous update and save
             Bukkit.getScheduler().runTask(plugin, () -> {
                 plugin.registry().update(emojis);
-                plugin.saveEmojis();
+                plugin.registry().save();
 
                 // asynchronous export
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {

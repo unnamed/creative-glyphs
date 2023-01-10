@@ -2,7 +2,7 @@ package team.unnamed.emojis.format.processor;
 
 import org.bukkit.ChatColor;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.EmojiFormat;
 
 import java.util.function.Predicate;
@@ -17,7 +17,7 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
     }
 
     @Override
-    public String process(String text, EmojiRegistry registry, Predicate<Emoji> usageChecker) {
+    public String process(String text, EmojiStore registry, Predicate<Emoji> usageChecker) {
 
         // TODO: Make this be consistent with EMOJI_USAGE_PATTERN
         StringBuilder builder = new StringBuilder();
@@ -29,7 +29,7 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
 
-            Emoji literal = registry.getByChar(c);
+            Emoji literal = registry.getByCodePoint(c);
             if (literal != null && !usageChecker.test(literal)) {
                 // player entered a literal emoji character,
                 // and they do not have permissions to use
@@ -104,7 +104,7 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
     }
 
     @Override
-    public String flatten(String message, EmojiRegistry registry) {
+    public String flatten(String message, EmojiStore registry) {
 
         StringBuilder builder = new StringBuilder();
 

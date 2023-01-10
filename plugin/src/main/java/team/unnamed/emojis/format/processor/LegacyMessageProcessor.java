@@ -4,7 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.representation.EmojiRepresentationProvider;
 import team.unnamed.emojis.util.Version;
@@ -27,7 +27,7 @@ final class LegacyMessageProcessor implements MessageProcessor<String, BaseCompo
     }
 
     @Override
-    public BaseComponent[] process(String message, EmojiRegistry registry, Predicate<Emoji> usageChecker) {
+    public BaseComponent[] process(String message, EmojiStore registry, Predicate<Emoji> usageChecker) {
         List<TextComponent> components = new ArrayList<>();
         StringBuilder pre = new StringBuilder();
         StringBuilder name = new StringBuilder();
@@ -36,7 +36,7 @@ final class LegacyMessageProcessor implements MessageProcessor<String, BaseCompo
         textLoop:
         for (int i = 0; i < message.length(); i++) {
             char c = message.charAt(i);
-            Emoji literal = registry.getByChar(c);
+            Emoji literal = registry.getByCodePoint(c);
 
             if (literal != null && !usageChecker.test(literal)) {
                 // player entered a literal emoji character,
@@ -108,7 +108,7 @@ final class LegacyMessageProcessor implements MessageProcessor<String, BaseCompo
     }
 
     @Override
-    public String flatten(String message, EmojiRegistry registry) {
+    public String flatten(String message, EmojiStore registry) {
         // delegate to the String MessageProcessor
         return MessageProcessor.string().flatten(message, registry);
     }

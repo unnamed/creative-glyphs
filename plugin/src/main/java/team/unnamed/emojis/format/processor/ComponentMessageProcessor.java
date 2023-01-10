@@ -3,7 +3,7 @@ package team.unnamed.emojis.format.processor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.representation.EmojiRepresentationProvider;
 
@@ -21,7 +21,7 @@ final class ComponentMessageProcessor implements MessageProcessor<Component, Com
     }
 
     @Override
-    public Component process(Component message, EmojiRegistry registry, Predicate<Emoji> usageChecker) {
+    public Component process(Component message, EmojiStore registry, Predicate<Emoji> usageChecker) {
         return message.replaceText(replacementConfig -> replacementConfig
                 .match(EmojiFormat.USAGE_PATTERN)
                 .replacement((result, builder) -> {
@@ -38,7 +38,7 @@ final class ComponentMessageProcessor implements MessageProcessor<Component, Com
     }
 
     @Override
-    public Component flatten(Component message, EmojiRegistry registry) {
+    public Component flatten(Component message, EmojiStore registry) {
         return message.replaceText(TextReplacementConfig.builder()
                 .match(ANY)
                 .replacement((result, builder) ->

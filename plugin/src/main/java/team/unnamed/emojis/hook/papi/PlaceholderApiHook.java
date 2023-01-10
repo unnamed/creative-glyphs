@@ -1,17 +1,17 @@
 package team.unnamed.emojis.hook.papi;
 
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.hook.PluginHook;
 
 public class PlaceholderApiHook implements PluginHook {
 
     private final Plugin plugin;
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
     public PlaceholderApiHook(
             Plugin plugin,
-            EmojiRegistry registry
+            EmojiStore registry
     ) {
         this.plugin = plugin;
         this.registry = registry;

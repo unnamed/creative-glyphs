@@ -1,7 +1,8 @@
-package team.unnamed.emojis.io;
+package team.unnamed.emojis.object.serialization;
 
 import team.unnamed.emojis.Emoji;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,5 +37,13 @@ public interface EmojiCodec {
             OutputStream output,
             Collection<Emoji> emojis
     ) throws IOException;
+
+    static EmojiCodec mcemoji() {
+        return MCEmojiCodec.INSTANCE;
+    }
+
+    static EmojiCodec yaml(File texturesFolder) {
+        return new YamlEmojiCodec(texturesFolder);
+    }
 
 }

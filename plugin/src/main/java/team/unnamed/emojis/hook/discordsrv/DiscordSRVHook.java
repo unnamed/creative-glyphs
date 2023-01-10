@@ -13,7 +13,7 @@ import github.scarsz.discordsrv.dependencies.kyori.adventure.text.format.NamedTe
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.hook.PluginHook;
 
@@ -24,9 +24,9 @@ public class DiscordSRVHook
         implements PluginHook, Listener {
 
     private static final Pattern ANY = Pattern.compile(".*", Pattern.MULTILINE);
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
-    public DiscordSRVHook(EmojiRegistry registry) {
+    public DiscordSRVHook(EmojiStore registry) {
         this.registry = registry;
     }
 

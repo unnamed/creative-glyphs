@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 
 /**
  * Placeholder expansion for PlaceholderAPI, provides the
@@ -15,11 +15,11 @@ public class EmojiPlaceholderExpansion
         extends PlaceholderExpansion {
 
     private final Plugin plugin;
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
     public EmojiPlaceholderExpansion(
             Plugin plugin,
-            EmojiRegistry registry
+            EmojiStore registry
     ) {
         this.plugin = plugin;
         this.registry = registry;

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.format.processor.MessageProcessor;
 
@@ -19,12 +19,12 @@ public class EzChatListener implements Listener {
     private final ChatFormatSerializer formatSerializer
             = new ChatFormatSerializer();
 
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
     private final MessageProcessor<String, BaseComponent[]> messageProcessor;
 
     public EzChatListener(
             Plugin plugin,
-            EmojiRegistry registry
+            EmojiStore registry
     ) {
         this.registry = registry;
         this.messageProcessor = MessageProcessor.stringToLegacyComponent(plugin);

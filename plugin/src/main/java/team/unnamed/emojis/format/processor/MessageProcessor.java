@@ -5,18 +5,18 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.representation.EmojiRepresentationProvider;
 
 import java.util.function.Predicate;
 
 public interface MessageProcessor<TInput, TOutput> {
 
-    TOutput process(TInput message, EmojiRegistry registry, Predicate<Emoji> usageChecker);
+    TOutput process(TInput message, EmojiStore registry, Predicate<Emoji> usageChecker);
 
-    TInput flatten(TInput message, EmojiRegistry registry);
+    TInput flatten(TInput message, EmojiStore registry);
 
-    default TOutput process(TInput message, EmojiRegistry registry) {
+    default TOutput process(TInput message, EmojiStore registry) {
         // has permission to use all the emojis
         return process(message, registry, emoji -> true);
     }

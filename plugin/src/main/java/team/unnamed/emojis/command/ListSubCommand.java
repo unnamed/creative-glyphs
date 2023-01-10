@@ -6,7 +6,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.Permissions;
 
@@ -27,8 +27,8 @@ public class ListSubCommand implements CommandRunnable {
     @SuppressWarnings("deprecation") // Spigot
     public void run(CommandSender sender, Stack<String> args) {
 
-        EmojiRegistry emojiRegistry = plugin.registry();
-        Iterator<Emoji> iterator = emojiRegistry.values().iterator();
+        EmojiStore emojiStore = plugin.registry();
+        Iterator<Emoji> iterator = emojiStore.values().iterator();
 
         while (iterator.hasNext()) {
             TextComponent line = new TextComponent("");

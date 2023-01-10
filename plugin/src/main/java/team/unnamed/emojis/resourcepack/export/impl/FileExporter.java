@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
-import team.unnamed.emojis.io.Streams;
+import team.unnamed.emojis.object.serialization.Streams;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.BufferedOutputStream;

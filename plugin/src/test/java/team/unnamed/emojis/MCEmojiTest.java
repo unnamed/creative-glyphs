@@ -2,8 +2,7 @@ package team.unnamed.emojis;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import team.unnamed.emojis.io.EmojiCodec;
-import team.unnamed.emojis.io.MCEmojiCodec;
+import team.unnamed.emojis.object.serialization.EmojiCodec;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +21,7 @@ public class MCEmojiTest {
 
     @Test
     public void test() throws IOException {
-        EmojiCodec codec = new MCEmojiCodec();
+        EmojiCodec codec = EmojiCodec.mcemoji();
 
         // default emoji pack
         {

@@ -1,9 +1,9 @@
-package team.unnamed.emojis.editor;
+package team.unnamed.emojis.object.cloud;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.io.EmojiCodec;
+import team.unnamed.emojis.object.serialization.EmojiCodec;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -27,16 +27,6 @@ public class EmojiImporter {
     private static final String USER_AGENT = "unemojis-importer";
 
     private final JsonParser jsonParser = new JsonParser();
-    private final EmojiCodec reader;
-
-    /**
-     * Constructs a new importing service that
-     * uses the given {@code reader} to read the
-     * imported data
-     */
-    public EmojiImporter(EmojiCodec reader) {
-        this.reader = reader;
-    }
 
     /**
      * Imports emojis from the given {@code url}
@@ -88,7 +78,7 @@ public class EmojiImporter {
 
             try (InputStream input = Base64.getDecoder()
                     .wrap(new ByteArrayInputStream(base64File))) {
-                emojis = this.reader.read(input);
+                emojis = EmojiCodec.mcemoji().read(input);
             }
         } catch (IOException e) {
             int status;

@@ -33,7 +33,7 @@ public class RootCommand implements CommandRunnable {
 
         switch (args.pop().toLowerCase(Locale.ROOT)) {
             case "update" -> updateSubCommand.run(sender, args);
-            case "reload" -> plugin.loadEmojis();
+            case "reload" -> plugin.registry().load();
             case "help" ->
                 // todo: replace this
                 sender.sendMessage(ChatColor.translateAlternateColorCodes(

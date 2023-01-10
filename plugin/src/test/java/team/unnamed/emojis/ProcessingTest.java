@@ -3,6 +3,7 @@ package team.unnamed.emojis;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import team.unnamed.emojis.format.processor.MessageProcessor;
+import team.unnamed.emojis.object.store.EmojiStore;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ProcessingTest {
 
     private static final Map<String, String> EXPECTATIONS;
-    private static final EmojiRegistry REGISTRY = new EmojiRegistry();
+    private static final EmojiStore REGISTRY = EmojiStore.createCachedOnly();
 
     static {
         // key replaces to value

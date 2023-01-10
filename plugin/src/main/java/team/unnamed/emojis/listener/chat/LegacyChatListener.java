@@ -5,7 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.processor.MessageProcessor;
 import team.unnamed.emojis.format.Permissions;
 import team.unnamed.emojis.listener.EventListener;
@@ -21,11 +21,11 @@ public class LegacyChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 
     private final Plugin plugin;
-    private final EmojiRegistry emojiRegistry;
+    private final EmojiStore emojiStore;
 
-    public LegacyChatListener(Plugin plugin, EmojiRegistry emojiRegistry) {
+    public LegacyChatListener(Plugin plugin, EmojiStore emojiStore) {
         this.plugin = plugin;
-        this.emojiRegistry = emojiRegistry;
+        this.emojiStore = emojiStore;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class LegacyChatListener
 
         event.setMessage(MessageProcessor.string().process(
                 messagePrefix + message,
-                emojiRegistry,
+                emojiStore,
                 Permissions.permissionTest(player)
         ));
     }

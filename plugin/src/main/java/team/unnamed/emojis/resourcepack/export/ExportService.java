@@ -1,7 +1,7 @@
 package team.unnamed.emojis.resourcepack.export;
 
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 /**
@@ -19,6 +19,6 @@ public interface ExportService {
      * exported to a remote location
      */
     @Nullable
-    UrlAndHash export(EmojiRegistry registry);
+    UrlAndHash export(EmojiStore registry);
 
 }

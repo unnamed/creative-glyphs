@@ -2,7 +2,7 @@ package team.unnamed.emojis.listener;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.listener.chat.LegacyChatListener;
 import team.unnamed.emojis.listener.chat.LegacyRichSurroundingChatListener;
@@ -24,7 +24,7 @@ public final class ListenerFactory {
 
     public static EventListener<?> create(
             Plugin plugin,
-            EmojiRegistry registry,
+            EmojiStore registry,
             EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy,
             boolean paper,
             boolean rich

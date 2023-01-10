@@ -1,4 +1,4 @@
-package team.unnamed.emojis.io;
+package team.unnamed.emojis.object.serialization;
 
 import org.intellij.lang.annotations.Subst;
 import team.unnamed.emojis.Emoji;
@@ -21,7 +21,12 @@ import java.util.Collection;
  *
  * @author yusshu (Andre Roldan)
  */
-public class MCEmojiCodec implements EmojiCodec {
+final class MCEmojiCodec implements EmojiCodec {
+
+    public static EmojiCodec INSTANCE = new MCEmojiCodec();
+
+    private MCEmojiCodec() {
+    }
 
     // newest version: 3
 

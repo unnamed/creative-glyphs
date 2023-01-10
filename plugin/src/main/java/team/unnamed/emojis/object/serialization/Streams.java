@@ -1,4 +1,4 @@
-package team.unnamed.emojis.io;
+package team.unnamed.emojis.object.serialization;
 
 import java.io.EOFException;
 import java.io.IOException;

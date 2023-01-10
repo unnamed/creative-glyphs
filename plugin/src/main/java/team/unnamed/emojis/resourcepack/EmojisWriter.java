@@ -7,7 +7,7 @@ import team.unnamed.creative.font.Font;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,9 +20,9 @@ import java.util.List;
  */
 public class EmojisWriter implements FileTreeWriter {
 
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
-    public EmojisWriter(EmojiRegistry registry) {
+    public EmojisWriter(EmojiStore registry) {
         this.registry = registry;
     }
 

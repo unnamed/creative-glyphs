@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permissible;
 import team.unnamed.emojis.Emoji;
-import team.unnamed.emojis.EmojiRegistry;
+import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.event.EmojiListUpdateEvent;
 import team.unnamed.emojis.format.EmojiFormat;
 import team.unnamed.emojis.format.Permissions;
@@ -18,9 +18,9 @@ import java.util.Map;
 
 public class EmojiCompletionsListener implements Listener {
 
-    private final EmojiRegistry registry;
+    private final EmojiStore registry;
 
-    public EmojiCompletionsListener(EmojiRegistry registry) {
+    public EmojiCompletionsListener(EmojiStore registry) {
         this.registry = registry;
     }
 
