@@ -38,10 +38,7 @@ public class DefaultExportService
         writer = writer.andThen(new EmojisWriter(registry));
 
         try {
-            return ResourceExportMethodFactory.createExporter(
-                    plugin,
-                    config.getString("pack.export", "into:resourcepack")
-            ).export(writer);
+            return ResourceExportMethodFactory.createExporter(plugin).export(writer);
         } catch (IOException e) {
             throw new IllegalStateException("Cannot export resource pack", e);
         }

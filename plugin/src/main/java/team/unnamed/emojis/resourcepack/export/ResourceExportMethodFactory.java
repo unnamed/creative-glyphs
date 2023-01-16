@@ -1,13 +1,15 @@
 package team.unnamed.emojis.resourcepack.export;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
-import team.unnamed.creative.file.FileTree;
 import team.unnamed.emojis.resourcepack.export.impl.FileExporter;
+import team.unnamed.emojis.resourcepack.export.impl.FolderExporter;
 import team.unnamed.emojis.resourcepack.export.impl.MCPacksHttpExporter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Factory for creating exporting methods
@@ -18,8 +20,40 @@ public final class ResourceExportMethodFactory {
     private ResourceExportMethodFactory() {
     }
 
-    public static ResourceExporter createExporter(Plugin plugin, String format)
+    public static ResourceExporter createExporter(Plugin plugin)
             throws IOException {
+
+        ConfigurationSection config = plugin.getConfig();
+        String methodName = config.getString("pack.export.type", null);
+
+        if (methodName == null) {
+            // legacy way?
+            return createLegacyExporter(
+                    plugin,
+                    config.getString("pack.export", "into:resourcepack")
+            );
+        }
+
+        return switch (methodName.toLowerCase(Locale.ROOT)) {
+            case "mcpacks" ->
+                    new MCPacksHttpExporter(plugin.getLogger());
+            case "file" ->
+                    new FileExporter(
+                            new File(plugin.getDataFolder(), "resource-pack.zip"),
+                            plugin.getLogger()
+                    );
+            case "folder" ->
+                    new FolderExporter(
+                            new File(plugin.getDataFolder(), "resource-pack"),
+                            plugin.getLogger()
+                    );
+            default ->
+                    throw new IOException("Unknown export method: " + methodName);
+        };
+    }
+
+    private static ResourceExporter createLegacyExporter(Plugin plugin, String format) throws IOException {
+
         File pluginFolder = plugin.getDataFolder();
         String[] args = format.split(":");
         String method = args[0].toLowerCase();
@@ -64,20 +98,16 @@ public final class ResourceExportMethodFactory {
                     targetFolder = new File(pluginFolder, folderFormat);
                 }
 
-                return writer -> {
-                    try (FileTree output = FileTree.directory(targetFolder)) {
-                        writer.write(output);
-                    }
-                    plugin.getLogger().info("Exported resource pack to folder: " + targetFolder);
-                    return null;
-                };
+                return new FolderExporter(targetFolder, plugin.getLogger());
             }
             default: {
                 throw new IllegalArgumentException(
                         "Invalid format: '" + format + "', unknown export"
-                        + "method: '" + method + "'"
+                                + "method: '" + method + "'"
                 );
             }
         }
+
     }
+
 }
