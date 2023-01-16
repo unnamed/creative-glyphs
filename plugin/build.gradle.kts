@@ -19,6 +19,7 @@ dependencies {
     compileOnly(serverApi)
     compileOnly(annotations)
     implementation("team.unnamed:creative-api:0.5.3-SNAPSHOT")
+    implementation("team.unnamed:creative-server:0.5.3-SNAPSHOT")
 
     // Optional libraries
     compileOnly("net.kyori:adventure-api:4.12.0")

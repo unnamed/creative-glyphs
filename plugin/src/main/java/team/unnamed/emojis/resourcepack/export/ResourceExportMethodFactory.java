@@ -2,12 +2,18 @@ package team.unnamed.emojis.resourcepack.export;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+import team.unnamed.emojis.object.serialization.Streams;
 import team.unnamed.emojis.resourcepack.export.impl.FileExporter;
 import team.unnamed.emojis.resourcepack.export.impl.FolderExporter;
+import team.unnamed.emojis.resourcepack.export.impl.LocalHostExporter;
 import team.unnamed.emojis.resourcepack.export.impl.MCPacksHttpExporter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -37,6 +43,18 @@ public final class ResourceExportMethodFactory {
         return switch (methodName.toLowerCase(Locale.ROOT)) {
             case "mcpacks" ->
                     new MCPacksHttpExporter(plugin.getLogger());
+            case "localhost" -> {
+                ConfigurationSection localhostConfig = config.getConfigurationSection("pack.export.localhost");
+                String address = localhostConfig.getString("address");
+                int port = localhostConfig.getInt("port");
+
+                if (address == null || address.trim().isEmpty()) {
+                    address = whatIsMyPublicIP();
+                    plugin.getLogger().info("Detected server's public IP address: " + address);
+                }
+
+                yield new LocalHostExporter(address, port);
+            }
             case "file" ->
                     new FileExporter(
                             new File(plugin.getDataFolder(), "resource-pack.zip"),
@@ -108,6 +126,15 @@ public final class ResourceExportMethodFactory {
             }
         }
 
+    }
+
+    private static String whatIsMyPublicIP() throws IOException {
+        URL url = new URL("https://api.ipify.org/?format=text");
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try (InputStream input = url.openStream()) {
+            Streams.pipe(input, output);
+        }
+        return output.toString(StandardCharsets.UTF_8);
     }
 
 }

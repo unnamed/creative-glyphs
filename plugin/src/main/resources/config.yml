@@ -12,6 +12,11 @@ pack:
         # |     Uploads the generated resource pack to https://mc-packs.net/,
         # |     a free resource pack hosting service (Consider donating to them)
         # |
+        # |--> 'localhost' (hosted)
+        # |     Opens a local HTTP server to serve resource packs, no third parties,
+        # |     extra configuration is required (you need to open a new port in
+        # |     your server)
+        # |
         # |--> 'file' (non hosted)
         # |     Writes the generated resource pack to a ZIP file in the plugin
         # |     folder (/plugins/unemojis/resource-pack.zip)
@@ -26,6 +31,13 @@ pack:
         # |       to download the resource pack
         #
         type: 'mcpacks'
+
+        # Configuration if type is 'localhost'
+        localhost:
+            # Put your server's public IP address or let the plugin
+            # detect it by using an external "what is my ip" service
+            address: ''
+            port: 7270
 
     # True if the player NEEDS to accept the resource-pack, false if the resource-pack
     # installation is optional
