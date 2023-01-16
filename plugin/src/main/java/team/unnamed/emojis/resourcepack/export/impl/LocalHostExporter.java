@@ -21,6 +21,7 @@ public class LocalHostExporter implements ResourceExporter, ResourcePackRequestH
     private final Logger logger;
     private @Nullable ResourcePackServer server;
     private @Nullable ResourcePack pack;
+    private @Nullable UrlAndHash location;
 
     public LocalHostExporter(String address, int port, Logger logger) {
         this.address = address;
@@ -29,16 +30,17 @@ public class LocalHostExporter implements ResourceExporter, ResourcePackRequestH
     }
 
     @Override
-    public @Nullable UrlAndHash export(FileTreeWriter writer) throws IOException {
+    public void export(FileTreeWriter writer) throws IOException {
 
-        this.pack = ResourcePack.build(writer);
+        // build resource pack in memory
+        pack = ResourcePack.build(writer);
 
-        if (this.server == null) {
-            this.server = ResourcePackServer.builder()
+        if (server == null) {
+            server = ResourcePackServer.builder()
                     .address(address, port)
                     .handler(this)
                     .build();
-            this.server.start(); // TODO: Stop when??
+            server.start(); // TODO: Stop when??
         }
 
         // Example:
@@ -47,7 +49,20 @@ public class LocalHostExporter implements ResourceExporter, ResourcePackRequestH
 
         logger.info("Resource-pack hosted, available in " + url);
 
-        return new UrlAndHash(url, pack.hash());
+        this.location = new UrlAndHash(url, pack.hash());
+    }
+
+    @Override
+    public @Nullable UrlAndHash location() {
+        return location;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (server != null) {
+            server.stop(0);
+            server = null;
+        }
     }
 
     @Override

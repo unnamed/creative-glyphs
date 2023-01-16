@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class EmojisPlugin extends JavaPlugin {
 
@@ -138,6 +139,17 @@ public class EmojisPlugin extends JavaPlugin {
 
         // Metrics
         new Metrics(this, 17168);
+    }
+
+    @Override
+    public void onDisable() {
+        if (exportService != null) {
+            try {
+                exportService.close();
+            } catch (IOException e) {
+                getLogger().log(Level.WARNING, "Failed to close export service", e);
+            }
+        }
     }
 
     public EmojiStore registry() {

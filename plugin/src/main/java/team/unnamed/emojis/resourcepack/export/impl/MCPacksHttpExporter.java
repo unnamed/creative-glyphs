@@ -1,6 +1,6 @@
 package team.unnamed.emojis.resourcepack.export.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
@@ -31,11 +31,13 @@ public class MCPacksHttpExporter implements ResourceExporter {
     private static final String DOWNLOAD_URL_TEMPLATE = "https://download.mc-packs.net/pack/" +
             "%HASH%.zip";
 
-    private static final String BOUNDARY = "HephaestusBoundary";
+    private static final String BOUNDARY = "UnnamedBoundary";
     private static final String LINE_FEED = "\r\n";
 
     private final Logger logger;
     private final URL url;
+
+    private @Nullable UrlAndHash location;
 
     public MCPacksHttpExporter(Logger logger) throws MalformedURLException {
         this.logger = logger;
@@ -43,8 +45,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
     }
 
     @Override
-    @NotNull
-    public UrlAndHash export(FileTreeWriter writer) throws IOException {
+    public void export(FileTreeWriter writer) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -108,7 +109,12 @@ public class MCPacksHttpExporter implements ResourceExporter {
         String url = DOWNLOAD_URL_TEMPLATE.replace("%HASH%", hashString);
         logger.info("Uploaded resource-pack to: " + url);
 
-        return new UrlAndHash(url, hashString);
+        this.location = new UrlAndHash(url, hashString);
+    }
+
+    @Override
+    public @Nullable UrlAndHash location() {
+        return this.location;
     }
 
     private char hex(int c) {

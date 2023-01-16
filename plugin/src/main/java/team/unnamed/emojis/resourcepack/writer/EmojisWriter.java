@@ -1,4 +1,4 @@
-package team.unnamed.emojis.resourcepack;
+package team.unnamed.emojis.resourcepack.writer;
 
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.file.FileTree;
@@ -14,8 +14,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Responsible for writing resources for the emojis
- * plugin.
+ * Responsible for writing resources required to use
+ * custom glyphs in Minecraft, it writes the glyph font
+ * and the glyph textures
+ *
  * @author yusshu (Andre Roldan)
  */
 public class EmojisWriter implements FileTreeWriter {
@@ -51,6 +53,7 @@ public class EmojisWriter implements FileTreeWriter {
                             .build()
             );
 
+            // add a provider for this glyph
             providers.add(
                     FontProvider.bitMap()
                             .height(emoji.height())

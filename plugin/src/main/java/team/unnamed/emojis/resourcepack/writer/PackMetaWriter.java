@@ -1,4 +1,4 @@
-package team.unnamed.emojis.resourcepack;
+package team.unnamed.emojis.resourcepack.writer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

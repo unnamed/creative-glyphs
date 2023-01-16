@@ -1,11 +1,9 @@
 package team.unnamed.emojis.resourcepack.export.impl;
 
-import org.jetbrains.annotations.Nullable;
 import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.file.FileTreeWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
 import team.unnamed.emojis.object.serialization.Streams;
-import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -45,8 +43,7 @@ public class FileExporter
     }
 
     @Override
-    @Nullable
-    public UrlAndHash export(FileTreeWriter writer) throws IOException {
+    public void export(FileTreeWriter writer) throws IOException {
         if (!target.exists() && !target.createNewFile()) {
             throw new IOException("Failed to create target resource pack file");
         }
@@ -91,6 +88,6 @@ public class FileExporter
         }
 
         logger.info("Exported resource-pack to file: " + target);
-        return null;
     }
+
 }
