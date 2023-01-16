@@ -53,7 +53,7 @@ public final class ResourceExportMethodFactory {
                     plugin.getLogger().info("Detected server's public IP address: " + address);
                 }
 
-                yield new LocalHostExporter(address, port);
+                yield new LocalHostExporter(address, port, plugin.getLogger());
             }
             case "file" ->
                     new FileExporter(
