@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import team.unnamed.emojis.EmojisPlugin;
 
 import java.util.Locale;
-import java.util.Stack;
 
 public class RootCommand implements CommandRunnable {
 
@@ -22,16 +21,16 @@ public class RootCommand implements CommandRunnable {
     }
 
     @Override
-    public void run(CommandSender sender, Stack<String> args) {
+    public void run(CommandSender sender, ArgumentStack args) {
 
         // if no permission for subcommands or no arguments given,
         // just send the emoji list
-        if ((!sender.isOp() && !sender.hasPermission("emojis.admin")) || args.isEmpty()) {
+        if ((!sender.isOp() && !sender.hasPermission("emojis.admin")) || !args.hasNext()) {
             listSubCommand.run(sender, args);
             return;
         }
 
-        switch (args.pop().toLowerCase(Locale.ROOT)) {
+        switch (args.next().toLowerCase(Locale.ROOT)) {
             case "update" -> updateSubCommand.run(sender, args);
             case "reload" -> plugin.registry().load();
             case "help" ->

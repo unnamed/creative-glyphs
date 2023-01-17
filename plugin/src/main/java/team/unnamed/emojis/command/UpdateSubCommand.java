@@ -10,7 +10,6 @@ import team.unnamed.emojis.resourcepack.UrlAndHash;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Stack;
 
 public class UpdateSubCommand implements CommandRunnable {
 
@@ -23,13 +22,13 @@ public class UpdateSubCommand implements CommandRunnable {
     }
 
     @Override
-    public void run(CommandSender sender, Stack<String> args) {
-        if (args.size() != 1) {
+    public void run(CommandSender sender, ArgumentStack args) {
+        if (args.available() != 1) {
             sender.sendMessage(ChatColor.RED + "Bad usage, use: /emojis update <id>");
             return;
         }
 
-        String downloadId = args.pop();
+        String downloadId = args.next();
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> execute(sender, downloadId));
     }
 

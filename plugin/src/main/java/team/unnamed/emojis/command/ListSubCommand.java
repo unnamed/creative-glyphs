@@ -11,7 +11,6 @@ import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.format.Permissions;
 
 import java.util.Iterator;
-import java.util.Stack;
 
 public class ListSubCommand implements CommandRunnable {
 
@@ -25,7 +24,7 @@ public class ListSubCommand implements CommandRunnable {
 
     @Override
     @SuppressWarnings("deprecation") // Spigot
-    public void run(CommandSender sender, Stack<String> args) {
+    public void run(CommandSender sender, ArgumentStack args) {
 
         EmojiStore emojiStore = plugin.registry();
         Iterator<Emoji> iterator = emojiStore.values().iterator();
