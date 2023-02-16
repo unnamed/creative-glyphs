@@ -8,6 +8,7 @@ import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.object.store.EmojiStore;
+import team.unnamed.emojis.provider.head.HeadEmojiProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +64,9 @@ public class EmojisWriter implements FileTreeWriter {
                             .build()
             );
         }
+
+        // head emoji provider resources
+        HeadEmojiProvider.installResources(providers, tree);
 
         // write the default.json font
         tree.write(Font.of(Font.MINECRAFT_DEFAULT, providers));
