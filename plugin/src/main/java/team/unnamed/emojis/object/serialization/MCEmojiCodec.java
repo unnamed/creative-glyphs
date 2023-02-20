@@ -17,7 +17,7 @@ import java.util.Collection;
  * and writing emojis from/to the MCEmoji format</p>
  *
  * <p>This implementation currently supports MCEmoji
- * format versions [ 1, 2, 3 ]</p>
+ * format versions [ 1, 2, 3, 4 ]</p>
  *
  * @author yusshu (Andre Roldan)
  */
@@ -38,14 +38,17 @@ final class MCEmojiCodec implements EmojiCodec {
         DataInputStream dataInput = new DataInputStream(input);
 
         byte formatVersion = dataInput.readByte();
-        if (formatVersion != 1 && formatVersion != 2 && formatVersion != 3) {
+        if (formatVersion != 1 && formatVersion != 2 && formatVersion != 3 && formatVersion != 4) {
             // Currently, there are no other versions
             throw new IOException("Invalid format version: '"
                     + formatVersion + "'. Are you from the future?"
                     + " Update this plugin");
         }
 
-        int emojiCount = dataInput.readUnsignedByte();
+        // emoji count read
+        // FEATURE (from version 4): uses an int instead of an unsigned byte to represent
+        //    the emoji count, supporting more than 256+ emojis
+        int emojiCount = formatVersion >= 4 ? dataInput.readInt() : dataInput.readUnsignedByte();
         Emoji[] emojis = new Emoji[emojiCount];
 
         for (short i = 0; i < emojiCount; i++) {
@@ -123,11 +126,19 @@ final class MCEmojiCodec implements EmojiCodec {
             }
         }
 
+        if (emojis.size() >= 250) {
+            formatVersion = formatversion < 4 ? 4 : formatVersion;
+        }
+
         // write current MCEmoji format
         dataOutput.write(formatVersion);
 
         // write emoji length
-        dataOutput.writeByte(emojis.size());
+        if (formatVersion >= 4) {
+            dataOutput.writeInt(emojis.size());
+        } else {
+            dataOutput.writeByte(emojis.size());
+        }
 
         // write all emojis
         for (Emoji emoji : emojis) {
