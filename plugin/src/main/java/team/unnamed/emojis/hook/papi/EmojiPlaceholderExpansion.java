@@ -33,9 +33,10 @@ public class EmojiPlaceholderExpansion
     public String onRequest(OfflinePlayer player, @NotNull String name) {
         Emoji emoji = registry.get(name);
         if (emoji == null) {
-            Player p = Bukkit.getPlayer(name);
-            if (p == null) return null;
-            return LegacyComponentSerializer.legacySection().serialize(HeadEmojiProvider.of(p));
+            //Player p = Bukkit.getPlayer(name);
+            //if (p == null) return null;
+            //return LegacyComponentSerializer.legacySection().serialize(HeadEmojiProvider.of(p));
+            return null;
         } else {
             return emoji.replacement();
         }

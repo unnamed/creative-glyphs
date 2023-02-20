@@ -66,7 +66,7 @@ public class EmojisWriter implements FileTreeWriter {
         }
 
         // head emoji provider resources
-        HeadEmojiProvider.installResources(providers, tree);
+        //HeadEmojiProvider.installResources(providers, tree);
 
         // write the default.json font
         tree.write(Font.of(Font.MINECRAFT_DEFAULT, providers));
