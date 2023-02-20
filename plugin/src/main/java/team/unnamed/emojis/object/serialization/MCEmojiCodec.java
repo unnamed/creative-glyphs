@@ -127,7 +127,7 @@ final class MCEmojiCodec implements EmojiCodec {
         }
 
         if (emojis.size() >= 250) {
-            formatVersion = formatversion < 4 ? 4 : formatVersion;
+            formatVersion = formatVersion < 4 ? 4 : formatVersion;
         }
 
         // write current MCEmoji format
