@@ -1,18 +1,17 @@
 package team.unnamed.emojis.resourcepack.writer;
 
 import net.kyori.adventure.key.Key;
-import team.unnamed.creative.file.FileTree;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.object.store.EmojiStore;
-import team.unnamed.emojis.provider.head.HeadEmojiProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Responsible for writing resources required to use
@@ -21,7 +20,7 @@ import java.util.List;
  *
  * @author yusshu (Andre Roldan)
  */
-public class EmojisWriter implements FileTreeWriter {
+public class EmojisWriter implements Consumer<ResourcePack> {
 
     private final EmojiStore registry;
 
@@ -37,7 +36,7 @@ public class EmojisWriter implements FileTreeWriter {
      * given {@code output}</strong>
      */
     @Override
-    public void write(FileTree tree) {
+    public void accept(ResourcePack resourcePack) {
 
         Collection<Emoji> emojis = registry.values();
         List<FontProvider> providers = new ArrayList<>(emojis.size());
@@ -47,7 +46,7 @@ public class EmojisWriter implements FileTreeWriter {
             Key textureKey = Key.key(Key.MINECRAFT_NAMESPACE, "emojis/" + emoji.name());
 
             // write emoji image
-            tree.write(
+            resourcePack.texture(
                     Texture.builder()
                             .key(textureKey)
                             .data(emoji.data())
@@ -69,7 +68,7 @@ public class EmojisWriter implements FileTreeWriter {
         //HeadEmojiProvider.installResources(providers, tree);
 
         // write the default.json font
-        tree.write(Font.of(Font.MINECRAFT_DEFAULT, providers));
+        resourcePack.font(Font.of(Font.MINECRAFT_DEFAULT, providers));
     }
 
 }

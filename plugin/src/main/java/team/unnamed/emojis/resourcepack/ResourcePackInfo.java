@@ -2,12 +2,12 @@ package team.unnamed.emojis.resourcepack;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ResourcePack extends UrlAndHash {
+public class ResourcePackInfo extends UrlAndHash {
 
     private final boolean required;
     @Nullable private final String prompt;
 
-    public ResourcePack(
+    public ResourcePackInfo(
             String url,
             String hash,
             boolean required,
@@ -26,8 +26,8 @@ public class ResourcePack extends UrlAndHash {
         return prompt;
     }
 
-    public ResourcePack withLocation(String url, String hash) {
-        return new ResourcePack(url, hash, required, prompt);
+    public ResourcePackInfo withLocation(String url, String hash) {
+        return new ResourcePackInfo(url, hash, required, prompt);
     }
 
 }

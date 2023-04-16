@@ -1,11 +1,11 @@
 package team.unnamed.emojis.resourcepack.export.impl;
 
-import team.unnamed.creative.file.FileTree;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
+import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
+import team.unnamed.creative.serialize.minecraft.fs.FileTreeWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
 import team.unnamed.emojis.object.serialization.Streams;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,7 +43,7 @@ public class FileExporter
     }
 
     @Override
-    public void export(FileTreeWriter writer) throws IOException {
+    public void export(ResourcePack resourcePack) throws IOException {
         if (!target.exists() && !target.createNewFile()) {
             throw new IOException("Failed to create target resource pack file");
         }
@@ -60,7 +60,7 @@ public class FileExporter
                 );
             }
 
-            try (FileTree tree = FileTree.zip(new ZipOutputStream(new FileOutputStream(tmpTarget)))) {
+            try (FileTreeWriter tree = FileTreeWriter.zip(new ZipOutputStream(new FileOutputStream(tmpTarget)))) {
                 try (ZipInputStream input = new ZipInputStream(new FileInputStream(target))) {
                     ZipEntry entry;
                     while ((entry = input.getNextEntry()) != null) {
@@ -68,7 +68,7 @@ public class FileExporter
                     }
                 }
 
-                writer.write(tree);
+                MinecraftResourcePackWriter.minecraft().write(tree, resourcePack);
             }
 
             // delete old file
@@ -80,11 +80,7 @@ public class FileExporter
                 throw new IOException("Cannot move temporary file to original ZIP file");
             }
         } else {
-            try (FileTree output = FileTree.zip(
-                    new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target))))
-            ) {
-                writer.write(output);
-            }
+            MinecraftResourcePackWriter.minecraft().writeToZipFile(target, resourcePack);
         }
 
         logger.info("Exported resource-pack to file: " + target);

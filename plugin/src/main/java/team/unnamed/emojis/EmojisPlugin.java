@@ -25,7 +25,7 @@ import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.metrics.Metrics;
-import team.unnamed.emojis.resourcepack.ResourcePack;
+import team.unnamed.emojis.resourcepack.ResourcePackInfo;
 import team.unnamed.emojis.resourcepack.ResourcePackApplier;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 import team.unnamed.emojis.object.store.EmojiStore;
@@ -40,7 +40,7 @@ import java.util.logging.Level;
 public class EmojisPlugin extends JavaPlugin {
 
     private EmojiStore registry;
-    private ResourcePack resourcePack;
+    private ResourcePackInfo resourcePack;
 
     private EmojiImporter importer;
 
@@ -81,7 +81,7 @@ public class EmojisPlugin extends JavaPlugin {
                 prompt = ComponentSerializer.toString(TextComponent.fromLegacyText(prompt));
             }
 
-            this.resourcePack = new ResourcePack(
+            this.resourcePack = new ResourcePackInfo(
                     location.url(),
                     location.hash(),
                     // TODO: Remove support for "feature.require-pack"
@@ -164,11 +164,11 @@ public class EmojisPlugin extends JavaPlugin {
         return exportService;
     }
 
-    public ResourcePack pack() {
+    public ResourcePackInfo pack() {
         return resourcePack;
     }
 
-    public void pack(ResourcePack resourcePack) {
+    public void pack(ResourcePackInfo resourcePack) {
         this.resourcePack = resourcePack;
     }
 

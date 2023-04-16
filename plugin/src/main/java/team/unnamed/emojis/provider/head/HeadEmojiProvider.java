@@ -8,8 +8,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.file.FileTree;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
 import team.unnamed.emojis.util.Version;
@@ -45,9 +45,7 @@ public class HeadEmojiProvider {
     private HeadEmojiProvider() {
     }
 
-    public static void installResources(Collection<FontProvider> defaultFontProviders, FileTree tree) {
-
-        // TODO: This step will be more elegant when the feat/central branch of creative is merged
+    public static void installResources(Collection<FontProvider> defaultFontProviders, ResourcePack resourcePack) {
 
         Key pixelTexture = Key.key("emojis", "emojiutil/pixel");
 
@@ -77,7 +75,7 @@ public class HeadEmojiProvider {
             throw new UnsupportedOperationException("1.19+ required");
         }
 
-        tree.write(
+        resourcePack.texture(
                 Texture.builder()
                         .key(pixelTexture)
                         .data(Writable.resource(HeadEmojiProvider.class.getClassLoader(), "pixel.png"))

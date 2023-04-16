@@ -1,7 +1,7 @@
 package team.unnamed.emojis.resourcepack.export.impl;
 
-import team.unnamed.creative.file.FileTree;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
+import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
 
 import java.io.File;
@@ -19,10 +19,8 @@ public class FolderExporter implements ResourceExporter {
     }
 
     @Override
-    public void export(FileTreeWriter writer) throws IOException {
-        try (FileTree output = FileTree.directory(target)) {
-            writer.write(output);
-        }
+    public void export(ResourcePack resourcePack) throws IOException {
+        MinecraftResourcePackWriter.minecraft().writeToDirectory(target, resourcePack);
         logger.info("Exported resource pack to folder: " + target);
     }
 

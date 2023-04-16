@@ -70,7 +70,7 @@ public final class ResourcePackApplier {
      * @param resourcePack The applied resource pack
      */
     @SuppressWarnings("all") // ide detects parameter mismatch
-    public static void setResourcePack(Player player, ResourcePack resourcePack) {
+    public static void setResourcePack(Player player, ResourcePackInfo resourcePack) {
         try {
             Object handle = GET_HANDLE_METHOD.invoke(player);
 

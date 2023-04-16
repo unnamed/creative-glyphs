@@ -1,13 +1,16 @@
 package team.unnamed.emojis.resourcepack.export;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
-import team.unnamed.emojis.resourcepack.writer.TreeWriters;
+import team.unnamed.emojis.resourcepack.writer.EmojisWriter;
+import team.unnamed.emojis.resourcepack.writer.PackMetaWriter;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of {@link ExportService},
@@ -32,7 +35,14 @@ public class DefaultExportService
     @Override
     public @Nullable UrlAndHash export(EmojiStore emojiStore) {
 
-        FileTreeWriter writer = TreeWriters.writer(plugin, emojiStore);
+        ConfigurationSection config = plugin.getConfig();
+        Consumer<ResourcePack> writer = rp -> {};
+
+        if (config.getBoolean("pack.meta.write")) {
+            writer = writer.andThen(new PackMetaWriter(plugin));
+        }
+
+        writer = writer.andThen(new EmojisWriter(emojiStore));
 
         try {
             exporter.export(writer);

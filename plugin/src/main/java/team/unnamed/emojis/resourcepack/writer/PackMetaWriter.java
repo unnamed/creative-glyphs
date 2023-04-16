@@ -3,11 +3,8 @@ package team.unnamed.emojis.resourcepack.writer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.file.FileTree;
-import team.unnamed.creative.file.FileTreeWriter;
-import team.unnamed.creative.metadata.Metadata;
-import team.unnamed.creative.metadata.PackMeta;
 import team.unnamed.emojis.object.serialization.Streams;
 import team.unnamed.emojis.util.Version;
 
@@ -15,9 +12,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
-public class PackMetaWriter implements FileTreeWriter {
+public class PackMetaWriter implements Consumer<ResourcePack> {
 
     private final Plugin plugin;
 
@@ -26,7 +24,7 @@ public class PackMetaWriter implements FileTreeWriter {
     }
 
     @Override
-    public void write(FileTree tree) {
+    public void accept(ResourcePack resourcePack) {
 
         String description = ChatColor.translateAlternateColorCodes(
                 '&',
@@ -47,16 +45,11 @@ public class PackMetaWriter implements FileTreeWriter {
             }
         }
 
-        // write pack.mcmeta
-        tree.write(
-                Metadata.builder()
-                        .add(PackMeta.of(getPackFormatVersion(), description))
-                        .build()
-        );
+        resourcePack.packMeta(getPackFormatVersion(), description);
 
         // write icon
         if (file.exists()) {
-            tree.write("pack.png", Writable.file(file));
+            resourcePack.icon(Writable.file(file));
         }
     }
 

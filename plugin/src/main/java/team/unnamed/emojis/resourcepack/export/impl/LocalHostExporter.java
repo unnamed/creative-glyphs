@@ -2,8 +2,9 @@ package team.unnamed.emojis.resourcepack.export.impl;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.ResourcePack;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 import team.unnamed.creative.server.ResourcePackRequest;
 import team.unnamed.creative.server.ResourcePackRequestHandler;
 import team.unnamed.creative.server.ResourcePackServer;
@@ -20,7 +21,7 @@ public class LocalHostExporter implements ResourceExporter, ResourcePackRequestH
     private final int port;
     private final Logger logger;
     private @Nullable ResourcePackServer server;
-    private @Nullable ResourcePack pack;
+    private @Nullable BuiltResourcePack pack;
     private @Nullable UrlAndHash location;
 
     public LocalHostExporter(String address, int port, Logger logger) {
@@ -30,10 +31,10 @@ public class LocalHostExporter implements ResourceExporter, ResourcePackRequestH
     }
 
     @Override
-    public void export(FileTreeWriter writer) throws IOException {
+    public void export(ResourcePack resourcePack) throws IOException {
 
         // build resource pack in memory
-        pack = ResourcePack.build(writer);
+        pack = MinecraftResourcePackWriter.minecraft().build(resourcePack);
 
         if (server == null) {
             server = ResourcePackServer.builder()

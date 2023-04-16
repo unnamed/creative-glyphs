@@ -18,8 +18,12 @@ dependencies {
     // Required libraries
     compileOnly(serverApi)
     compileOnly(annotations)
-    implementation("team.unnamed:creative-api:0.5.4-SNAPSHOT")
-    implementation("team.unnamed:creative-server:0.5.4-SNAPSHOT")
+
+    // Creative
+    val creativeVersion = "0.6.0-SNAPSHOT"
+    implementation("team.unnamed:creative-api:$creativeVersion")
+    implementation("team.unnamed:creative-serializer-minecraft:$creativeVersion")
+    implementation("team.unnamed:creative-server:$creativeVersion")
 
     // Optional libraries
     compileOnly("net.kyori:adventure-api:4.12.0")

@@ -1,8 +1,9 @@
 package team.unnamed.emojis.resourcepack.export.impl;
 
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.creative.file.FileTree;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
+import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
+import team.unnamed.creative.serialize.minecraft.fs.FileTreeWriter;
 import team.unnamed.emojis.resourcepack.export.ResourceExporter;
 import team.unnamed.emojis.object.serialization.Streams;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
@@ -45,7 +46,7 @@ public class MCPacksHttpExporter implements ResourceExporter {
     }
 
     @Override
-    public void export(FileTreeWriter writer) throws IOException {
+    public void export(ResourcePack resourcePack) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -77,9 +78,10 @@ public class MCPacksHttpExporter implements ResourceExporter {
                 throw new IOException("Cannot find SHA-1 algorithm");
             }
 
-            FileTree treeOutput = FileTree.zip(new ZipOutputStream(new DigestOutputStream(output, digest)));
+
+            FileTreeWriter treeOutput = FileTreeWriter.zip(new ZipOutputStream(new DigestOutputStream(output, digest)));
             try {
-                writer.write(treeOutput);
+                MinecraftResourcePackWriter.minecraft().write(treeOutput, resourcePack);
             } finally {
                 treeOutput.finish();
             }

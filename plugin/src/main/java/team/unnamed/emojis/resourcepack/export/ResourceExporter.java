@@ -1,7 +1,7 @@
 package team.unnamed.emojis.resourcepack.export;
 
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.creative.file.FileTreeWriter;
+import team.unnamed.creative.ResourcePack;
 import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.Closeable;
@@ -13,10 +13,9 @@ import java.io.IOException;
 public interface ResourceExporter extends Closeable {
 
     /**
-     * Exports the data written by the
-     * given {@code writer}
+     * Exports the given ResourcePack
      */
-    void export(FileTreeWriter writer) throws IOException;
+    void export(ResourcePack resourcePack) throws IOException;
 
     default @Nullable UrlAndHash location() {
         return null;
