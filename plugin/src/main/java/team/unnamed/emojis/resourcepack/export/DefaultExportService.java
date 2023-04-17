@@ -45,7 +45,9 @@ public class DefaultExportService
         writer = writer.andThen(new EmojisWriter(emojiStore));
 
         try {
-            exporter.export(writer);
+            ResourcePack resourcePack = ResourcePack.create();
+            writer.accept(resourcePack);
+            exporter.export(resourcePack);
             return exporter.location();
         } catch (IOException e) {
             throw new IllegalStateException("Cannot export resource pack", e);
