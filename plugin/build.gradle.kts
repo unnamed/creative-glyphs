@@ -20,7 +20,7 @@ dependencies {
     compileOnly(annotations)
 
     // Creative
-    val creativeVersion = "0.6.0-SNAPSHOT"
+    val creativeVersion = "0.6.1-SNAPSHOT"
     implementation("team.unnamed:creative-api:$creativeVersion")
     implementation("team.unnamed:creative-serializer-minecraft:$creativeVersion")
     implementation("team.unnamed:creative-server:$creativeVersion")
