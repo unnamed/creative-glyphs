@@ -3,16 +3,10 @@ package team.unnamed.emojis.provider.head;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
-import team.unnamed.creative.ResourcePack;
-import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.font.FontProvider;
-import team.unnamed.creative.texture.Texture;
-import team.unnamed.emojis.util.Version;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,14 +14,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class HeadEmojiProvider {
 
-    private static final String[] PIXELS_BY_HEIGHT = {
+    public static final String[] PIXELS_BY_HEIGHT = {
             string(0x10B00B),
             string(0x10B00C),
             string(0x10B00D),
@@ -37,50 +30,12 @@ public class HeadEmojiProvider {
             string(0x10B011),
             string(0x10B012)
     };
-    private static final String OFFSET_MINUS_1 = string(0x10B013);
-    private static final String OFFSET_MINUS_8 = string(0x10B014);
+    public static final String OFFSET_MINUS_1 = string(0x10B013);
+    public static final String OFFSET_MINUS_8 = string(0x10B014);
 
     private static final Map<UUID, int[][]> heads = new HashMap<>();
     
     private HeadEmojiProvider() {
-    }
-
-    public static void installResources(Collection<FontProvider> defaultFontProviders, ResourcePack resourcePack) {
-
-        Key pixelTexture = Key.key("emojis", "emojiutil/pixel");
-
-        // write pixel font providers
-        for (int height = 0; height < Faces.FACE_HEIGHT; height++) {
-            defaultFontProviders.add(
-                    FontProvider.bitMap()
-                            .file(pixelTexture)
-                            .height(8)
-                            .ascent(Faces.FACE_HEIGHT - height - 1)
-                            .characters(PIXELS_BY_HEIGHT[height])
-                            .build()
-            );
-        }
-
-        // write offset font provider
-        if (Version.CURRENT.minor() >= 19) {
-            // 1.19 added space font providers
-            defaultFontProviders.add(
-                    FontProvider.space()
-                            .advance(OFFSET_MINUS_1, -1)
-                            .advance(OFFSET_MINUS_8, -8)
-                            .build()
-            );
-        } else {
-            // TODO:
-            throw new UnsupportedOperationException("1.19+ required");
-        }
-
-        resourcePack.texture(
-                Texture.builder()
-                        .key(pixelTexture)
-                        .data(Writable.resource(HeadEmojiProvider.class.getClassLoader(), "pixel.png"))
-                        .build()
-        );
     }
 
     public static Component of(Player player) {

@@ -1,7 +1,9 @@
-package team.unnamed.emojis.resourcepack.writer;
+package team.unnamed.emojis.resourcepack;
 
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.ResourcePack;
+import team.unnamed.creative.central.event.EventListener;
+import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
 import team.unnamed.creative.font.Font;
 import team.unnamed.creative.font.FontProvider;
 import team.unnamed.creative.texture.Texture;
@@ -11,7 +13,6 @@ import team.unnamed.emojis.object.store.EmojiStore;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Responsible for writing resources required to use
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
  *
  * @author yusshu (Andre Roldan)
  */
-public class EmojisWriter implements Consumer<ResourcePack> {
+public class EmojisWriter implements EventListener<ResourcePackGenerateEvent> {
 
     private final EmojiStore registry;
 
@@ -36,7 +37,8 @@ public class EmojisWriter implements Consumer<ResourcePack> {
      * given {@code output}</strong>
      */
     @Override
-    public void accept(ResourcePack resourcePack) {
+    public void on(ResourcePackGenerateEvent event) {
+        ResourcePack resourcePack = event.resourcePack();
 
         Collection<Emoji> emojis = registry.values();
         List<FontProvider> providers = new ArrayList<>(emojis.size());

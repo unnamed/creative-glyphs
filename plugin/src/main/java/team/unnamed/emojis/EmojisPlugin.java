@@ -1,18 +1,14 @@
 package team.unnamed.emojis;
 
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import team.unnamed.creative.central.CreativeCentralProvider;
+import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
 import team.unnamed.emojis.command.RootCommand;
 import team.unnamed.emojis.object.cloud.EmojiImporter;
 import team.unnamed.emojis.listener.EventListener;
-import team.unnamed.emojis.resourcepack.export.DefaultExportService;
-import team.unnamed.emojis.resourcepack.export.ExportService;
 import team.unnamed.emojis.hook.PluginHook;
 import team.unnamed.emojis.hook.PluginHookManager;
 import team.unnamed.emojis.hook.discordsrv.DiscordSRVHook;
@@ -23,28 +19,20 @@ import team.unnamed.emojis.listener.EmojiCompletionsListener;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
-import team.unnamed.emojis.listener.ResourcePackApplyListener;
 import team.unnamed.emojis.metrics.Metrics;
-import team.unnamed.emojis.resourcepack.ResourcePackInfo;
-import team.unnamed.emojis.resourcepack.ResourcePackApplier;
-import team.unnamed.emojis.resourcepack.UrlAndHash;
 import team.unnamed.emojis.object.store.EmojiStore;
+import team.unnamed.emojis.resourcepack.EmojisWriter;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class EmojisPlugin extends JavaPlugin {
 
     private EmojiStore registry;
-    private ResourcePackInfo resourcePack;
-
     private EmojiImporter importer;
-
-    private ExportService exportService;
 
     @Override
     public void onEnable() {
@@ -63,36 +51,9 @@ public class EmojisPlugin extends JavaPlugin {
         this.registry.load();
 
         // export
-        this.exportService = new DefaultExportService(this);
-        getLogger().info("Exporting resource-pack...");
-        UrlAndHash location = exportService.export(registry);
+        CreativeCentralProvider.get().eventBus().listen(this, ResourcePackGenerateEvent.class, new EmojisWriter(registry));
 
         EventBus eventBus = EventBus.create(this);
-
-        if (location != null) {
-            // TODO: Remove support for 'application.prompt'
-            String prompt = getConfig().getString("application.prompt", null);
-            if (prompt == null) {
-                prompt = getConfig().getString("pack.prompt", null);
-            }
-            if (prompt != null) {
-                prompt = ChatColor.translateAlternateColorCodes('&', prompt);
-                // TODO: refactor this ugly code
-                prompt = ComponentSerializer.toString(TextComponent.fromLegacyText(prompt));
-            }
-
-            this.resourcePack = new ResourcePackInfo(
-                    location.url(),
-                    location.hash(),
-                    // TODO: Remove support for "feature.require-pack"
-                    getConfig().getBoolean("feature.require-pack", false) || getConfig().getBoolean("pack.required", false),
-                    prompt
-            );
-            Bukkit.getPluginManager().registerEvents(
-                    new ResourcePackApplyListener(this),
-                    this
-            );
-        }
 
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
                 .setExecutor(new RootCommand(this).asExecutor());
@@ -141,47 +102,12 @@ public class EmojisPlugin extends JavaPlugin {
         new Metrics(this, 17168);
     }
 
-    @Override
-    public void onDisable() {
-        if (exportService != null) {
-            try {
-                exportService.close();
-            } catch (IOException e) {
-                getLogger().log(Level.WARNING, "Failed to close export service", e);
-            }
-        }
-    }
-
     public EmojiStore registry() {
         return registry;
     }
 
     public EmojiImporter importer() {
         return importer;
-    }
-
-    public ExportService exportService() {
-        return exportService;
-    }
-
-    public ResourcePackInfo pack() {
-        return resourcePack;
-    }
-
-    public void pack(ResourcePackInfo resourcePack) {
-        this.resourcePack = resourcePack;
-    }
-
-    public void updateResourcePackLocation(UrlAndHash location) {
-        this.resourcePack = resourcePack.withLocation(
-                location.url(),
-                location.hash()
-        );
-
-        // for current players
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            ResourcePackApplier.setResourcePack(player, resourcePack);
-        }
     }
 
 }

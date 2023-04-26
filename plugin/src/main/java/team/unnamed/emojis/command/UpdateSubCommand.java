@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojisPlugin;
-import team.unnamed.emojis.resourcepack.UrlAndHash;
 
 import java.io.IOException;
 import java.net.URL;
