@@ -3,6 +3,7 @@ package team.unnamed.emojis.command;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.EmojisPlugin;
 
@@ -43,12 +44,7 @@ public class UpdateSubCommand implements CommandRunnable {
 
                 // asynchronous export
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    UrlAndHash resource = plugin.exportService().export(plugin.registry());
-
-                    // update
-                    if (resource != null) {
-                        plugin.updateResourcePackLocation(resource);
-                    }
+                    CreativeCentralProvider.get().generate();
                 });
             });
         } catch (IOException e) {

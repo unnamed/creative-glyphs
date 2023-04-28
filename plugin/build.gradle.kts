@@ -20,11 +20,9 @@ dependencies {
     compileOnly(annotations)
 
     // Creative
-    val creativeVersion = "0.6.2-SNAPSHOT"
-    implementation("team.unnamed:creative-api:$creativeVersion")
-    implementation("team.unnamed:creative-central-api:$creativeVersion")
-    implementation("team.unnamed:creative-serializer-minecraft:$creativeVersion")
-    implementation("team.unnamed:creative-server:$creativeVersion")
+    val creativeVersion = "0.7.0-dev-SNAPSHOT"
+    compileOnly("team.unnamed:creative-central-api:$creativeVersion")
+    testImplementation("team.unnamed:creative-central-api:$creativeVersion")
 
     // Optional libraries
     compileOnly("net.kyori:adventure-api:4.12.0")
@@ -63,20 +61,17 @@ tasks {
         useJUnitPlatform()
     }
 
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))
         }
-    }
-
-    shadowJar {
-        from(project.sourceSets.main.get().output)
-
-        // relocate libraries
-        // TODO: Remove when creative-manage is ready
-        val pkg = "team.unnamed.emojis.lib"
-        relocate("team.unnamed.creative", "$pkg.creative")
-        relocate("net.kyori.examination", "$pkg.examination")
-        relocate("net.kyori.adventure.key", "$pkg.adventure.key")
     }
 }
