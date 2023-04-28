@@ -47,6 +47,7 @@ bukkit {
     apiVersion = "1.13"
     description = "Unnamed Team's Emojis Plugin"
     author = "Unnamed Team"
+    depend = listOf("creative-central")
     softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "LPC")
     commands {
         create("emojis") {
