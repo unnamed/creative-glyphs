@@ -20,7 +20,7 @@ dependencies {
     compileOnly(annotations)
 
     // Creative
-    val creativeVersion = "0.7.0-dev-SNAPSHOT"
+    val creativeVersion = "0.7.0-SNAPSHOT"
     compileOnly("team.unnamed:creative-central-api:$creativeVersion")
     testImplementation("team.unnamed:creative-central-api:$creativeVersion")
 

@@ -43,9 +43,7 @@ public class UpdateSubCommand implements CommandRunnable {
                 plugin.registry().save();
 
                 // asynchronous export
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    CreativeCentralProvider.get().generate();
-                });
+                CreativeCentralProvider.get().generate();
             });
         } catch (IOException e) {
             sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
