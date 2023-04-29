@@ -34,7 +34,7 @@ dependencies {
 
     // Optional plugin hooks
     compileOnly("me.clip:placeholderapi:2.10.10")
-    compileOnly(files("../lib/TownyChat-0.91.jar", "../lib/EzChat-3.0.3.jar"))
+    compileOnly(files("lib/TownyChat-0.91.jar", "lib/EzChat-3.0.3.jar"))
     compileOnly("com.discordsrv:discordsrv:1.26.0")
 
     // Testing
