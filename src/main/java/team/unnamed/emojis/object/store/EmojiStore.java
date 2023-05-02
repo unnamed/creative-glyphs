@@ -20,11 +20,6 @@ public interface EmojiStore {
 
     void update(Emoji emoji);
 
-    @Deprecated
-    default void add(Emoji emoji) {
-        update(emoji);
-    }
-
     void update(Collection<Emoji> emojis);
 
     Collection<Emoji> values();

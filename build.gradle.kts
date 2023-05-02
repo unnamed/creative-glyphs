@@ -23,6 +23,9 @@ dependencies {
     compileOnly(serverApi)
     compileOnly(annotations)
 
+    // Aho-Corasick implementation (We use this to replace emojis in text)
+    implementation("org.ahocorasick:ahocorasick:0.6.3")
+
     // Creative
     val creativeVersion = "0.7.0-SNAPSHOT"
     compileOnly("team.unnamed:creative-central-api:$creativeVersion")
@@ -72,6 +75,11 @@ tasks {
 
     compileTestJava {
         options.encoding = "UTF-8"
+    }
+
+    shadowJar {
+        val pkg = "team.unnamed.emojis.lib"
+        relocate("org.ahocorasick", "$pkg.ahocorasick")
     }
 
     java {

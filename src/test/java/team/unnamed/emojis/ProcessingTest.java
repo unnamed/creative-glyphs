@@ -43,7 +43,7 @@ public class ProcessingTest {
         EXPECTATIONS = Collections.unmodifiableMap(expectations);
 
         // fill registry
-        REGISTRY.add(
+        REGISTRY.update(
                 Emoji.builder()
                         .name("test")
                         .permission("")
