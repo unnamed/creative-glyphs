@@ -66,7 +66,24 @@ messages:
     help: |-
         &8----------------- &dµŋemojis &8- &7Help Page &8-----------------
         &8 - &d/emojis update <id> &8- &7Import emojis from https://unnamed.team/emojis
+        &8 - &d/emojis list [page] &8- &7List all emojis
         &8 - &d/emojis reload &8- &7Reload emojis from the emojis.mcemoji file
         &8-----------------------------------------------------
     list:
-        hover: '&f<emoji> &8:<emojiname>:'
+        invalid-page: '&cInvalid page number!'
+        header: '&8----------------- &dµŋemojis &8- &7Page <page> / <maxpages> &8-----------------'
+        element:
+            available:
+                content: '&f<emoji>'
+                hover: '&f<emoji> &8:<emojiname>:'
+            unavailable:
+                content: '&7<emoji>'
+                hover: |-
+                    &cBuy VIP to unlock this emoji!
+                      &7<emoji> &8:<emojiname>:
+        show-unavailable: false
+        separation:
+            1: ' '
+            10: '\n'
+        max-emojis-per-page: 30
+        footer: '&8-----------------------------------------------------'

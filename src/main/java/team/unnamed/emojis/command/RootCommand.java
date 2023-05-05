@@ -33,14 +33,25 @@ public class RootCommand implements CommandRunnable {
         switch (args.next().toLowerCase(Locale.ROOT)) {
             case "update" -> updateSubCommand.run(sender, args);
             case "reload" -> plugin.registry().load();
+            case "list" -> listSubCommand.run(sender, args);
             case "help" ->
                 // todo: replace this
                 sender.sendMessage(ChatColor.translateAlternateColorCodes(
                         '&',
                         plugin.getConfig().getString("messages.help", "Message not found")
                 ));
-            default ->
+            default -> {
+                // try to parse the page number, if it's a number, run
+                // the list subcommand
+                try {
+                    Integer.parseInt(args.peek());
+                    listSubCommand.run(sender, args);
+                    return;
+                } catch (NumberFormatException ignored) {
+                }
+
                 sender.sendMessage(ChatColor.RED + "Unknown subcommand");
+            }
         }
     }
 

@@ -16,6 +16,10 @@ public class ArgumentStack {
         return args.get(cursor++);
     }
 
+    public String peek() {
+        return args.get(cursor);
+    }
+
     public int available() {
         return args.size() - cursor;
     }
