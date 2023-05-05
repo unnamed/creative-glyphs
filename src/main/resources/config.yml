@@ -71,7 +71,7 @@ messages:
         &8-----------------------------------------------------
     list:
         invalid-page: '&cInvalid page number!'
-        header: '&8----------------- &dµŋemojis &8- &7Page <page> / <maxpages> &8-----------------'
+        header: '&8&m                    &d µŋemojis &8- &7Page <page> / <maxpages> &8&m                    '
         element:
             available:
                 content: '&f<emoji>'
@@ -83,7 +83,7 @@ messages:
                       &7<emoji> &8:<emojiname>:
         show-unavailable: false
         separation:
-            1: ' '
-            10: "\n"
-        max-emojis-per-page: 30
-        footer: '&8-----------------------------------------------------'
+            1: ' '    # every 1 emoji, add a space
+            28: "\n"  # every 28 emojis, add a new line
+        max-emojis-per-page: 84
+        footer: '&8&m                                                                       '

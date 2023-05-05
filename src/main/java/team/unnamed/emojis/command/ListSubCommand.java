@@ -87,7 +87,7 @@ public class ListSubCommand implements CommandRunnable {
         int emojisPerPage = listConfig.getInt("max-emojis-per-page", 30);
         int maxPages = (int) Math.ceil(len / (float) emojisPerPage);
 
-        if (page < 0 || page > maxPages) {
+        if (page < 0 || page >= maxPages) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', listConfig.getString("invalid-page", "Invalid page")));
             return;
         }
@@ -96,7 +96,7 @@ public class ListSubCommand implements CommandRunnable {
         emojis = emojis.subList(page * emojisPerPage, Math.min(len, (page + 1) * emojisPerPage));
 
         TextComponent message = new TextComponent("");
-        for (int i = 0; i < Math.min(len, emojisPerPage); i++) {
+        for (int i = 0; i < emojis.size(); i++) {
             // add separators if needed
             if (i != 0) {
                 for (Map.Entry<Integer, String> entry : separators.entrySet()) {

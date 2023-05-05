@@ -47,6 +47,7 @@ public class RootCommand implements CommandRunnable {
                 // try to parse the page number, if it's a number, run
                 // the list subcommand
                 try {
+                    args.back();
                     Integer.parseInt(args.peek());
                     listSubCommand.run(sender, args);
                     return;
