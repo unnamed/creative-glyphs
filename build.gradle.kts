@@ -66,7 +66,7 @@ tasks {
     }
 
     processResources {
-        filesMatching("**.yml") {
+        filesMatching("plugin.yml") {
             expand("project" to project)
         }
     }
