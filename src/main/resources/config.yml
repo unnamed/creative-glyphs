@@ -84,6 +84,6 @@ messages:
         show-unavailable: false
         separation:
             1: ' '
-            10: '\n'
+            10: "\n"
         max-emojis-per-page: 30
         footer: '&8-----------------------------------------------------'

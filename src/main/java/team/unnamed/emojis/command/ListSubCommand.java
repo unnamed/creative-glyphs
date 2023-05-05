@@ -112,7 +112,10 @@ public class ListSubCommand implements CommandRunnable {
             String basePath = "element." + (available ? "available" : "unavailable");
 
             TextComponent component = new TextComponent(
-                    listConfig.getString(basePath + ".content")
+                    ChatColor.translateAlternateColorCodes(
+                            '&',
+                                    listConfig.getString(basePath + ".content", "Not found")
+                    )
                             .replace("<emoji>", emoji.replacement())
                             .replace("<emojiname>", emoji.name())
             );

@@ -32,7 +32,10 @@ public class RootCommand implements CommandRunnable {
 
         switch (args.next().toLowerCase(Locale.ROOT)) {
             case "update" -> updateSubCommand.run(sender, args);
-            case "reload" -> plugin.registry().load();
+            case "reload" -> {
+                plugin.reloadConfig();
+                plugin.registry().load();
+            }
             case "list" -> listSubCommand.run(sender, args);
             case "help" ->
                 // todo: replace this
