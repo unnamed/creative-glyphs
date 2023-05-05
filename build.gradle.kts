@@ -1,7 +1,6 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
 }
 
 repositories {
@@ -47,20 +46,9 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
-bukkit {
-    main = "team.unnamed.emojis.EmojisPlugin"
-    name = "unemojis"
-    version = project.version.toString()
-    apiVersion = "1.13"
-    description = "Unnamed Team's Emojis Plugin"
-    author = "Unnamed Team"
-    depend = listOf("creative-central")
-    softDepend = listOf("PlaceholderAPI", "EzChat", "TownyChat", "DiscordSRV", "LPC")
-    commands {
-        create("emojis") {
-            description = "Main command for the unemojis plugin"
-            usage = "/<command> update <id>"
-        }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -77,14 +65,14 @@ tasks {
         options.encoding = "UTF-8"
     }
 
+    processResources {
+        filesMatching("**.yml") {
+            expand("project" to project)
+        }
+    }
+
     shadowJar {
         val pkg = "team.unnamed.emojis.lib"
         relocate("org.ahocorasick", "$pkg.ahocorasick")
-    }
-
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
     }
 }
