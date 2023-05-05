@@ -1,3 +1,29 @@
+##
+##                                           /$$
+##                                          |__/
+##      /$$$$$$  /$$$$$$/$$$$   /$$$$$$  /$$ /$$  /$$$$$$$
+##     /$$__  $$| $$_  $$_  $$ /$$__  $$|__/| $$ /$$_____/
+##    | $$$$$$$$| $$ \ $$ \ $$| $$  \ $$ /$$| $$|  $$$$$$
+##    | $$_____/| $$ | $$ | $$| $$  | $$| $$| $$ \____  $$
+##    |  $$$$$$$| $$ | $$ | $$|  $$$$$$/| $$| $$ /$$$$$$$/
+##     \_______/|__/ |__/ |__/ \______/ | $$|__/|_______/
+##          plugin by unnamed      /$$  | $$
+##                                |  $$$$$$/
+##                                 \______/
+##
+
+#
+# Welcome to the emojis configuration!
+#
+#
+#  -  If you want to use special characters in the config file, you need
+#     to save the file using UTF-8, not ANSI or any other encoding
+#
+#
+# If you need help with the configuration, feel free to contact us on
+#  -    Discord: https://discord.gg/xbba2fy
+#
+
 format:
 
     # The text displayed when the player hovers an emoji
