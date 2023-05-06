@@ -2,7 +2,6 @@ package team.unnamed.emojis;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
@@ -18,7 +17,6 @@ import team.unnamed.emojis.hook.papi.PlaceholderApiHook;
 import team.unnamed.emojis.hook.townychat.TownyChatHook;
 import team.unnamed.emojis.listener.EmojiCompletionsListener;
 import team.unnamed.emojis.listener.EventBus;
-import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
 import team.unnamed.emojis.util.Metrics;
 import team.unnamed.emojis.object.store.EmojiStore;
@@ -59,11 +57,6 @@ public class EmojisPlugin extends JavaPlugin {
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
                 .setExecutor(new RootCommand(this).asExecutor());
 
-        EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy =
-                "clearRecipients".equals(getConfig().getString(""))
-                        ? EventCancellationStrategy.removingRecipients()
-                        : EventCancellationStrategy.cancellingDefault();
-
         Set<PluginHook> hooks = PluginHookManager.create()
                 .registerHook(new EzChatHook(this, registry))
                 .registerHook(new TownyChatHook(this, registry))
@@ -82,9 +75,7 @@ public class EmojisPlugin extends JavaPlugin {
             EventListener<?> chatListener = ListenerFactory.create(
                     this,
                     registry,
-                    cancellationStrategy,
-                    getConfig().getBoolean("compat.use-paper-listener"),
-                    getConfig().getBoolean("format.legacy.rich")
+                    getConfig().getBoolean("compat.use-paper-listener")
             );
 
             eventBus.register(chatListener, priority);

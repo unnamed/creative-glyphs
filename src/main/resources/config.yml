@@ -45,18 +45,6 @@ format:
         # from other plugins when using AsyncPlayerChatEvent
         message-prefix: '&f'
 
-        # Using components in legacy servers can affect
-        # compatibility with other plugins since we need
-        # to surround the chat event
-        rich: false
-
-        # Event surrounding strategy, 'clearRecipients'
-        # will remove all event recipients (it makes it
-        # compatible with DiscordSRV), 'cancel' will just
-        # cancel the event, both strategies may cause problems
-        # with another plugins
-        surround: 'clearRecipients'
-
 compat:
     # If enabled, the plugin will use the Paper API to listen
     # to chat messages. This will allow the plugin to use rich

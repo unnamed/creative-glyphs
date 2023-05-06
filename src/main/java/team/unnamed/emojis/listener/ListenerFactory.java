@@ -1,11 +1,9 @@
 package team.unnamed.emojis.listener;
 
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.EmojisPlugin;
 import team.unnamed.emojis.listener.chat.LegacyChatListener;
-import team.unnamed.emojis.listener.chat.LegacyRichSurroundingChatListener;
 import team.unnamed.emojis.listener.chat.PaperRichChatListener;
 
 import java.util.logging.Logger;
@@ -22,13 +20,10 @@ public final class ListenerFactory {
     private ListenerFactory() {
     }
 
-    @SuppressWarnings("deprecation")
     public static EventListener<?> create(
             Plugin plugin,
             EmojiStore registry,
-            EventCancellationStrategy<AsyncPlayerChatEvent> cancellationStrategy,
-            boolean paper,
-            boolean rich
+            boolean paper
     ) {
         if (paper) {
             // try using the Paper event 'AsyncChatEvent'
@@ -44,21 +39,8 @@ public final class ListenerFactory {
             }
         }
 
-        if (rich) {
-            LOGGER.info("Using Bukkit rich chat listener");
-            // not on paper and user wants it to be rich text, use
-            // this another ugly legacy that may generate compatibility
-            // problems with other plugins...
-            return new LegacyRichSurroundingChatListener(
-                    plugin,
-                    registry,
-                    cancellationStrategy
-            );
-        } else {
-            LOGGER.info("Using Bukkit flat chat listener");
-            // use the ugly legacy flat chat listener
-            return new LegacyChatListener(plugin, registry);
-        }
+        LOGGER.info("Using Bukkit flat chat listener");
+        return new LegacyChatListener(plugin, registry);
     }
 
 }

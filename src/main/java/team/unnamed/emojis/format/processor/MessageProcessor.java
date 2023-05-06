@@ -1,8 +1,6 @@
 package team.unnamed.emojis.format.processor;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.plugin.Plugin;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.object.store.EmojiStore;
@@ -31,14 +29,6 @@ public interface MessageProcessor<TInput, TOutput> {
 
     static MessageProcessor<Component, Component> component(Plugin plugin) {
         return component(EmojiRepresentationProvider.component(plugin));
-    }
-
-    static MessageProcessor<String, BaseComponent[]> stringToLegacyComponent(EmojiRepresentationProvider<TextComponent> representationProvider) {
-        return new LegacyMessageProcessor(representationProvider);
-    }
-
-    static MessageProcessor<String, BaseComponent[]> stringToLegacyComponent(Plugin plugin) {
-        return stringToLegacyComponent(EmojiRepresentationProvider.legacyComponent(plugin));
     }
 
 }
