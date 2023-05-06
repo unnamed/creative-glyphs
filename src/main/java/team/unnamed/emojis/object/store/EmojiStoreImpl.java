@@ -1,5 +1,6 @@
 package team.unnamed.emojis.object.store;
 
+import org.ahocorasick.trie.Trie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 final class EmojiStoreImpl implements EmojiStore {
 
+    private Trie trie = Trie.builder().build();
     private Map<String, Emoji> emojisByName = new HashMap<>();
     private Map<Integer, Emoji> emojisByCodePoint = new HashMap<>();
 
@@ -35,6 +37,11 @@ final class EmojiStoreImpl implements EmojiStore {
     public EmojiStoreImpl() {
         this.plugin = null;
         this.database = null;
+    }
+
+    @Override
+    public Trie trie() {
+        return trie;
     }
 
     @Override
@@ -53,6 +60,7 @@ final class EmojiStoreImpl implements EmojiStore {
         if (old != null) {
             emojisByCodePoint.remove(old.character(), old);
         }
+        trie = buildTrie(emojisByName);
     }
 
     @Override
@@ -72,9 +80,21 @@ final class EmojiStoreImpl implements EmojiStore {
         // call emoji list update event
         Bukkit.getPluginManager().callEvent(new EmojiListUpdateEvent(emojisByName, newRegistry));
 
-        // update the registry
+        // build trie and update the registries
+        trie = buildTrie(newRegistry);
         emojisByName = newRegistry;
         emojisByCodePoint = newCharacters;
+    }
+
+    private Trie buildTrie(Map<String, Emoji> emojisByName) {
+        // TODO: make ignoreCase() and other options configurable
+        Trie.TrieBuilder builder = Trie.builder()
+                .ignoreCase()
+                .ignoreOverlaps();
+        for (Emoji emoji : emojisByName.values()) {
+            builder.addKeyword(emoji.name());
+        }
+        return builder.build();
     }
 
     @Override

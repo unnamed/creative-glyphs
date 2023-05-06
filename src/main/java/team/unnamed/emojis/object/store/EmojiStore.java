@@ -1,5 +1,6 @@
 package team.unnamed.emojis.object.store;
 
+import org.ahocorasick.trie.Trie;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import team.unnamed.emojis.Emoji;
@@ -9,6 +10,8 @@ import java.util.Collection;
 import java.util.Locale;
 
 public interface EmojiStore {
+
+    Trie trie();
 
     @Nullable Emoji get(String name);
 
