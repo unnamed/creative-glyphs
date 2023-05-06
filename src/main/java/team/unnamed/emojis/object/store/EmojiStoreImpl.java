@@ -1,6 +1,6 @@
 package team.unnamed.emojis.object.store;
 
-import org.ahocorasick.trie.Trie;
+import org.ahocorasick.trie.PayloadTrie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 final class EmojiStoreImpl implements EmojiStore {
 
-    private Trie trie = Trie.builder().build();
+    private PayloadTrie<Emoji> trie = PayloadTrie.<Emoji>builder().build();
     private Map<String, Emoji> emojisByName = new HashMap<>();
     private Map<Integer, Emoji> emojisByCodePoint = new HashMap<>();
 
@@ -40,7 +40,7 @@ final class EmojiStoreImpl implements EmojiStore {
     }
 
     @Override
-    public Trie trie() {
+    public PayloadTrie<Emoji> trie() {
         return trie;
     }
 
@@ -86,13 +86,15 @@ final class EmojiStoreImpl implements EmojiStore {
         emojisByCodePoint = newCharacters;
     }
 
-    private Trie buildTrie(Map<String, Emoji> emojisByName) {
+    private PayloadTrie<Emoji> buildTrie(Map<String, Emoji> emojisByName) {
         // TODO: make ignoreCase() and other options configurable
-        Trie.TrieBuilder builder = Trie.builder()
+        PayloadTrie.PayloadTrieBuilder<Emoji> builder = PayloadTrie.<Emoji>builder()
                 .ignoreCase()
                 .ignoreOverlaps();
         for (Emoji emoji : emojisByName.values()) {
-            builder.addKeyword(emoji.name());
+            for (String usage : emoji.usages()) {
+                builder.addKeyword(usage, emoji);
+            }
         }
         return builder.build();
     }
