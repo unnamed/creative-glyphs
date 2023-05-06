@@ -5,7 +5,7 @@ api-version: 1.13
 description: Unnamed Team's Emojis Plugin
 author: Unnamed Team
 depend: [creative-central]
-softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC]
+softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders]
 commands:
     emojis:
         description: Main command for the unemojis plugin
