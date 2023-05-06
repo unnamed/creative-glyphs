@@ -58,8 +58,24 @@ format:
         surround: 'clearRecipients'
 
 compat:
-    # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
-    use-paper-listener: false
+    # If enabled, the plugin will use the Paper API to listen
+    # to chat messages. This will allow the plugin to use rich
+    # components.
+    #
+    # Note: If enabled, the listener will be executed AFTER
+    #  all the listeners registered for the legacy event,
+    #  however, if other plugins use the modern event, the
+    #  "listener-priority" setting is still available
+    use-paper-listener: true
+
+    # Specify the listener priority to use, LOW by default
+    #
+    # Available priorities:
+    # - LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+    #
+    # If the listener-priority is lower, it will be executed
+    # BEFORE other plugins' listeners, if it's higher, it will
+    # be executed AFTER other plugins' listeners
     listener-priority: 'LOW'
 
 messages:
