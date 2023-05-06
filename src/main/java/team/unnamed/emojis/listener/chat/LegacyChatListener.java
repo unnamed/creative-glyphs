@@ -17,6 +17,7 @@ import team.unnamed.emojis.listener.EventListener;
  * to cancel the event. Should be compatible with
  * all chat plugins.
  */
+@SuppressWarnings("deprecation") // AsyncPlayerChatEvent is deprecated in Paper
 public class LegacyChatListener
         implements EventListener<AsyncPlayerChatEvent> {
 
@@ -61,7 +62,7 @@ public class LegacyChatListener
             } else if (legacyColor.length() == 1) {
                 // backwards compatibility
                 // TODO: Remove, backwards compatibility
-                return ChatColor.getByChar(legacyColor) + "";
+                return String.valueOf(ChatColor.getByChar(legacyColor));
             } else {
                 // same behavior as new, but new path is recommended
                 return ChatColor.translateAlternateColorCodes('&', legacyColor);

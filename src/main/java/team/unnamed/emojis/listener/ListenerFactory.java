@@ -22,6 +22,7 @@ public final class ListenerFactory {
     private ListenerFactory() {
     }
 
+    @SuppressWarnings("deprecation")
     public static EventListener<?> create(
             Plugin plugin,
             EmojiStore registry,

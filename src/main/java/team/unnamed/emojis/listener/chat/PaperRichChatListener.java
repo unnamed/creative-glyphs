@@ -13,8 +13,6 @@ import team.unnamed.emojis.listener.EventListener;
  * Implementation for listening to Paper's AsyncChatEvent,
  * won't cancel anything and should not be incompatible with
  * other plugins that use this event.
- *
- * Thank you PaperMC <3
  */
 public class PaperRichChatListener
         implements EventListener<AsyncChatEvent> {

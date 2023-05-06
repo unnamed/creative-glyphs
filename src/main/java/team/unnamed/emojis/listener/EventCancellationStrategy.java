@@ -36,6 +36,7 @@ public interface EventCancellationStrategy<E extends Event> {
      * {@link AsyncPlayerChatEvent} events, it removes all the
      * recipients (message receivers) from the event.
      */
+    @SuppressWarnings("deprecation")
     static EventCancellationStrategy<AsyncPlayerChatEvent> removingRecipients() {
         return event -> event.getRecipients().clear();
     }
