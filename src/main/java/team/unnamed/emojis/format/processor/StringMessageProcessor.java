@@ -23,13 +23,9 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
     public String process(String text, EmojiStore registry, Predicate<Emoji> usageChecker) {
 
         Collection<PayloadEmit<Emoji>> emits = registry.trie().parseText(text);
-        if (emits.isEmpty()) {
-            // no Emoji emits for this text, return it as-is
-            return text;
-        }
 
         Iterator<PayloadEmit<Emoji>> emitIterator = emits.iterator();
-        PayloadEmit<Emoji> emit = emitIterator.next();
+        PayloadEmit<Emoji> emit = emitIterator.hasNext() ? emitIterator.next() : null;
 
         StringBuilder builder = new StringBuilder();
 
@@ -46,6 +42,12 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
                 continue;
             }
 
+            // check if emit is null, if the emit is null, that
+            // means that we are not looking for an emoji usage,
+            // so we can skip next processes.
+            // It is null if, and only if:
+            // - There aren't any emoji usages in the message
+            // - We have finished processing all the emoji usages
             if (emit == null) {
                 builder.append(c);
                 continue;
@@ -81,7 +83,6 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
             }
 
             int start = emit.getStart();
-            int end = emit.getEnd();
 
             if (i < start) {
                 builder.append(c);
@@ -99,14 +100,12 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
                     builder.append(lastColors);
                 }
 
-                i += end - start;
+                // skip to the end of the emoji usage, we
+                // have already replaced the emoji
+                i += emit.getEnd() - start;
             }
 
-            if (emitIterator.hasNext()) {
-                emit = emitIterator.next();
-            } else {
-                emit = null;
-            }
+            emit = emitIterator.hasNext() ? emitIterator.next() : null;
         }
         return builder.toString();
     }
