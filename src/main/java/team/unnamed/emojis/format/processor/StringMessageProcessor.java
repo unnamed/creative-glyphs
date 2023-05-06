@@ -1,10 +1,13 @@
 package team.unnamed.emojis.format.processor;
 
+import org.ahocorasick.trie.PayloadEmit;
 import org.bukkit.ChatColor;
 import team.unnamed.emojis.Emoji;
 import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.format.EmojiFormat;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 final class StringMessageProcessor implements MessageProcessor<String, String> {
@@ -19,13 +22,19 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
     @Override
     public String process(String text, EmojiStore registry, Predicate<Emoji> usageChecker) {
 
-        // TODO: Make this be consistent with EMOJI_USAGE_PATTERN
+        Collection<PayloadEmit<Emoji>> emits = registry.trie().parseText(text);
+        if (emits.isEmpty()) {
+            // no Emoji emits for this text, return it as-is
+            return text;
+        }
+
+        Iterator<PayloadEmit<Emoji>> emitIterator = emits.iterator();
+        PayloadEmit<Emoji> emit = emitIterator.next();
+
         StringBuilder builder = new StringBuilder();
-        StringBuilder name = new StringBuilder();
 
         StringBuilder lastColors = new StringBuilder();
 
-        textLoop:
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
 
@@ -37,6 +46,9 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
                 continue;
             }
 
+            // check for colors and formatting, so we keep
+            // them after placing the emojis (they need to
+            // have white color and no decoration)
             if (c == ChatColor.COLOR_CHAR) {
                 if (i + 1 < text.length()) {
                     char code = text.charAt(++i);
@@ -57,48 +69,44 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
 
                     lastColors.append(color);
                 } else {
+                    // a color char used at the end of the message
                     builder.append(c);
                 }
                 continue;
             }
 
-            if (c != EmojiFormat.USAGE_START) {
+            int start = emit.getStart();
+            int end = emit.getEnd();
+
+            if (i < start) {
                 builder.append(c);
                 continue;
             }
 
-            while (++i < text.length()) {
-                char current = text.charAt(i);
-                if (current == EmojiFormat.USAGE_END) {
-                    if (name.length() < 1) {
-                        builder.append(EmojiFormat.USAGE_START);
-                        continue;
-                    }
-                    String nameStr = name.toString();
-                    Emoji emoji = registry.getIgnoreCase(nameStr);
-
-                    if (emoji == null || !usageChecker.test(emoji)) {
-                        builder.append(EmojiFormat.USAGE_START).append(nameStr);
-                        name.setLength(0);
-                        continue;
-                    } else {
-                        boolean previousColors = lastColors.length() > 0;
-                        if (previousColors) {
-                            builder.append(WHITE_PREFIX);
-                        }
-                        builder.append(emoji.replacement());
-                        if (previousColors) {
-                            builder.append(lastColors);
-                        }
-                    }
-                    name.setLength(0);
-                    continue textLoop;
-                } else {
-                    name.append(current);
+            Emoji emoji = emit.getPayload();
+            if (usageChecker.test(emoji)) {
+                boolean previousColors = lastColors.length() > 0;
+                if (previousColors) {
+                    builder.append(WHITE_PREFIX);
                 }
+                builder.append(emoji.replacement());
+                if (previousColors) {
+                    builder.append(lastColors);
+                }
+
+                i += end - start;
+            } else {
+                // no permission, do not replace
             }
 
-            builder.append(EmojiFormat.USAGE_START).append(name);
+            if (emitIterator.hasNext()) {
+                emit = emitIterator.next();
+            } else {
+                // no more emojis to replace, just append
+                // the rest of the text and break the loop
+                builder.append(text, i + 1, text.length());
+                break;
+            }
         }
         return builder.toString();
     }
