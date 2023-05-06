@@ -28,7 +28,11 @@ public final class EmojiFormat {
     }
 
     public static String usageOf(Emoji emoji) {
-        return USAGE_START + emoji.name() + USAGE_END;
+        return usageOf(emoji.name());
+    }
+
+    public static String usageOf(String emojiName) {
+        return USAGE_START + emojiName + USAGE_END;
     }
 
 }

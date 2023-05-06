@@ -71,6 +71,7 @@ final class YamlEmojiCodec implements EmojiCodec {
                             .ascent(ascent)
                             .character(character)
                             .data(Files.readAllBytes(file.toPath()))
+                            .addNameUsage()
                             .build()
             );
         }

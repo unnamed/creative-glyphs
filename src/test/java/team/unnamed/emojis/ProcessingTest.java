@@ -51,6 +51,7 @@ public class ProcessingTest {
                         .height(8)
                         .ascent(7)
                         .character('\u03bc')
+                        .addNameUsage()
                         .build()
         );
     }

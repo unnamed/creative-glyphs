@@ -96,6 +96,7 @@ final class MCEmojiCodec implements EmojiCodec {
                     .height(height)
                     .ascent(ascent)
                     .character(character)
+                    .addNameUsage()
                     .build();
         }
 

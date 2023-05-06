@@ -7,6 +7,9 @@ import team.unnamed.creative.font.BitMapFontProvider;
 import team.unnamed.creative.util.Validate;
 import team.unnamed.emojis.format.EmojiFormat;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static team.unnamed.emojis.format.EmojiFormat.NAME_PATTERN;
 import static team.unnamed.emojis.format.EmojiFormat.NAME_PATTERN_STR;
 import static team.unnamed.emojis.format.EmojiFormat.PERMISSION_PATTERN;
@@ -20,6 +23,7 @@ public class Emoji {
 
     private final String name;
     private final String permission;
+    private final Set<String> usages;
 
     private final int dataLength;
     private final Writable data;
@@ -27,11 +31,12 @@ public class Emoji {
     private final int height;
     private final int ascent;
     private final int character;
-    private final String characterString;
+    private final String characterString; // cached string value for 'character'
 
     private Emoji(
             @Pattern(NAME_PATTERN_STR) String name,
             @Pattern(EmojiFormat.PERMISSION_PATTERN_STR) String permission,
+            Set<String> usages,
             int dataLength,
             Writable data,
             int height,
@@ -39,6 +44,7 @@ public class Emoji {
             int character
     ) {
         this.name = name;
+        this.usages = usages;
         this.permission = permission;
         this.dataLength = dataLength;
         this.data = data;
@@ -52,6 +58,10 @@ public class Emoji {
 
     public @Subst("smile") String name() {
         return name;
+    }
+
+    public Set<String> usages() {
+        return usages;
     }
 
     public String permission() {
@@ -87,6 +97,7 @@ public class Emoji {
         return "Emoji{" +
                 "name='" + name + '\'' +
                 ", permission='" + permission + '\'' +
+                ", usages=" + usages +
                 ", dataLength=" + dataLength +
                 ", data=" + data +
                 ", height=" + height +
@@ -103,6 +114,7 @@ public class Emoji {
 
         private String name;
         private String permission;
+        private Set<String> usages = new HashSet<>();
         private int dataLength;
         private Writable data;
         private int height = BitMapFontProvider.DEFAULT_HEIGHT;
@@ -124,6 +136,18 @@ public class Emoji {
             Validate.isNotNull(permission, "permission");
             Validate.isTrue(PERMISSION_PATTERN.matcher(permission).matches(), "Invalid emoji permission '" + permission);
             this.permission = permission;
+            return this;
+        }
+
+        public Builder addNameUsage() {
+            Validate.isNotNull(name, "name");
+            this.usages.add(EmojiFormat.usageOf(name));
+            return this;
+        }
+
+        public Builder addUsage(String usage) {
+            Validate.isNotNull(usage, "usage");
+            this.usages.add(usage);
             return this;
         }
 
@@ -163,7 +187,7 @@ public class Emoji {
             Validate.isNotNull(name, "name");
             Validate.isNotNull(permission, "permission");
             Validate.isNotNull(data, "data");
-            return new Emoji(name, permission, dataLength, data, height, ascent, character);
+            return new Emoji(name, permission, usages, dataLength, data, height, ascent, character);
         }
 
     }
