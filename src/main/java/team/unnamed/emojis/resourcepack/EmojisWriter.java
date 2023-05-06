@@ -45,7 +45,7 @@ public class EmojisWriter implements EventListener<ResourcePackGenerateEvent> {
 
         for (Emoji emoji : emojis) {
 
-            Key textureKey = Key.key(Key.MINECRAFT_NAMESPACE, "emojis/" + emoji.name());
+            Key textureKey = Key.key("emojis/" + emoji.name());
 
             // write emoji image
             resourcePack.texture(
@@ -66,10 +66,12 @@ public class EmojisWriter implements EventListener<ResourcePackGenerateEvent> {
             );
         }
 
-        // head emoji provider resources
-        //HeadEmojiProvider.installResources(providers, tree);
-
         // write the default.json font
+        // keep old font providers
+        Font defaultFont = resourcePack.font(Font.MINECRAFT_DEFAULT);
+        if (defaultFont != null) {
+            providers.addAll(defaultFont.providers());
+        }
         resourcePack.font(Font.of(Font.MINECRAFT_DEFAULT, providers));
     }
 

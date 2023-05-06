@@ -1,6 +1,7 @@
 package team.unnamed.emojis;
 
 import org.intellij.lang.annotations.Pattern;
+import org.intellij.lang.annotations.Subst;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.font.BitMapFontProvider;
 import team.unnamed.creative.util.Validate;
@@ -49,7 +50,7 @@ public class Emoji {
                 .toString();
     }
 
-    public String name() {
+    public @Subst("smile") String name() {
         return name;
     }
 
