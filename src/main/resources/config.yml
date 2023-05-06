@@ -60,7 +60,7 @@ format:
 compat:
     # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
     use-paper-listener: false
-    listener-priority: 'HIGHEST'
+    listener-priority: 'LOW'
 
 messages:
     help: |-

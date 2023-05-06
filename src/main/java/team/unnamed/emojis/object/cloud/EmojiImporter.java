@@ -56,7 +56,6 @@ public class EmojiImporter {
         try (Reader responseReader = new BufferedReader(
                 new InputStreamReader(connection.getInputStream())
         )) {
-            // TODO: we should use the 404 status instead of this
             // response should be like:
             // {
             //   present: true/false,
@@ -83,7 +82,6 @@ public class EmojiImporter {
         } catch (IOException e) {
             int status;
             try {
-                // TODO: we should probably handle more statuses
                 status = connection.getResponseCode();
             } catch (IOException ignored) {
                 // if getResponseCode() failed, just throw
