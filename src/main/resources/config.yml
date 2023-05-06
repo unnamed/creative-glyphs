@@ -66,6 +66,19 @@ compat:
     # be executed AFTER other plugins' listeners
     listener-priority: 'LOW'
 
+# pack:
+    # Which font should we use to write the emojis?
+    #
+    # You can use 'minecraft:default' so it uses the default
+    # Minecraft font, or specify any other one to use a custom
+    # one, like "myserver:emojifont"
+    #
+    # Using a custom font is recommended to avoid conflicts
+    # (two or more plugins using the same font and the same
+    # characters for different things), but it requires the
+    # 'use-paper-listener' option to be set to true
+#    font: 'minecraft:default'
+
 messages:
     help: |-
         &8----------------- &dµŋemojis &8- &7Help Page &8-----------------
