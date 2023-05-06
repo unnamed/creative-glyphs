@@ -46,6 +46,11 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
                 continue;
             }
 
+            if (emit == null) {
+                builder.append(c);
+                continue;
+            }
+
             // check for colors and formatting, so we keep
             // them after placing the emojis (they need to
             // have white color and no decoration)
@@ -95,17 +100,12 @@ final class StringMessageProcessor implements MessageProcessor<String, String> {
                 }
 
                 i += end - start;
-            } else {
-                // no permission, do not replace
             }
 
             if (emitIterator.hasNext()) {
                 emit = emitIterator.next();
             } else {
-                // no more emojis to replace, just append
-                // the rest of the text and break the loop
-                builder.append(text, i + 1, text.length());
-                break;
+                emit = null;
             }
         }
         return builder.toString();
