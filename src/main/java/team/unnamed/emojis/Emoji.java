@@ -151,6 +151,12 @@ public class Emoji {
             return this;
         }
 
+        public Builder usages(Set<String> usages) {
+            Validate.isNotNull(usages, "usages");
+            this.usages = usages;
+            return this;
+        }
+
         public Builder dataLength(int dataLength) {
             this.dataLength = dataLength;
             return this;
