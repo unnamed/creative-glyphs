@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package team.unnamed.emojis.metrics;
+package team.unnamed.emojis.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -47,6 +47,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("all") // unemojis - Suppress all warnings, we won't edit this file and warnings are annoying
 public class Metrics {
 
   private final Plugin plugin;

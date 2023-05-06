@@ -19,7 +19,7 @@ import team.unnamed.emojis.listener.EmojiCompletionsListener;
 import team.unnamed.emojis.listener.EventBus;
 import team.unnamed.emojis.listener.EventCancellationStrategy;
 import team.unnamed.emojis.listener.ListenerFactory;
-import team.unnamed.emojis.metrics.Metrics;
+import team.unnamed.emojis.util.Metrics;
 import team.unnamed.emojis.object.store.EmojiStore;
 import team.unnamed.emojis.resourcepack.EmojisWriter;
 
