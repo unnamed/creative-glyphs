@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    val serverApi = "io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT";
+    val serverApi = "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT";
     val annotations = "org.jetbrains:annotations:22.0.0";
 
     // Required libraries

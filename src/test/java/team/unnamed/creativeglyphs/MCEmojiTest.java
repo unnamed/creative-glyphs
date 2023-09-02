@@ -2,7 +2,6 @@ package team.unnamed.creativeglyphs;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import team.unnamed.creativeglyphs.object.serialization.EmojiCodec;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,12 +20,12 @@ public class MCEmojiTest {
 
     @Test
     public void test() throws IOException {
-        EmojiCodec codec = EmojiCodec.mcemoji();
+        GlyphCodec codec = GlyphCodec.mcemoji();
 
         // default emoji pack
         {
-            Collection<Emoji> emojis = codec.read(getResource("defaults.mcemoji"));
-            Assertions.assertEquals(21, emojis.size());
+            Collection<Glyph> glyphs = codec.read(getResource("defaults.mcemoji"));
+            Assertions.assertEquals(21, glyphs.size());
         }
 
 

@@ -1,11 +1,11 @@
 # creative-glyphs
-![Build Status](https://img.shields.io/github/actions/workflow/status/unnamed/emojis/build.yml?branch=main)
+![Build Status](https://img.shields.io/github/actions/workflow/status/unnamed/glyphs/build.yml?branch=main)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
 [![Discord](https://img.shields.io/discord/683899335405994062)](https://discord.gg/xbba2fy)
 
 A creative plugin that brings the default Minecraft UI to life by
 adding custom glyphs to anywhere you can write text. `creative-glyphs`
-also supports  using glyphs as emojis, like ":smiley:", ":heart:", "<3",
+also supports  using glyphs as glyphs, like ":smiley:", ":heart:", "<3",
 ":P", etc.
 
 `creative-glyphs` uses [creative](https://unnamed.team/docs/creative),

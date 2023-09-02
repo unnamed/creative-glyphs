@@ -1,12 +1,12 @@
-main: team.unnamed.emojis.EmojisPlugin
-name: unemojis
+main: team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin
+name: creative-glyphs
 version: ${project.version}
 api-version: 1.13
-description: Unnamed Team's Emojis Plugin
+description: Unnamed Team's creative-glyphs Plugin
 author: Unnamed Team
 depend: [creative-central]
 softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders]
 commands:
     emojis:
-        description: Main command for the unemojis plugin
+        description: Main command for the creative-glyphs plugin
         usage: /<command> update <id>

@@ -1,6 +1,7 @@
 package team.unnamed.creativeglyphs.command;
 
 import org.junit.jupiter.api.Test;
+import team.unnamed.creativeglyphs.plugin.command.ArgumentStack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -2,8 +2,9 @@ package team.unnamed.creativeglyphs;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import team.unnamed.creativeglyphs.format.processor.MessageProcessor;
-import team.unnamed.creativeglyphs.object.store.EmojiStore;
+import team.unnamed.creativeglyphs.content.ContentFlattener;
+import team.unnamed.creativeglyphs.content.ContentProcessor;
+import team.unnamed.creativeglyphs.map.GlyphMap;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ProcessingTest {
 
     private static final Map<String, String> EXPECTATIONS;
-    private static final EmojiStore REGISTRY = EmojiStore.createCachedOnly();
+    private static final GlyphMap REGISTRY = GlyphMap.map();
 
     static {
         // key replaces to value
@@ -44,14 +45,14 @@ public class ProcessingTest {
 
         // fill registry
         REGISTRY.update(
-                Emoji.builder()
+                Glyph.builder()
                         .name("test")
                         .permission("")
                         .data(new byte[0])
                         .height(8)
                         .ascent(7)
                         .character('\u03bc')
-                        .addNameUsage()
+                        .addUsage(":test:")
                         .build()
         );
     }
@@ -62,7 +63,7 @@ public class ProcessingTest {
         for (Map.Entry<String, String> expectation : EXPECTATIONS.entrySet()) {
             assertEquals(
                     expectation.getValue(),
-                    MessageProcessor.string().process(expectation.getKey(), REGISTRY)
+                    ContentProcessor.string().process(expectation.getKey(), REGISTRY)
             );
         }
     }
@@ -80,7 +81,7 @@ public class ProcessingTest {
 //            );
             assertEquals(
                     input,
-                    MessageProcessor.string().flatten(input, REGISTRY)
+                    ContentFlattener.stringToShorterUsage().flatten(input, REGISTRY)
             );
         }
     }
