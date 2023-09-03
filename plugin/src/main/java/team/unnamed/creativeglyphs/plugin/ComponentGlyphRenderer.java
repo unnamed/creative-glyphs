@@ -14,14 +14,14 @@ import team.unnamed.creativeglyphs.content.GlyphRenderer;
 
 import static net.kyori.adventure.text.minimessage.tag.resolver.TagResolver.resolver;
 
-final class ComponentGlyphRenderer
+public final class ComponentGlyphRenderer
         implements GlyphRenderer<Component> {
 
     private final Plugin plugin;
     private final boolean isMiniMessageAvailable;
     private boolean infoSupportMiniMessage = true;
 
-    ComponentGlyphRenderer(Plugin plugin) {
+    public ComponentGlyphRenderer(Plugin plugin) {
         this.plugin = plugin;
         this.isMiniMessageAvailable = isMiniMessageAvailable();
 
@@ -88,8 +88,6 @@ final class ComponentGlyphRenderer
         return Component.text()
                 .color(NamedTextColor.WHITE) // text color affects character texture
                 .content(glyph.replacement()); // use the emoji character
-                // TODO: We could use an specialized font for emojis
-                // .font(emojisFont)
     }
 
     private static boolean isMiniMessageAvailable() {

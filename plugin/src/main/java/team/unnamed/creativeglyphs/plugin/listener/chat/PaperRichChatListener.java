@@ -4,6 +4,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import team.unnamed.creativeglyphs.plugin.ComponentGlyphRenderer;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventListener;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 import team.unnamed.creativeglyphs.content.ContentProcessor;
@@ -22,7 +23,7 @@ public class PaperRichChatListener
 
     public PaperRichChatListener(Plugin plugin, PluginGlyphMap glyphMap) {
         this.glyphMap = glyphMap;
-        this.contentProcessor = ContentProcessor.component(plugin);
+        this.contentProcessor = ContentProcessor.component(new ComponentGlyphRenderer(plugin));
     }
 
     @Override
