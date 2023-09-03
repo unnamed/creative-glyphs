@@ -1,0 +1,12 @@
+[versions]
+adventure = "4.12.0"
+creative = "0.9.0-SNAPSHOT"
+creative-central = "0.7.0-SNAPSHOT"
+annotations = "22.0.0"
+
+[libraries]
+adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+adventure-text-minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure" }
+creative-api = { group = "team.unnamed", name = "creative-api", version.ref = "creative" }
+creative-central-api = { group = "team.unnamed", name = "creative-central-api", version.ref = "creative-central" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
