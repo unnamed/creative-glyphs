@@ -1,5 +1,5 @@
 # creative-glyphs
-![Build Status](https://img.shields.io/github/actions/workflow/status/unnamed/glyphs/build.yml?branch=main)
+![Build Status](https://img.shields.io/github/actions/workflow/status/unnamed/creative-glyphs/build.yml?branch=main)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
 [![Discord](https://img.shields.io/discord/683899335405994062)](https://discord.gg/xbba2fy)
 
