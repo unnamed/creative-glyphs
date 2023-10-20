@@ -1,6 +1,3 @@
-import gradle.kotlin.dsl.accessors._21d323b7f457c7b1c7c3ec9d4211e425.compileJava
-import gradle.kotlin.dsl.accessors._21d323b7f457c7b1c7c3ec9d4211e425.compileTestJava
-
 plugins {
     `java-library`
 }
