@@ -1,7 +1,7 @@
 [versions]
 adventure = "4.12.0"
-creative = "0.9.0-SNAPSHOT"
-creative-central = "0.7.0-SNAPSHOT"
+creative = "1.3.0" # keep in sync with creative-central's creative version
+creative-central = "0.10.0-SNAPSHOT"
 annotations = "22.0.0"
 
 [libraries]
