@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
 import team.unnamed.creativeglyphs.plugin.command.RootCommand;
+import team.unnamed.creativeglyphs.plugin.hook.essentialsdiscord.EssentialsDiscordHook;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
 import team.unnamed.creativeglyphs.plugin.listener.misc.CommandPreprocessListener;
 import team.unnamed.creativeglyphs.plugin.util.ArtemisGlyphImporter;
@@ -64,6 +65,7 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
                 .registerHook(new PlaceholderApiHook(this, registry))
                 .registerHook(new DiscordSRVHook(registry))
                 .registerHook(new MiniPlaceholdersHook(registry))
+                .registerHook(new EssentialsDiscordHook(this, registry))
                 .hook();
 
         if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {

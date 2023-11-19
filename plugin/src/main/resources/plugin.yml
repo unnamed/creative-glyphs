@@ -5,7 +5,7 @@ api-version: 1.13
 description: Unnamed Team's creative-glyphs (formerly unemojis) Plugin
 author: Unnamed Team
 depend: [creative-central]
-softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders]
+softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders, EssentialsDiscord]
 commands:
     emojis:
         description: Main command for the creative-glyphs (formerly unemojis) plugin
