@@ -35,7 +35,7 @@ public class ResourcePackGlyphWriter implements EventListener<ResourcePackGenera
 
             // write emoji image
             resourcePack.texture(
-                    Texture.builder()
+                    Texture.texture()
                             .key(textureKey)
                             .data(glyph.data())
                             .build()
@@ -58,7 +58,7 @@ public class ResourcePackGlyphWriter implements EventListener<ResourcePackGenera
         if (defaultFont != null) {
             providers.addAll(defaultFont.providers());
         }
-        resourcePack.font(Font.of(Font.MINECRAFT_DEFAULT, providers));
+        resourcePack.font(Font.font(Font.MINECRAFT_DEFAULT, providers));
     }
 
 }
