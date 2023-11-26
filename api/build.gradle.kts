@@ -11,6 +11,7 @@ dependencies {
     api("org.ahocorasick:ahocorasick:0.6.3")
 
     compileOnlyApi(libs.annotations)
+    compileOnlyApi(libs.gson)
 
     // Adventure!
     compileOnlyApi(libs.adventure.api)

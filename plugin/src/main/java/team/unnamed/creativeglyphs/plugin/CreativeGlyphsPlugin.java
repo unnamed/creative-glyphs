@@ -10,7 +10,7 @@ import team.unnamed.creativeglyphs.plugin.command.RootCommand;
 import team.unnamed.creativeglyphs.plugin.hook.essentialsdiscord.EssentialsDiscordHook;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
 import team.unnamed.creativeglyphs.plugin.listener.misc.CommandPreprocessListener;
-import team.unnamed.creativeglyphs.plugin.util.ArtemisGlyphImporter;
+import team.unnamed.creativeglyphs.util.ArtemisGlyphImporter;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventListener;
 import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
 import team.unnamed.creativeglyphs.plugin.hook.PluginHookManager;
