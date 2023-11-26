@@ -8,13 +8,9 @@ import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collection;
 
 public class UpdateSubCommand implements CommandRunnable {
-
-    private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
-
     private final CreativeGlyphsPlugin plugin;
 
     public UpdateSubCommand(CreativeGlyphsPlugin plugin) {
@@ -34,8 +30,7 @@ public class UpdateSubCommand implements CommandRunnable {
 
     private void execute(CommandSender sender, String id) {
         try {
-            URL url = new URL(API_URL.replace("%id%", id));
-            Collection<Glyph> glyphs = plugin.importer().importHttp(url);
+            Collection<Glyph> glyphs = plugin.importer().importHttp(id);
 
             // synchronous update and save
             Bukkit.getScheduler().runTask(plugin, () -> {

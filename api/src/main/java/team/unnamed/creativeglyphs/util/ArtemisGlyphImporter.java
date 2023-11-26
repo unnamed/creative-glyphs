@@ -2,6 +2,7 @@ package team.unnamed.creativeglyphs.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.serialization.GlyphReader;
 
@@ -24,6 +25,7 @@ import java.util.Collection;
  * @author yusshu (Andre Roldan)
  */
 public class ArtemisGlyphImporter {
+    private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
 
     private static final String USER_AGENT = "creative-glyphs-importer";
 
@@ -40,8 +42,9 @@ public class ArtemisGlyphImporter {
      * @throws IllegalStateException If an expected
      * error occurs, contains a user-friendly message
      */
-    public Collection<Glyph> importHttp(URL url)
+    public Collection<Glyph> importHttp(final @NotNull String id)
             throws IOException, IllegalStateException {
+        final URL url = new URL(API_URL.replace("%id%", id));
 
         HttpURLConnection connection
                 = (HttpURLConnection) url.openConnection();
