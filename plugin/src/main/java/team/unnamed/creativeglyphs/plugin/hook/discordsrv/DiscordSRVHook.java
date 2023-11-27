@@ -34,7 +34,7 @@ public class DiscordSRVHook
     }
 
     @Override
-    public String getPluginName() {
+    public String pluginName() {
         return "DiscordSRV";
     }
 

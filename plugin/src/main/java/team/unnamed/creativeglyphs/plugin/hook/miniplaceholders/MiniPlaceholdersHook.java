@@ -16,7 +16,7 @@ public final class MiniPlaceholdersHook implements PluginHook {
     }
 
     @Override
-    public String getPluginName() {
+    public String pluginName() {
         return "MiniPlaceholders";
     }
 

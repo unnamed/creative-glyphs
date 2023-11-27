@@ -19,7 +19,7 @@ public class EzChatHook implements PluginHook.Chat {
     }
 
     @Override
-    public String getPluginName() {
+    public String pluginName() {
         return "EzChat";
     }
 

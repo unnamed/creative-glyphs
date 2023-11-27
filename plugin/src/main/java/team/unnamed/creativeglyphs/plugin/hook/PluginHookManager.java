@@ -26,7 +26,7 @@ public class PluginHookManager {
      * @return {@code this}, for a fluent api
      */
     public PluginHookManager registerHook(PluginHook hook) {
-        hooks.put(hook.getPluginName(), hook);
+        hooks.put(hook.pluginName(), hook);
         return this;
     }
 
@@ -40,7 +40,7 @@ public class PluginHookManager {
         Set<PluginHook> enabled = new HashSet<>();
         for (PluginHook hook : hooks.values()) {
             Plugin plugin = Bukkit.getPluginManager()
-                    .getPlugin(hook.getPluginName());
+                    .getPlugin(hook.pluginName());
             if (plugin != null && plugin.isEnabled()) {
                 // found it, hook it
                 hook.hook(plugin);

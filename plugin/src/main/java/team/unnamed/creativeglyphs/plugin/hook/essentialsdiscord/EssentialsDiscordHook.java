@@ -21,7 +21,7 @@ public class EssentialsDiscordHook implements PluginHook {
     }
 
     @Override
-    public String getPluginName() {
+    public String pluginName() {
         return "EssentialsDiscord";
     }
 

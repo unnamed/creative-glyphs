@@ -1,6 +1,7 @@
 package team.unnamed.creativeglyphs.plugin.hook;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a plugin hook handle, contains
@@ -8,18 +9,17 @@ import org.bukkit.plugin.Plugin;
  * initialization and finalization logic.
  */
 public interface PluginHook {
-
     /**
      * Returns the plugin name for this
      * plugin hook.
      */
-    String getPluginName();
+    @NotNull String pluginName();
 
     /**
      * Hooks into the given {@code hook}
      * @param hook The target hook
      */
-    default void hook(Plugin hook) {
+    default void hook(final @NotNull Plugin hook) {
     }
 
     /**
@@ -29,5 +29,4 @@ public interface PluginHook {
      */
     interface Chat extends PluginHook {
     }
-
 }

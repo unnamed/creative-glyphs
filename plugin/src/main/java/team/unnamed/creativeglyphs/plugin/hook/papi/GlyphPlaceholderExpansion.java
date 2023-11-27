@@ -7,27 +7,18 @@ import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 
-/**
- * Placeholder expansion for PlaceholderAPI, provides the
- * emojis allowing to be used in other places
- */
-public class EmojiPlaceholderExpansion
-        extends PlaceholderExpansion {
-
+final class GlyphPlaceholderExpansion extends PlaceholderExpansion {
     private final Plugin plugin;
     private final PluginGlyphMap registry;
 
-    public EmojiPlaceholderExpansion(
-            Plugin plugin,
-            PluginGlyphMap registry
-    ) {
+    GlyphPlaceholderExpansion(Plugin plugin, PluginGlyphMap registry) {
         this.plugin = plugin;
         this.registry = registry;
     }
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String name) {
-        Glyph glyph = registry.getByName(name);
+        final Glyph glyph = registry.getByName(name);
         if (glyph == null) {
             return null;
         } else {
@@ -37,7 +28,7 @@ public class EmojiPlaceholderExpansion
 
     @Override
     public @NotNull String getIdentifier() {
-        return "emoji";
+        return "glyph";
     }
 
     @Override
@@ -55,5 +46,4 @@ public class EmojiPlaceholderExpansion
     public boolean persist() {
         return true;
     }
-
 }

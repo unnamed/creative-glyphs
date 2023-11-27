@@ -17,7 +17,7 @@ import team.unnamed.creativeglyphs.plugin.hook.PluginHookManager;
 import team.unnamed.creativeglyphs.plugin.hook.discordsrv.DiscordSRVHook;
 import team.unnamed.creativeglyphs.plugin.hook.ezchat.EzChatHook;
 import team.unnamed.creativeglyphs.plugin.hook.miniplaceholders.MiniPlaceholdersHook;
-import team.unnamed.creativeglyphs.plugin.hook.papi.PlaceholderApiHook;
+import team.unnamed.creativeglyphs.plugin.hook.papi.PlaceholderAPIHook;
 import team.unnamed.creativeglyphs.plugin.hook.townychat.TownyChatHook;
 import team.unnamed.creativeglyphs.plugin.listener.chat.ChatCompletionsListener;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventBus;
@@ -62,7 +62,7 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
         Set<PluginHook> hooks = PluginHookManager.create()
                 .registerHook(new EzChatHook(this, registry))
                 .registerHook(new TownyChatHook(this, registry))
-                .registerHook(new PlaceholderApiHook(this, registry))
+                .registerHook(new PlaceholderAPIHook(this, registry))
                 .registerHook(new DiscordSRVHook(registry))
                 .registerHook(new MiniPlaceholdersHook(registry))
                 .registerHook(new EssentialsDiscordHook(this, registry))

@@ -24,7 +24,7 @@ public class TownyChatHook
     }
 
     @Override
-    public String getPluginName() {
+    public String pluginName() {
         return "TownyChat";
     }
 
