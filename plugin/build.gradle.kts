@@ -10,13 +10,14 @@ repositories {
     maven("https://repo.essentialsx.net/releases/") // EssentialsDiscord
     maven("https://nexus.scarsz.me/content/groups/public/") // DiscordSRV
     maven("https://m2.dv8tion.net/releases") // JDA - Required by DiscordSRV
-    maven("https://repo.unnamed.team/repository/unnamed-public/") // creative
+    maven("https://repo.unnamed.team/repository/unnamed-public/") // creative, command-flow
     mavenCentral()
 }
 
 dependencies {
-
     implementation(project(":creative-glyphs-api"))
+    implementation("me.fixeddev:commandflow-universal:0.6.0") // command-flow
+    implementation("me.fixeddev:commandflow-bukkit:0.6.0")    // command-flow
 
     val serverApi = "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT";
 
@@ -42,5 +43,6 @@ tasks {
     shadowJar {
         val pkg = "team.unnamed.creativeglyphs.lib"
         relocate("org.ahocorasick", "$pkg.ahocorasick")
+        relocate("me.fixeddev.commandflow", "$pkg.commandflow")
     }
 }
