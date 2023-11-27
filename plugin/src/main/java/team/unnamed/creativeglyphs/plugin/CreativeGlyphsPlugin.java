@@ -63,7 +63,7 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
                 .registerHook(new EzChatHook(this, registry))
                 .registerHook(new TownyChatHook(this, registry))
                 .registerHook(new PlaceholderAPIHook(this, registry))
-                .registerHook(new DiscordSRVHook(registry))
+                .registerHook(new DiscordSRVHook(this, registry))
                 .registerHook(new MiniPlaceholdersHook(registry))
                 .registerHook(new EssentialsDiscordHook(this, registry))
                 .hook();
