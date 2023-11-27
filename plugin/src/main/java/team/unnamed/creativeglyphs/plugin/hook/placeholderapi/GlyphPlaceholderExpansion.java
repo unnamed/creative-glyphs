@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.papi;
+package team.unnamed.creativeglyphs.plugin.hook.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;

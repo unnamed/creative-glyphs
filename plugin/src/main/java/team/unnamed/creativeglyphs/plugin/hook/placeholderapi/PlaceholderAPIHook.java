@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.papi;
+package team.unnamed.creativeglyphs.plugin.hook.placeholderapi;
 
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

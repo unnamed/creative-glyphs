@@ -17,7 +17,7 @@ import team.unnamed.creativeglyphs.plugin.hook.PluginHookManager;
 import team.unnamed.creativeglyphs.plugin.hook.discordsrv.DiscordSRVHook;
 import team.unnamed.creativeglyphs.plugin.hook.ezchat.EzChatHook;
 import team.unnamed.creativeglyphs.plugin.hook.miniplaceholders.MiniPlaceholdersHook;
-import team.unnamed.creativeglyphs.plugin.hook.papi.PlaceholderAPIHook;
+import team.unnamed.creativeglyphs.plugin.hook.placeholderapi.PlaceholderAPIHook;
 import team.unnamed.creativeglyphs.plugin.hook.townychat.TownyChatHook;
 import team.unnamed.creativeglyphs.plugin.listener.chat.ChatCompletionsListener;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventBus;
