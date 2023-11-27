@@ -1,8 +1,8 @@
-name: unemojis
+name: creative-glyphs
 version: ${project.version}
 main: team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin
 api-version: 1.13
-description: Unnamed Team's creative-glyphs (formerly unemojis) Plugin
+description: A creative Minecraft plugin that extends the default Minecraft look by adding custom glyphs to chat, signs, items and everywhere you can write text!
 author: Unnamed Team
 depend: [creative-central]
 softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders, EssentialsDiscord]

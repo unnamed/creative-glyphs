@@ -7,13 +7,13 @@
 ##     | $$  | $$| $$| $$  | $$| $$  | $$| $$  | $$ \____  $$
 ##     |  $$$$$$$| $$|  $$$$$$$| $$$$$$$/| $$  | $$ /$$$$$$$/
 ##     \____  $$|__/ \____  $$| $$____/ |__/  |__/|_______/
-##     /$$  \ $$     /$$  | $$| $$    (formerly unemojis)
-##    |  $$$$$$/    |  $$$$$$/| $$      by unnamed team
+##     /$$  \ $$     /$$  | $$| $$      by unnamed team
+##    |  $$$$$$/    |  $$$$$$/| $$
 ##     \______/      \______/ |__/
 ##
 
 #
-# Welcome to the creative-glyphs (formerly unemojis) configuration!
+# Welcome to the creative-glyphs configuration!
 #
 #
 #  -  If you want to use special characters in the config file, you need
@@ -24,26 +24,21 @@
 #  -    Discord: https://discord.gg/xbba2fy
 #
 
-format:
-
-    # The text displayed when the player hovers an emoji
-    # in a player message. Available placeholders:
-    # - <emoji>: The Emoji character itself
-    # - <emojiname>: The Emoji name
-    hover:
-        # Format to use when MiniMessage is supported by the server (Paper 1.18+)
-        # If not specified, it uses the legacy ampersand formatting
-        # mini-message: '<emoji> <gray>:<emojiname>: <#ff8df8>/emojis'
-
-        # Format to use by default (Spigot, Paper 1.17 and olders)
-        # Uses the legacy ampersand formatting
-        legacy: '&f<emoji> &7:<emojiname>: &d/emojis'
-
-    # Configuration for when not running on a Paper server
-    legacy:
-        # Initial message prefix, because we can't obtain it
-        # from other plugins when using AsyncPlayerChatEvent
-        message-prefix: '&f'
+####                                        ####
+####   How should the plugin show emojis?   ####
+####                                        ####
+#
+# - Here you can set the hover event for when users use an emoji,
+#   you can also set the click event, colors, and more.
+#
+# - This setting uses the MiniMessage format, see more here:
+#    https://docs.advntr.dev/minimessage/index.html
+#
+# - There are some placeholders available:
+#     - <emoji>: The Emoji character itself
+#     - <emojiname>: The Emoji name
+#
+emoji-format: '<hover:show_text:"<white><emoji> <gray>:<emojiname>: <#ff8df8>/emojis"><white><emoji>'
 
 compat:
     # If enabled, the plugin will use the Paper API to listen
@@ -68,26 +63,21 @@ compat:
 
 messages:
     help: |-
-        &8----------------- &dµŋemojis &8- &7Help Page &8-----------------
-        &8 - &d/emojis update <id> &8- &7Import emojis from https://unnamed.team/emojis
-        &8 - &d/emojis list [page] &8- &7List all emojis
-        &8 - &d/emojis reload &8- &7Reload emojis from the emojis.mcemoji file
-        &8-----------------------------------------------------
+        <dark_gray><st>           </st> <#ff8df8>creative-glyphs</#ff8df8> - <gray>Help Page</gray> <st>           </st></dark_gray>
+         <dark_gray>- <#ff8df8>/glyphs set <id><dark_gray>:   <gray>Update your glyph pack
+         <dark_gray>- <#ff8df8>/glyphs editor<dark_gray>:            <gray>Open a web-editor
+         <dark_gray>- <#ff8df8>/emojis<dark_gray>, <#ff8df8>/glyphs list<dark_gray>:    <gray>List emojis/glyphs
+         <dark_gray>- <#ff8df8>/glyphs reload<dark_gray>:             <gray>Reload the plugin
+        <dark_gray><st>                                                            </dark_gray>
     list:
-        invalid-page: '&cInvalid page number!'
-        header: '&8&m                    &d µŋemojis &8- &7Page <page> / <maxpages> &8&m                    '
+        invalid-page: '<red>Invalid page number!'
+        header: '<dark_gray><st>           </dark_gray> <#ff8df8>creative-glyphs <dark_gray>- <gray>Page <page> / <maxpages> <dark_gray><st>           '
         element:
-            available:
-                content: '&f<emoji>'
-                hover: '&f<emoji> &8:<emojiname>:'
-            unavailable:
-                content: '&7<emoji>'
-                hover: |-
-                    &cBuy VIP to unlock this emoji!
-                      &7<emoji> &8:<emojiname>:
+            available: '<insert:"<emoji>"><hover:show_text:"<white><emoji> <dark_gray>:<emojiname>:"><white><emoji>'
+            unavailable: '<hover:show_text:"<red>Buy VIP to unlock this emoji!"><gray><emoji>'
         show-unavailable: false
         separation:
             1: ' '    # every 1 emoji, add a space
             28: "\n"  # every 28 emojis, add a new line
         max-emojis-per-page: 84
-        footer: '&8&m                                                                       '
+        footer: '<dark_gray><st>                                                             </dark_gray>'
