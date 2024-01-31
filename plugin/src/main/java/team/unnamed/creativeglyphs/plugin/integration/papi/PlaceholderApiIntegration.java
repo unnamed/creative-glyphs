@@ -1,15 +1,16 @@
-package team.unnamed.creativeglyphs.plugin.hook.papi;
+package team.unnamed.creativeglyphs.plugin.integration.papi;
 
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
-public class PlaceholderApiHook implements PluginHook {
+public class PlaceholderApiIntegration implements PluginIntegration {
 
     private final Plugin plugin;
     private final PluginGlyphMap registry;
 
-    public PlaceholderApiHook(
+    public PlaceholderApiIntegration(
             Plugin plugin,
             PluginGlyphMap registry
     ) {
@@ -18,12 +19,12 @@ public class PlaceholderApiHook implements PluginHook {
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "PlaceholderAPI";
     }
 
     @Override
-    public void hook(Plugin hook) {
+    public void enable(@NotNull Plugin hook) {
         new EmojiPlaceholderExpansion(plugin, registry).register();
         plugin.getLogger().info("Successfully registered PlaceholderAPI placeholders");
     }

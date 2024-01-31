@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.ezchat;
+package team.unnamed.creativeglyphs.plugin.integration.ezchat;
 
 import me.fixeddev.ezchat.event.AsyncEzChatEvent;
 import net.kyori.adventure.text.Component;

@@ -1,27 +1,28 @@
-package team.unnamed.creativeglyphs.plugin.hook.miniplaceholders;
+package team.unnamed.creativeglyphs.plugin.integration.miniplaceholders;
 
 import io.github.miniplaceholders.api.Expansion;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.Glyph;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 
-public final class MiniPlaceholdersHook implements PluginHook {
+public final class MiniPlaceholdersIntegration implements PluginIntegration {
     private final PluginGlyphMap registry;
 
-    public MiniPlaceholdersHook(final PluginGlyphMap registry) {
+    public MiniPlaceholdersIntegration(final PluginGlyphMap registry) {
         this.registry = registry;
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "MiniPlaceholders";
     }
 
     @Override
-    public void hook(final Plugin hook) {
+    public void enable(final @NotNull Plugin hook) {
         Expansion.builder("unemoji")
                 .globalPlaceholder("emoji", (queue, ctx) -> {
                     final Tag.Argument argument = queue.popOr("You need to provide an argument");

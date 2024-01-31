@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.townychat;
+package team.unnamed.creativeglyphs.plugin.integration.townychat;
 
 import com.palmergames.bukkit.TownyChat.events.AsyncChatHookEvent;
 import org.bukkit.Bukkit;
@@ -7,29 +7,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 import team.unnamed.creativeglyphs.content.ContentProcessor;
 import team.unnamed.creativeglyphs.plugin.util.Permissions;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
-public class TownyChatHook
-        implements PluginHook.Chat, Listener {
+public class TownyChatIntegration
+        implements PluginIntegration.Chat, Listener {
 
     private final Plugin plugin;
     private final PluginGlyphMap registry;
 
-    public TownyChatHook(Plugin plugin, PluginGlyphMap registry) {
+    public TownyChatIntegration(Plugin plugin, PluginGlyphMap registry) {
         this.plugin = plugin;
         this.registry = registry;
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "TownyChat";
     }
 
     @Override
-    public void hook(Plugin hook) {
+    public void enable(@NotNull Plugin hook) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
         plugin.getLogger().info("Successfully hooked into TownyChat!");
     }

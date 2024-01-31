@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.essentialsdiscord;
+package team.unnamed.creativeglyphs.plugin.integration.essentialsdiscord;
 
 import net.essentialsx.api.v2.events.discord.DiscordChatMessageEvent;
 import net.essentialsx.api.v2.events.discord.DiscordRelayEvent;
@@ -6,27 +6,28 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.content.ContentFlattener;
 import team.unnamed.creativeglyphs.content.ContentProcessor;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
-public class EssentialsDiscordHook implements PluginHook {
+public class EssentialsDiscordIntegration implements PluginIntegration {
     private final Plugin plugin;
     private final PluginGlyphMap glyphMap;
 
-    public EssentialsDiscordHook(Plugin plugin, PluginGlyphMap glyphMap) {
+    public EssentialsDiscordIntegration(Plugin plugin, PluginGlyphMap glyphMap) {
         this.plugin = plugin;
         this.glyphMap = glyphMap;
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "EssentialsDiscord";
     }
 
     @Override
-    public void hook(Plugin hook) {
+    public void enable(@NotNull Plugin hook) {
         Bukkit.getPluginManager().registerEvents(
                 new EssentialsDiscordChatListener(),
                 plugin

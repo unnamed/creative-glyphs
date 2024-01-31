@@ -1,16 +1,17 @@
-package team.unnamed.creativeglyphs.plugin.hook.ezchat;
+package team.unnamed.creativeglyphs.plugin.integration.ezchat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
-public class EzChatHook implements PluginHook.Chat {
+public class EzChatIntegration implements PluginIntegration.Chat {
 
     private final Plugin plugin;
     private final PluginGlyphMap registry;
 
-    public EzChatHook(
+    public EzChatIntegration(
             Plugin plugin,
             PluginGlyphMap registry
     ) {
@@ -19,12 +20,12 @@ public class EzChatHook implements PluginHook.Chat {
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "EzChat";
     }
 
     @Override
-    public void hook(Plugin hook) {
+    public void enable(@NotNull Plugin hook) {
         Bukkit.getPluginManager().registerEvents(
                 new EzChatListener(plugin, registry),
                 plugin

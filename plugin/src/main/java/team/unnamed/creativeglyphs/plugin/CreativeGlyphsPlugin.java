@@ -7,18 +7,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
 import team.unnamed.creativeglyphs.plugin.command.RootCommand;
-import team.unnamed.creativeglyphs.plugin.hook.essentialsdiscord.EssentialsDiscordHook;
+import team.unnamed.creativeglyphs.plugin.integration.essentialsdiscord.EssentialsDiscordIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
 import team.unnamed.creativeglyphs.plugin.listener.misc.CommandPreprocessListener;
 import team.unnamed.creativeglyphs.plugin.util.ArtemisGlyphImporter;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventListener;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHookManager;
-import team.unnamed.creativeglyphs.plugin.hook.discordsrv.DiscordSRVHook;
-import team.unnamed.creativeglyphs.plugin.hook.ezchat.EzChatHook;
-import team.unnamed.creativeglyphs.plugin.hook.miniplaceholders.MiniPlaceholdersHook;
-import team.unnamed.creativeglyphs.plugin.hook.papi.PlaceholderApiHook;
-import team.unnamed.creativeglyphs.plugin.hook.townychat.TownyChatHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.IntegrationManager;
+import team.unnamed.creativeglyphs.plugin.integration.discordsrv.DiscordSRVIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.ezchat.EzChatIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.miniplaceholders.MiniPlaceholdersIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.papi.PlaceholderApiIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.townychat.TownyChatIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.chat.ChatCompletionsListener;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventBus;
 import team.unnamed.creativeglyphs.plugin.listener.ListenerFactory;
@@ -59,16 +59,16 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
         Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
                 .setExecutor(new RootCommand(this).asExecutor());
 
-        Set<PluginHook> hooks = PluginHookManager.create()
-                .registerHook(new EzChatHook(this, registry))
-                .registerHook(new TownyChatHook(this, registry))
-                .registerHook(new PlaceholderApiHook(this, registry))
-                .registerHook(new DiscordSRVHook(registry))
-                .registerHook(new MiniPlaceholdersHook(registry))
-                .registerHook(new EssentialsDiscordHook(this, registry))
-                .hook();
+        Set<PluginIntegration> hooks = IntegrationManager.integrationManager(this)
+                .register(new EzChatIntegration(this, registry))
+                .register(new TownyChatIntegration(this, registry))
+                .register(new PlaceholderApiIntegration(this, registry))
+                .register(new DiscordSRVIntegration(registry))
+                .register(new MiniPlaceholdersIntegration(registry))
+                .register(new EssentialsDiscordIntegration(this, registry))
+                .check();
 
-        if (hooks.stream().noneMatch(hook -> hook instanceof PluginHook.Chat)) {
+        if (hooks.stream().noneMatch(hook -> hook instanceof PluginIntegration.Chat)) {
             // if no chat plugin hooks, let's register our own listener
             EventPriority priority = EventPriority.valueOf(getConfig().getString(
                     "compat.listener-priority",

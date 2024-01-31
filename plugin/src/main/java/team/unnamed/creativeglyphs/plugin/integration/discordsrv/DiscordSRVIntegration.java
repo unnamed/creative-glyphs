@@ -1,4 +1,4 @@
-package team.unnamed.creativeglyphs.plugin.hook.discordsrv;
+package team.unnamed.creativeglyphs.plugin.integration.discordsrv;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
@@ -13,33 +13,33 @@ import github.scarsz.discordsrv.dependencies.kyori.adventure.text.format.NamedTe
 import org.ahocorasick.trie.PayloadEmit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
-import team.unnamed.creativeglyphs.plugin.hook.PluginHook;
+import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 import team.unnamed.creativeglyphs.util.Patterns;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
-public class DiscordSRVHook
-        implements PluginHook, Listener {
+public class DiscordSRVIntegration
+        implements PluginIntegration, Listener {
 
     private final PluginGlyphMap registry;
 
-    public DiscordSRVHook(PluginGlyphMap registry) {
+    public DiscordSRVIntegration(PluginGlyphMap registry) {
         this.registry = registry;
     }
 
     @Override
-    public String getPluginName() {
+    public @NotNull String plugin() {
         return "DiscordSRV";
     }
 
     @Override
-    public void hook(Plugin hook) {
+    public void enable(@NotNull Plugin hook) {
         DiscordSRV.api.subscribe(new DiscordSRVListener());
     }
 
