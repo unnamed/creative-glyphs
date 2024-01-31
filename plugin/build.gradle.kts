@@ -32,6 +32,7 @@ dependencies {
     compileOnly("net.essentialsx:EssentialsXDiscord:2.20.1")
     compileOnly("com.discordsrv:discordsrv:1.26.2:shaded") // DiscordSRV (shaded)
     compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.1.0")
+    compileOnly("de.hexaoxi:carbonchat-api:3.0.0-beta.25") // CarbonChat
 
     // Testing
     testImplementation(serverApi)

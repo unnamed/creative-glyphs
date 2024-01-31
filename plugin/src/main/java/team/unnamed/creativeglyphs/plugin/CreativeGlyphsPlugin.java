@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
 import team.unnamed.creativeglyphs.plugin.command.RootCommand;
+import team.unnamed.creativeglyphs.plugin.integration.carbon.CarbonChatIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.essentialsdiscord.EssentialsDiscordIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
 import team.unnamed.creativeglyphs.plugin.listener.misc.CommandPreprocessListener;
@@ -60,6 +61,7 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
                 .setExecutor(new RootCommand(this).asExecutor());
 
         Set<PluginIntegration> hooks = IntegrationManager.integrationManager(this)
+                .register(new CarbonChatIntegration(this))
                 .register(new EzChatIntegration(this, registry))
                 .register(new TownyChatIntegration(this, registry))
                 .register(new PlaceholderApiIntegration(this, registry))
