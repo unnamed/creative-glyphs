@@ -1,38 +1,26 @@
 package team.unnamed.creativeglyphs.plugin.integration.papi;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import team.unnamed.creativeglyphs.Glyph;
+import org.jetbrains.annotations.Nullable;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 
 /**
  * Placeholder expansion for PlaceholderAPI, provides the
- * emojis allowing to be used in other places
+ * glyphs allowing to be used in other places using the
+ * {@code %emoji_<emojiname>%} format.
+ *
+ * @deprecated Use {@link GlyphPlaceholderExpansion} instead.
  */
-public class EmojiPlaceholderExpansion
-        extends PlaceholderExpansion {
-
+@Deprecated
+public final class EmojiPlaceholderExpansion extends GlyphPlaceholderExpansion {
     private final Plugin plugin;
-    private final PluginGlyphMap registry;
+    private boolean warnAboutDeprecation = true;
 
-    public EmojiPlaceholderExpansion(
-            Plugin plugin,
-            PluginGlyphMap registry
-    ) {
+    public EmojiPlaceholderExpansion(final @NotNull Plugin plugin, final @NotNull PluginGlyphMap registry) {
+        super(plugin, registry);
         this.plugin = plugin;
-        this.registry = registry;
-    }
-
-    @Override
-    public String onRequest(OfflinePlayer player, @NotNull String name) {
-        Glyph glyph = registry.getByName(name);
-        if (glyph == null) {
-            return null;
-        } else {
-            return glyph.replacement();
-        }
     }
 
     @Override
@@ -41,19 +29,12 @@ public class EmojiPlaceholderExpansion
     }
 
     @Override
-    public @NotNull String getAuthor() {
-        // return the first author in the list
-        return plugin.getDescription().getAuthors().get(0);
+    public @Nullable String onRequest(OfflinePlayer player, @NotNull String name) {
+        if (warnAboutDeprecation) {
+            plugin.getLogger().warning("(PlaceholderAPI Integration) Detected usage of deprecated" +
+                    " placeholder format: '%emoji_" + name + "%', please use '%glyph_" + name + "%' instead.");
+            warnAboutDeprecation = false;
+        }
+        return super.onRequest(player, name);
     }
-
-    @Override
-    public @NotNull String getVersion() {
-        return plugin.getDescription().getVersion();
-    }
-
-    @Override
-    public boolean persist() {
-        return true;
-    }
-
 }

@@ -5,17 +5,15 @@ import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
-public class PlaceholderApiIntegration implements PluginIntegration {
+import static java.util.Objects.requireNonNull;
 
+public final class PlaceholderAPIIntegration implements PluginIntegration {
     private final Plugin plugin;
     private final PluginGlyphMap registry;
 
-    public PlaceholderApiIntegration(
-            Plugin plugin,
-            PluginGlyphMap registry
-    ) {
-        this.plugin = plugin;
-        this.registry = registry;
+    public PlaceholderAPIIntegration(final @NotNull Plugin plugin, final @NotNull PluginGlyphMap registry) {
+        this.plugin = requireNonNull(plugin, "plugin");
+        this.registry = requireNonNull(registry, "registry");
     }
 
     @Override
@@ -24,9 +22,9 @@ public class PlaceholderApiIntegration implements PluginIntegration {
     }
 
     @Override
-    public void enable(@NotNull Plugin hook) {
+    @SuppressWarnings("deprecation")
+    public void enable(final @NotNull Plugin placeholderAPI) {
+        new GlyphPlaceholderExpansion(plugin, registry).register();
         new EmojiPlaceholderExpansion(plugin, registry).register();
-        plugin.getLogger().info("Successfully registered PlaceholderAPI placeholders");
     }
-
 }

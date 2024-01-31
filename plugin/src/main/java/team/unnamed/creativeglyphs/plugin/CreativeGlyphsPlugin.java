@@ -18,7 +18,7 @@ import team.unnamed.creativeglyphs.plugin.integration.IntegrationManager;
 import team.unnamed.creativeglyphs.plugin.integration.discordsrv.DiscordSRVIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.ezchat.EzChatIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.miniplaceholders.MiniPlaceholdersIntegration;
-import team.unnamed.creativeglyphs.plugin.integration.papi.PlaceholderApiIntegration;
+import team.unnamed.creativeglyphs.plugin.integration.papi.PlaceholderAPIIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.townychat.TownyChatIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.chat.ChatCompletionsListener;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventBus;
@@ -64,7 +64,7 @@ public class CreativeGlyphsPlugin extends JavaPlugin {
                 .register(new CarbonChatIntegration(this))
                 .register(new EzChatIntegration(this, registry))
                 .register(new TownyChatIntegration(this, registry))
-                .register(new PlaceholderApiIntegration(this, registry))
+                .register(new PlaceholderAPIIntegration(this, registry))
                 .register(new DiscordSRVIntegration(registry))
                 .register(new MiniPlaceholdersIntegration(registry))
                 .register(new EssentialsDiscordIntegration(this, registry))
