@@ -1,5 +1,6 @@
 package team.unnamed.creativeglyphs.plugin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,18 +27,46 @@ import team.unnamed.creativeglyphs.plugin.listener.ListenerFactory;
 import team.unnamed.creativeglyphs.resourcepack.ResourcePackGlyphWriter;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
-public class CreativeGlyphsPlugin extends JavaPlugin {
+public final class CreativeGlyphsPlugin extends JavaPlugin {
 
     private PluginGlyphMap registry;
     private ArtemisGlyphImporter importer;
 
     @Override
     public void onEnable() {
+        final Path dataFolder = getDataFolder().toPath();
+
+        //#region Backwards compatibility (creative-glyphs was called unemojis)
+        // unemojis should be removed
+        if (Bukkit.getPluginManager().isPluginEnabled("unemojis")) {
+            getLogger().severe(
+                    "Can't enable creative-glyphs since unemojis is enabled! Please remove " +
+                            "unemojis JAR file only (NOT THE unemojis FOLDER, IT WILL BE AUTOMATICALLY" +
+                            " RENAMED). Note that creative-glyphs is the new, improved version of unemojis."
+            );
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        // Rename unemojis data folder to creative-glyphs if it exists
+        final Path pluginsFolder = Bukkit.getPluginsFolder().toPath();
+        final Path unemojisDataFolder = pluginsFolder.resolve("unemojis");
+        if (Files.isDirectory(unemojisDataFolder)) {
+            try {
+                Files.move(unemojisDataFolder, dataFolder);
+            } catch (final IOException e) {
+                throw new IllegalStateException("(Backwards compatibility) Couldn't" +
+                        " rename 'unemojis' folder to '" + dataFolder.getFileName() + "'", e);
+            }
+        }
+        //#endregion
 
         saveDefaultConfig();
 

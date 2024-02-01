@@ -1,12 +1,21 @@
-name: unemojis
+name: creative-glyphs
 version: ${project.version}
 main: team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin
 api-version: 1.13
-description: Unnamed Team's creative-glyphs (formerly unemojis) Plugin
+description: Unnamed Team's creative-glyphs plugin
 author: Unnamed Team
 depend: [creative-central]
-softdepend: [PlaceholderAPI, EzChat, TownyChat, DiscordSRV, LPC, MiniPlaceholders, EssentialsDiscord]
+softdepend:
+    - PlaceholderAPI
+    - EzChat
+    - TownyChat
+    - DiscordSRV
+    - LPC
+    - MiniPlaceholders
+    - EssentialsDiscord
+    - CarbonChat
+    - unemojis # We want to detect if unemojis (old version of creative-glyphs) is installed, to warn the server admin to remove it
 commands:
     emojis:
-        description: Main command for the creative-glyphs (formerly unemojis) plugin
+        description: Main command for the creative-glyphs plugin
         usage: /<command> update <id>
