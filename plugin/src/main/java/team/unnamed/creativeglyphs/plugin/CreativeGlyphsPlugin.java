@@ -96,7 +96,7 @@ public final class CreativeGlyphsPlugin extends JavaPlugin {
                 .register(new TownyChatIntegration(this, registry))
                 .register(new PlaceholderAPIIntegration(this, registry))
                 .register(new DiscordSRVIntegration(registry))
-                .register(new MiniPlaceholdersIntegration(registry))
+                .register(new MiniPlaceholdersIntegration(this))
                 .register(new EssentialsDiscordIntegration(this, registry))
                 .check();
 
