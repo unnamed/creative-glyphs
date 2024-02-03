@@ -24,6 +24,9 @@
 #  -    Discord: https://discord.gg/xbba2fy
 #
 
+# Should the plugin check for updates? (Only checks at startup)
+check-for-updates: true
+
 format:
 
     # The text displayed when the player hovers an emoji

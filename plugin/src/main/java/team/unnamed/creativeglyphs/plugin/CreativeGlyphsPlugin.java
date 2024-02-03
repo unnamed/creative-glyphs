@@ -24,6 +24,7 @@ import team.unnamed.creativeglyphs.plugin.integration.townychat.TownyChatIntegra
 import team.unnamed.creativeglyphs.plugin.listener.chat.ChatCompletionsListener;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventBus;
 import team.unnamed.creativeglyphs.plugin.listener.ListenerFactory;
+import team.unnamed.creativeglyphs.plugin.util.GitHubUpdateChecker;
 import team.unnamed.creativeglyphs.resourcepack.ResourcePackGlyphWriter;
 
 import java.io.IOException;
@@ -130,6 +131,9 @@ public final class CreativeGlyphsPlugin extends JavaPlugin {
 
         // Metrics
         new Metrics(this, 17168);
+
+        // GitHub Update Checker
+        GitHubUpdateChecker.checkAsync(this);
     }
 
     private void listen(Listener listener) {
