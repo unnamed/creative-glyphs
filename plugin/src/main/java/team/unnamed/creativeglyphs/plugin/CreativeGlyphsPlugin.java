@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creative.central.event.pack.ResourcePackGenerateEvent;
-import team.unnamed.creativeglyphs.plugin.command.RootCommand;
+import team.unnamed.creativeglyphs.plugin.command.CommandService;
 import team.unnamed.creativeglyphs.plugin.integration.carbon.CarbonChatIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.essentialsdiscord.EssentialsDiscordIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
@@ -87,8 +87,8 @@ public final class CreativeGlyphsPlugin extends JavaPlugin {
 
         EventBus eventBus = EventBus.create(this);
 
-        Objects.requireNonNull(getCommand("emojis"), "'emojis' command not registered")
-                .setExecutor(new RootCommand(this).asExecutor());
+        // todo:!
+        new CommandService(this).start();
 
         Set<PluginIntegration> hooks = IntegrationManager.integrationManager(this)
                 .register(new CarbonChatIntegration(this))

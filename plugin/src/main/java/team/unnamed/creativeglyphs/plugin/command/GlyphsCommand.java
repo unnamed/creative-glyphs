@@ -1,47 +1,95 @@
 package team.unnamed.creativeglyphs.plugin.command;
 
+import me.fixeddev.commandflow.annotated.CommandClass;
+import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin;
 import team.unnamed.creativeglyphs.plugin.util.Permissions;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ListSubCommand implements CommandRunnable {
+import static java.util.Objects.requireNonNull;
+
+@Command(names = { "glyphs", "glyph", "emojis", "emoji" })
+public final class GlyphsCommand implements CommandClass {
+    private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
 
     private final CreativeGlyphsPlugin plugin;
 
-    public ListSubCommand(CreativeGlyphsPlugin plugin) {
-        this.plugin = plugin;
+    public GlyphsCommand(final @NotNull CreativeGlyphsPlugin plugin) {
+        this.plugin = requireNonNull(plugin, "plugin");
     }
 
-    @Override
-    @SuppressWarnings("deprecation") // Spigot
-    public void run(CommandSender sender, ArgumentStack args) {
+    @Command(names = {"help", "?"}, permission = "emojis.admin")
+    public void help(final @NotNull CommandSender sender) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes(
+                '&',
+                plugin.getConfig().getString("messages.help", "Message not found")
+        ));
+    }
 
+    @Command(names = "reload", permission = "emojis.admin")
+    public void reload() {
+        plugin.reloadConfig();
+        plugin.registry().load();
+    }
+
+    @Command(names = "update", permission = "emojis.admin")
+    public void update(final @NotNull CommandSender sender, final @NotNull @Named("id") String id) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> execute(sender, id));
+    }
+
+    @Command(names = "edit", permission = "emojis.admin")
+    public void edit(final @NotNull CommandSender sender) {
+    }
+
+    private void execute(CommandSender sender, String id) {
+        try {
+            URL url = new URL(API_URL.replace("%id%", id));
+            Collection<Glyph> glyphs = plugin.importer().importHttp(url);
+
+            // synchronous update and save
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                plugin.registry().setGlyphs(glyphs);
+                plugin.registry().save();
+
+                // asynchronous export
+                CreativeCentralProvider.get().generate();
+            });
+        } catch (IOException e) {
+            sender.sendMessage(ChatColor.RED + "Something went wrong, please" +
+                    " contact an administrator to read the console.");
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            // stack trace in this case isn't so relevant
+            sender.sendMessage(ChatColor.RED + e.getMessage());
+        }
+    }
+
+    @Command(names = "list")
+    @SuppressWarnings("deprecation") // Spigot
+    public void list(final @NotNull CommandSender sender, final @OptArg("0") @Named("page") int page) {
         // load the configuration for listing emojis
         ConfigurationSection listConfig = plugin.getConfig().getConfigurationSection("messages.list");
         if (listConfig == null) {
             throw new IllegalStateException("No configuration for list subcommand");
-        }
-
-        int page = -1;
-        if (args.hasNext()) {
-            try {
-                page = Integer.parseInt(args.next()) - 1;
-            } catch (NumberFormatException ignored) {
-                // lets 'page' be -1, detected later
-            }
-        } else {
-            page = 0;
         }
 
         // load the separation config
@@ -113,9 +161,9 @@ public class ListSubCommand implements CommandRunnable {
 
             TextComponent component = new TextComponent(
                     ChatColor.translateAlternateColorCodes(
-                            '&',
+                                    '&',
                                     listConfig.getString(basePath + ".content", "Not found")
-                    )
+                            )
                             .replace("<emoji>", glyph.replacement())
                             .replace("<emojiname>", glyph.name())
             );
@@ -154,5 +202,4 @@ public class ListSubCommand implements CommandRunnable {
                 .replace("<maxpages>", String.valueOf(maxPages))
         );
     }
-
 }

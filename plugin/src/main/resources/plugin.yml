@@ -15,7 +15,3 @@ softdepend:
     - EssentialsDiscord
     - CarbonChat
     - unemojis # We want to detect if unemojis (old version of creative-glyphs) is installed, to warn the server admin to remove it
-commands:
-    emojis:
-        description: Main command for the creative-glyphs plugin
-        usage: /<command> update <id>
