@@ -1,5 +1,6 @@
 plugins {
     id("glyphs.dist-conventions")
+    id("xyz.jpenilla.run-paper") version "2.2.3"
 }
 
 repositories {
@@ -44,6 +45,13 @@ dependencies {
 }
 
 tasks {
+    runServer {
+        downloadPlugins {
+            modrinth("central", "1.3.0") // creative-central
+        }
+
+        minecraftVersion("1.20.4")
+    }
     shadowJar {
         val pkg = "team.unnamed.creativeglyphs.lib"
         relocate("org.ahocorasick", "$pkg.ahocorasick")
