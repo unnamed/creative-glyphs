@@ -12,12 +12,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creativeglyphs.Glyph;
 import team.unnamed.creativeglyphs.cloud.FileCloudService;
 import team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin;
 import team.unnamed.creativeglyphs.plugin.util.Permissions;
 import team.unnamed.creativeglyphs.serialization.GlyphReader;
+import team.unnamed.creativeglyphs.serialization.GlyphWriter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +60,17 @@ public final class GlyphsCommand implements CommandClass {
 
     @Command(names = "edit", permission = "emojis.admin")
     public void edit(final @NotNull CommandSender sender) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> edit0(sender));
+    }
+
+    private void edit0(final @NotNull CommandSender sender) {
+        final var file = (Writable) (output -> GlyphWriter.mcglyph().write(output, plugin.registry().values()));
+        final var id = FileCloudService.artemis().upload(file);
+        final var url = "https://unnamed.team/project/glyphs?id=" + id;
+        sender.sendMessage("");
+        sender.sendMessage(ChatColor.GRAY + "  Edit the glyph list at the following URL: ");
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "  " + ChatColor.UNDERLINE + url);
+        sender.sendMessage("");
     }
 
     private void execute(CommandSender sender, String id) {
@@ -91,7 +104,7 @@ public final class GlyphsCommand implements CommandClass {
         }
     }
 
-    @Command(names = "list")
+    @Command(names = { "", "list" })
     @SuppressWarnings("deprecation") // Spigot
     public void list(final @NotNull CommandSender sender, final @OptArg("0") @Named("page") int page) {
         // load the configuration for listing emojis
