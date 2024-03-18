@@ -14,8 +14,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.central.CreativeCentralProvider;
 import team.unnamed.creativeglyphs.Glyph;
+import team.unnamed.creativeglyphs.cloud.FileCloudService;
 import team.unnamed.creativeglyphs.plugin.CreativeGlyphsPlugin;
 import team.unnamed.creativeglyphs.plugin.util.Permissions;
+import team.unnamed.creativeglyphs.serialization.GlyphReader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,8 +31,6 @@ import static java.util.Objects.requireNonNull;
 
 @Command(names = { "glyphs", "glyph", "emojis", "emoji" })
 public final class GlyphsCommand implements CommandClass {
-    private static final String API_URL = "https://artemis.unnamed.team/tempfiles/get/%id%";
-
     private final CreativeGlyphsPlugin plugin;
 
     public GlyphsCommand(final @NotNull CreativeGlyphsPlugin plugin) {
@@ -62,8 +62,16 @@ public final class GlyphsCommand implements CommandClass {
 
     private void execute(CommandSender sender, String id) {
         try {
-            URL url = new URL(API_URL.replace("%id%", id));
-            Collection<Glyph> glyphs = plugin.importer().importHttp(url);
+            final var file = FileCloudService.artemis().download(id);
+            if (file == null) {
+                sender.sendMessage(ChatColor.RED + "No glyphs found with the given ID");
+                return;
+            }
+
+            Collection<Glyph> glyphs;
+            try (final var stream = file.open()) {
+                glyphs = GlyphReader.mcglyph().read(stream);
+            }
 
             // synchronous update and save
             Bukkit.getScheduler().runTask(plugin, () -> {

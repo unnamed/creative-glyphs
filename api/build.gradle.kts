@@ -24,4 +24,5 @@ dependencies {
     testImplementation(libs.adventure.api)
     testImplementation(libs.creative.api)
     testImplementation(libs.creative.central.api)
+    testImplementation(libs.gson)
 }

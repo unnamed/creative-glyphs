@@ -12,7 +12,6 @@ import team.unnamed.creativeglyphs.plugin.integration.carbon.CarbonChatIntegrati
 import team.unnamed.creativeglyphs.plugin.integration.essentialsdiscord.EssentialsDiscordIntegration;
 import team.unnamed.creativeglyphs.plugin.listener.misc.AnvilEditListener;
 import team.unnamed.creativeglyphs.plugin.listener.misc.CommandPreprocessListener;
-import team.unnamed.creativeglyphs.plugin.util.ArtemisGlyphImporter;
 import team.unnamed.creativeglyphs.plugin.listener.bus.EventListener;
 import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 import team.unnamed.creativeglyphs.plugin.integration.IntegrationManager;
@@ -32,13 +31,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 
 public final class CreativeGlyphsPlugin extends JavaPlugin {
-
     private PluginGlyphMap registry;
-    private ArtemisGlyphImporter importer;
 
     @Override
     public void onEnable() {
@@ -78,7 +74,6 @@ public final class CreativeGlyphsPlugin extends JavaPlugin {
             setEnabled(false);
             return;
         }
-        this.importer = new ArtemisGlyphImporter();
 
         this.registry.load();
 
@@ -143,9 +138,4 @@ public final class CreativeGlyphsPlugin extends JavaPlugin {
     public PluginGlyphMap registry() {
         return registry;
     }
-
-    public ArtemisGlyphImporter importer() {
-        return importer;
-    }
-
 }
