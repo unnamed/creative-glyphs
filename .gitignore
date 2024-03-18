@@ -11,3 +11,6 @@
 
 # dependencies
 /deps/
+
+# run-task
+/plugin/run/
