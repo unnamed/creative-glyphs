@@ -55,6 +55,7 @@ final class BaseFileCloudService implements FileCloudService {
 
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
+        connection.setConnectTimeout(5000);
 
         final var multipartBoundary = HttpUtil.generateBoundary();
 
@@ -82,7 +83,23 @@ final class BaseFileCloudService implements FileCloudService {
             //noinspection deprecation
             responseJson = JSON_PARSER.parse(reader).getAsJsonObject();
         } catch (final IOException e) {
-            throw new IllegalStateException("Failed to read response from Artemis", e);
+            int status;
+            try {
+                status = connection.getResponseCode();
+            } catch (IOException ignored) {
+                // if getResponseCode() failed, just throw
+                // the original exception
+                throw new IllegalStateException("Failed to upload file, failed to get response code", e);
+            }
+
+            final String errorInfo;
+            try {
+                errorInfo = ((Readable) (connection::getErrorStream)).readAsUTF8String();
+            } catch (final IOException ignored) {
+                throw new IllegalStateException("Failed to upload file, failed to read error stream", e);
+            }
+
+            throw new IllegalStateException("Failed to upload file, status: " + status + ", error: " + errorInfo, e);
         }
 
         final var success = responseJson.get("ok").getAsBoolean();
