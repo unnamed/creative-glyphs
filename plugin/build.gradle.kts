@@ -48,6 +48,7 @@ tasks {
     runServer {
         downloadPlugins {
             modrinth("central", "1.3.0") // creative-central
+            modrinth("carbon", "3.0.0-beta.26") // CarbonChat
         }
 
         minecraftVersion("1.20.4")
