@@ -49,6 +49,7 @@ tasks {
         downloadPlugins {
             modrinth("central", "1.3.0") // creative-central
             modrinth("carbon", "6dmNHzy8") // CarbonChat
+            url("https://download.luckperms.net/1534/bukkit/loader/LuckPerms-Bukkit-5.4.121.jar") // LuckPerms
         }
 
         minecraftVersion("1.20.4")
