@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creativeglyphs.content.ContentFlattener;
-import team.unnamed.creativeglyphs.content.ContentProcessor;
 import team.unnamed.creativeglyphs.plugin.PluginGlyphMap;
 import team.unnamed.creativeglyphs.plugin.integration.PluginIntegration;
 
@@ -46,8 +45,6 @@ public class EssentialsDiscordIntegration implements PluginIntegration {
 
         @EventHandler
         public void onDiscordToMinecraftMessage(DiscordRelayEvent event) {
-            final String raw = event.getRawMessage();
-            event.setFormattedMessage(ContentProcessor.string().process(raw, glyphMap));
         }
     }
 }
