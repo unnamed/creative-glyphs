@@ -35,7 +35,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.10")
     compileOnly(files("../lib/TownyChat-0.91.jar", "../lib/EzChat-3.0.3.jar"))
     compileOnly("net.essentialsx:EssentialsXDiscord:2.20.1")
-    compileOnly("com.discordsrv:discordsrv:1.26.2:shaded") // DiscordSRV (shaded)
+    compileOnly("com.discordsrv:discordsrv:1.27.0") // DiscordSRV (shaded)
     compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.1.0")
     compileOnly("de.hexaoxi:carbonchat-api:3.0.0-beta.25") // CarbonChat
 
